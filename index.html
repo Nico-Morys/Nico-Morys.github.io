@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML-MMA Predictions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .banner {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .banner h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .banner h1 a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .banner h1 a:hover {
+            text-decoration: underline;
+        }
+        .nav {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner -->
+    <header class="banner">
+        <h1><a href="index.html">ML-MMA</a></h1>
+        <nav class="nav">
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="predictions">
+            <h2>Fight Predictions</h2>
+            <table id="predictions-table">
+                <thead>
+                    <tr>
+                        <th>Fight</th>
+                        <th>Predicted Winner</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Predictions will be populated here -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
