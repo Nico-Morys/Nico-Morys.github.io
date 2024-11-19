@@ -1,0 +1,5 @@
+[
+    {"fight": "Alex Pereira vs Khalil Rountree Jr.", "predicted_winner": "Alex Pereira", "confidence": "50.74%", "result": "win"},
+    {"fight": "Jose Aldo vs Mario Bautista", "predicted_winner": "Mario Bautista", "confidence": "51.80%", "result": "win"},
+    {"fight": "Roman Dolidze vs Kevin Holland", "predicted_winner": "Kevin Holland", "confidence": "50.36%", "result": "loss"}
+    ]
