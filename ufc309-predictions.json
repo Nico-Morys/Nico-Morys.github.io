@@ -1,0 +1,8 @@
+[
+    {"fight": "Jon Jones vs Stipe Miocic", "predicted_winner": "Jon Jones", "confidence": "59.68%", "result": "win"},
+    {"fight": "Charles Oliveira vs Michael Chandler", "predicted_winner": "Charles Oliveira", "confidence": "56.20%", "result": "win"},
+    {"fight": "Bo Nickal vs Paul Craig", "predicted_winner": "Bo Nickal", "confidence": "62.12%", "result": "win"},
+    {"fight": "Jonathan Martinez vs Marcus McGhee", "predicted_winner": "Marcus McGhee", "confidence": "50.15%", "result": "win"},
+    {"fight": "Jim Miller vs Damon Jackson", "predicted_winner": "Jim Miller", "confidence": "52.50%", "result": "win"},
+    {"fight": "Mickey Gall vs Ramiz Brahimaj", "predicted_winner": "Mickey Gall", "confidence": "51.01%", "result": "loss"}
+    ]
