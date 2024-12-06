@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ML-MMA Predictions</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Banner -->
@@ -26,6 +26,28 @@
         </div>
 
         <!-- Event Banner with Dropdown -->
+        <section class="event-banner" onclick="toggleDropdown('ufc310')">
+            <h2>UFC 310</h2>
+        </section>
+        <!-- Dropdown Content (Initially Hidden) -->
+        <div id="ufc310" class="dropdown-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fight</th>
+                        <th>Predicted Winner</th>
+                        <th>Confidence</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ufc310-table">
+                    <!-- Predictions will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+
+
         <section class="event-banner" onclick="toggleDropdown('ufc309')">
             <h2>UFC 309</h2>
         </section>
@@ -65,27 +87,6 @@
                 </tbody>
             </table>
         </div>
-
-        <section class="event-banner" onclick="toggleDropdown('ufc307')">
-            <h2>UFC 307</h2>
-        </section>
-        <div id="ufc307" class="dropdown-content">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fight</th>
-                        <th>Predicted Winner</th>
-                        <th>Confidence</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="ufc307-table">
-                    <!-- Predictions will be populated here -->
-                </tbody>
-            </table>
-        </div>
-
-
     </main>
 
     <script src="script.js"></script>

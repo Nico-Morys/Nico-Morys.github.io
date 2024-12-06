@@ -1,5 +1,5 @@
 // Fetch predictions for multiple events
-const events = ['ufc307','ufc308', 'ufc309']; // Add your events here
+const events = ['ufc308', 'ufc309', 'ufc310']; // Add your events here
 
 events.forEach(event => {
     fetch(`${event}-predictions.json`)  // Assuming each event has its own JSON file
@@ -21,7 +21,7 @@ events.forEach(event => {
                     statusImage = 'images/red-x.png';
                 } else {
                     // Optionally, handle cases where the result isn't set
-                    statusImage = 'images/red-x.png'; // Default to red X if no result is available
+                    statusImage = 'images/unknown.png'; // Default to red X if no result is available
                 }
 
                 row.innerHTML = `
