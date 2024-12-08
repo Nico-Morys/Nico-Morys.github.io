@@ -1,16 +1,16 @@
 [
-    {"fight": "Shavkhat Rakhmonov vs Ian Garry", "predicted_winner": "Shavkhat Rakhmonov", "confidence": "58.03%", "result": ""},
-    {"fight": "Ciryl Gane vs Alexander Volkov", "predicted_winner": "Ciryl Gane", "confidence": "52.18%", "result": ""},
-    {"fight": "Bryce Mitchell vs Kron Gracie", "predicted_winner": "Bryce Mitchell", "confidence": "60.99%", "result": ""},
-    {"fight": "Nate Landwehr vs Choi Doo-ho", "predicted_winner": "Nate Landwehr", "confidence": "51.89%", "result": ""},
-    {"fight": "Dominick Reyes vs Anthony Smtih", "predicted_winner": "Anthony Smith", "confidence": "49.88%", "result": ""},
-    {"fight": "Vicente Luque vs Themba Gorimbo", "predicted_winner": "Vicente Luque", "confidence": "52.37%", "result": ""},
-    {"fight": "Movsar Evloev vs Aljamain Sterling", "predicted_winner": "Movsar Evloev", "confidence": "51.68%", "result": ""},
-    {"fight": "Randy Brown vs Bryan Battle", "predicted_winner": "Randy Brown", "confidence": "53.10%", "result": ""},
-    {"fight": "Chris Weidman vs Eryk Anders", "predicted_winner": "Chris Weidman", "confidence": "52.66%", "result": ""},
-    {"fight": "Cody Durden vs Joshua Van", "predicted_winner": "Joshua Van", "confidence": "51.06%", "result": ""},
-    {"fight": "Michael Chiesa vs Max Griffin", "predicted_winner": "Michael Chiesa", "confidence": "55.80%", "result": ""},
-    {"fight": "Clay Guida vs Chase Hooper", "predicted_winner": "Chase Hooper", "confidence": "55.10%", "result": ""},
-    {"fight": "Kennedy Nzechukwu vs Lukasz Brzeski", "predicted_winner": "Lukasz Brzeski", "confidence": "51.11%", "result": ""}
+    {"fight": "Shavkhat Rakhmonov vs Ian Garry", "predicted_winner": "Shavkhat Rakhmonov", "confidence": "58.03%", "result": "win"},
+    {"fight": "Ciryl Gane vs Alexander Volkov", "predicted_winner": "Ciryl Gane", "confidence": "52.18%", "result": "win"},
+    {"fight": "Bryce Mitchell vs Kron Gracie", "predicted_winner": "Bryce Mitchell", "confidence": "60.99%", "result": "win"},
+    {"fight": "Nate Landwehr vs Choi Doo-ho", "predicted_winner": "Nate Landwehr", "confidence": "51.89%", "result": "loss"},
+    {"fight": "Dominick Reyes vs Anthony Smtih", "predicted_winner": "Anthony Smith", "confidence": "50.11%", "result": "loss"},
+    {"fight": "Vicente Luque vs Themba Gorimbo", "predicted_winner": "Vicente Luque", "confidence": "52.37%", "result": "win"},
+    {"fight": "Movsar Evloev vs Aljamain Sterling", "predicted_winner": "Movsar Evloev", "confidence": "51.68%", "result": "win"},
+    {"fight": "Randy Brown vs Bryan Battle", "predicted_winner": "Randy Brown", "confidence": "53.10%", "result": "loss"},
+    {"fight": "Chris Weidman vs Eryk Anders", "predicted_winner": "Chris Weidman", "confidence": "52.66%", "result": "loss"},
+    {"fight": "Cody Durden vs Joshua Van", "predicted_winner": "Joshua Van", "confidence": "51.06%", "result": "win"},
+    {"fight": "Michael Chiesa vs Max Griffin", "predicted_winner": "Michael Chiesa", "confidence": "55.80%", "result": "win"},
+    {"fight": "Clay Guida vs Chase Hooper", "predicted_winner": "Chase Hooper", "confidence": "55.10%", "result": "win"},
+    {"fight": "Kennedy Nzechukwu vs Lukasz Brzeski", "predicted_winner": "Lukas Brzeski", "confidence": "51.11%", "result": "loss"}
     ]
     
