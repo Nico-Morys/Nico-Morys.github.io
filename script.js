@@ -1,5 +1,5 @@
 // Fetch predictions for multiple events
-const events = ['ufc308', 'ufc309', 'ufc310']; // Add your events here
+const events = ['ufc308', 'ufc309', 'ufc310', 'ufconespncovingtonvsbuckley']; // Add your events here
 
 events.forEach(event => {
     fetch(`${event}-predictions.json`)  // Assuming each event has its own JSON file
