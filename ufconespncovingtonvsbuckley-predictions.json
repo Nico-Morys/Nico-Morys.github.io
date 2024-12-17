@@ -1,11 +1,11 @@
 [
-    {"fight": "Colby Covington vs Joaquin Buckley", "predicted_winner": "Colby Covington", "confidence": "55.9%", "result": ""},
-    {"fight": "Cub Swanson vs Billy Quarantillo", "predicted_winner": "Billy Quarantillo", "confidence": "52.24%", "result": ""},
-    {"fight": "Manel Kape vs Bruno Silva", "predicted_winner": "Bruno Silva", "confidence": "50.34%", "result": ""},
-    {"fight": "Vitor Petrino vs Dustin Jacoby", "predicted_winner": "Vitor Petrino", "confidence": "64.13%", "result": ""},
-    {"fight": "Adrian Yanez vs Daniel Marcos", "predicted_winner": "Daniel Marcos", "confidence": "50.01%", "result": ""},
-    {"fight": "Michael Johnson vs Ottman Azaitar", "predicted_winner": "Ottman Azaitar", "confidence": "57.81%", "result": ""},
-    {"fight": "Joel Alvarez vs Drakkar Klose", "predicted_winner": "Joel Alvarez", "confidence": "55.32%", "result": ""},
-    {"fight": "Sean Woodson vs Fernando Padilla", "predicted_winner": "Sean Woodson", "confidence": "57.48%", "result": ""}
+    {"fight": "Colby Covington vs Joaquin Buckley", "predicted_winner": "Colby Covington", "confidence": "55.9%", "result": "loss"},
+    {"fight": "Cub Swanson vs Billy Quarantillo", "predicted_winner": "Billy Quarantillo", "confidence": "52.24%", "result": "loss"},
+    {"fight": "Manel Kape vs Bruno Silva", "predicted_winner": "Bruno Silva", "confidence": "50.34%", "result": "loss"},
+    {"fight": "Vitor Petrino vs Dustin Jacoby", "predicted_winner": "Vitor Petrino", "confidence": "64.13%", "result": "loss"},
+    {"fight": "Adrian Yanez vs Daniel Marcos", "predicted_winner": "Daniel Marcos", "confidence": "50.01%", "result": "win"},
+    {"fight": "Michael Johnson vs Ottman Azaitar", "predicted_winner": "Ottman Azaitar", "confidence": "57.81%", "result": "loss"},
+    {"fight": "Joel Alvarez vs Drakkar Klose", "predicted_winner": "Joel Alvarez", "confidence": "55.32%", "result": "win"},
+    {"fight": "Sean Woodson vs Fernando Padilla", "predicted_winner": "Sean Woodson", "confidence": "57.48%", "result": "win"}
     ]
     
