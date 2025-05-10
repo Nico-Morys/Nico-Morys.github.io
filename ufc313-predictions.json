@@ -1,7 +1,7 @@
 [
-    {"fight": "Alex Pereira vs Magomed Ankalaev", "predicted_winner": "Alex Pereira", "confidence": "48.05%", "result": ""},
-    {"fight": "Justin Gaethje vs Rafael Fiziev", "predicted_winner": "Justin Gaethje", "confidence": "51.65%", "result": ""},
-    {"fight": "Jalin Turner vs Ignacio Bahamondes", "predicted_winner": "Ignacio Bahamondes", "confidence": "54.31%", "result": ""},
-    {"fight": "Bruno Ferreira vs Armen Petrosyan", "predicted_winner": "Bruno Ferreira", "confidence": "55.95%", "result": ""}
+    {"fight": "Alex Pereira vs Magomed Ankalaev", "predicted_winner": "Magomed Ankalaev", "confidence": "51.95%", "result": "win"},
+    {"fight": "Justin Gaethje vs Rafael Fiziev", "predicted_winner": "Justin Gaethje", "confidence": "51.65%", "result": "win"},
+    {"fight": "Jalin Turner vs Ignacio Bahamondes", "predicted_winner": "Ignacio Bahamondes", "confidence": "54.31%", "result": "win"},
+    {"fight": "Bruno Ferreira vs Armen Petrosyan", "predicted_winner": "Bruno Ferreira", "confidence": "55.95%", "result": "win"}
     ]
     
