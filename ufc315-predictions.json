@@ -1,8 +1,8 @@
 [
-    {"fight": "Belal Muhammad vs Jack Della Maddalena", "predicted_winner": "Jack Della Maddalena", "confidence": "55.03%", "result": ""},
-    {"fight": "Jose Aldo vs Aiemann Zahabi", "predicted_winner": "Jose Aldo", "confidence": "51.39%", "result": ""},
-    {"fight": "Mike Malott vs Charles Radtke", "predicted_winner": "Mike Malott", "confidence": "62.50%", "result": ""},
-    {"fight": "Modestas Bukauskas vs Ion Cutelaba", "predicted_winner": "Modestas Bukauskas", "confidence": "62.41%", "result": ""},
-    {"fight": "Marc-Andre Barrialut vs Bruno Silva", "predicted_winner": "Marc-Andre Barrialut", "confidence": "56.97%", "result": ""}
+    {"fight": "Belal Muhammad vs Jack Della Maddalena", "predicted_winner": "Jack Della Maddalena", "confidence": "55.03%", "result": "win"},
+    {"fight": "Jose Aldo vs Aiemann Zahabi", "predicted_winner": "Jose Aldo", "confidence": "51.39%", "result": "loss"},
+    {"fight": "Mike Malott vs Charles Radtke", "predicted_winner": "Mike Malott", "confidence": "62.50%", "result": "win"},
+    {"fight": "Modestas Bukauskas vs Ion Cutelaba", "predicted_winner": "Modestas Bukauskas", "confidence": "62.41%", "result": "win"},
+    {"fight": "Marc-Andre Barrialut vs Bruno Silva", "predicted_winner": "Marc-Andre Barrialut", "confidence": "56.97%", "result": "win"}
     ]
     
