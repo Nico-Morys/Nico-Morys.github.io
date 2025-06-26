@@ -1,8 +1,8 @@
 [
-    {"fight": "Merab Dvalishvili vs Sean O'Malley", "predicted_winner": "Merab Dvalishvili", "confidence": "60.76%", "result": ""},
-    {"fight": "Kelvin Gastelum vs Joe Pyfer", "predicted_winner": "Kelvin Gastelum", "confidence": "55.60%", "result": ""},
-    {"fight": "Vicente Luque vs Kevin Holland", "predicted_winner": "Vicente Luque", "confidence": "52.06%", "result": ""},
-    {"fight": "Bruno Silva vs Joshua Van", "predicted_winner": "Joshua Van", "confidence": "53.12%", "result": ""},
-    {"fight": "Sergey Spivak vs Waldo Cortes-Acosta", "predicted_winner": "Sergey Spivak", "confidence": "64.72%", "result": ""}
+    {"fight": "Merab Dvalishvili vs Sean O'Malley", "predicted_winner": "Merab Dvalishvili", "confidence": "60.76%", "result": "win"},
+    {"fight": "Kelvin Gastelum vs Joe Pyfer", "predicted_winner": "Kelvin Gastelum", "confidence": "55.60%", "result": "loss"},
+    {"fight": "Vicente Luque vs Kevin Holland", "predicted_winner": "Vicente Luque", "confidence": "52.06%", "result": "loss"},
+    {"fight": "Bruno Silva vs Joshua Van", "predicted_winner": "Joshua Van", "confidence": "53.12%", "result": "win"},
+    {"fight": "Sergey Spivak vs Waldo Cortes-Acosta", "predicted_winner": "Sergey Spivak", "confidence": "64.72%", "result": "loss"}
     ]
     
