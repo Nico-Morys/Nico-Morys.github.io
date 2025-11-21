@@ -53,10 +53,27 @@
             margin: 20px auto;
         }
 
+        .company-section {
+            margin: 30px 0;
+        }
+
+        .company-header {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #333;
+        }
+
+        .company-jobs {
+            margin-left: 20px;
+        }
+
         .job-card {
             background-color: #f4f4f4;
             padding: 15px;
-            margin: 15px 0;
+            margin: 10px 0;
             border-radius: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-left: 4px solid #333;
@@ -76,12 +93,6 @@
         .job-title a:hover {
             color: #ff623b;
             text-decoration: underline;
-        }
-
-        .job-company {
-            color: #666;
-            font-weight: 600;
-            margin-bottom: 5px;
         }
 
         .job-time {
@@ -229,30 +240,62 @@
                     lastUpdatedEl.textContent = 'No jobs found';
                 }
 
-                // Display jobs (most recent first)
+                // Display jobs grouped by company
                 if (jobs.length === 0) {
                     jobsContainer.innerHTML = '<div class="no-jobs">No jobs found at this time.</div>';
                 } else {
-                    // Sort by time_scraped (most recent first)
-                    jobs.sort((a, b) => {
-                        return new Date(b.time_scraped) - new Date(a.time_scraped);
+                    // Group jobs by company
+                    const jobsByCompany = {};
+                    jobs.forEach(job => {
+                        const company = job.company || 'Unknown';
+                        if (!jobsByCompany[company]) {
+                            jobsByCompany[company] = [];
+                        }
+                        jobsByCompany[company].push(job);
                     });
                     
-                    jobs.forEach(job => {
-                        const jobCard = document.createElement('div');
-                        jobCard.className = 'job-card';
+                    // Sort companies alphabetically
+                    const companies = Object.keys(jobsByCompany).sort();
+                    
+                    // Create sections for each company
+                    companies.forEach(company => {
+                        // Company header
+                        const companySection = document.createElement('div');
+                        companySection.className = 'company-section';
                         
-                        jobCard.innerHTML = `
-                            <div class="job-title">
-                                <a href="${escapeHtml(job.link)}" target="_blank" rel="noopener noreferrer">
-                                    ${escapeHtml(job.job_name)}
-                                </a>
-                            </div>
-                            <div class="job-company">${escapeHtml(job.company)}</div>
-                            <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
-                        `;
+                        const companyHeader = document.createElement('div');
+                        companyHeader.className = 'company-header';
+                        companyHeader.textContent = company;
+                        companySection.appendChild(companyHeader);
                         
-                        jobsContainer.appendChild(jobCard);
+                        // Jobs container for this company
+                        const companyJobs = document.createElement('div');
+                        companyJobs.className = 'company-jobs';
+                        
+                        // Sort jobs by time_scraped (most recent first)
+                        jobsByCompany[company].sort((a, b) => {
+                            return new Date(b.time_scraped) - new Date(a.time_scraped);
+                        });
+                        
+                        // Create job cards for this company
+                        jobsByCompany[company].forEach(job => {
+                            const jobCard = document.createElement('div');
+                            jobCard.className = 'job-card';
+                            
+                            jobCard.innerHTML = `
+                                <div class="job-title">
+                                    <a href="${escapeHtml(job.link)}" target="_blank" rel="noopener noreferrer">
+                                        ${escapeHtml(job.job_name)}
+                                    </a>
+                                </div>
+                                <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
+                            `;
+                            
+                            companyJobs.appendChild(jobCard);
+                        });
+                        
+                        companySection.appendChild(companyJobs);
+                        jobsContainer.appendChild(companySection);
                     });
                 }
 
