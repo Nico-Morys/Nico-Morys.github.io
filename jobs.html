@@ -365,7 +365,16 @@
             } catch (error) {
                 loadingEl.style.display = 'none';
                 errorEl.style.display = 'block';
-                errorEl.textContent = `Error loading jobs: ${error.message}`;
+                
+                // Provide a friendly error message based on the error type
+                if (error.message.includes('404')) {
+                    errorEl.textContent = 'jobs_data.csv file not found. Please ensure the jobs data file is available.';
+                } else if (error.message.includes('failed to fetch')) {
+                    errorEl.textContent = 'Unable to load jobs data. Please check your internet connection.';
+                } else {
+                    errorEl.textContent = `Error loading jobs: ${error.message}`;
+                }
+                
                 console.error('Error loading jobs:', error);
             }
         }
