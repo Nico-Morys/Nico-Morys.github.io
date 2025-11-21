@@ -49,6 +49,102 @@
             font-size: 0.9em;
         }
 
+        .filter-section {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .filter-toggle {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .filter-toggle:hover {
+            background-color: #555;
+        }
+
+        .filter-panel {
+            display: none;
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        .filter-panel.active {
+            display: block;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .filter-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .filter-checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .filter-checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox-item label {
+            cursor: pointer;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .filter-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .filter-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .filter-button:hover {
+            background-color: #555;
+        }
+
+        .filter-button.clear {
+            background-color: #666;
+        }
+
         .jobs-container {
             width: 80%;
             margin: 20px auto;
@@ -154,6 +250,21 @@
 
         <div class="last-updated" id="lastUpdated">Loading...</div>
 
+        <div class="filter-section">
+            <button class="filter-toggle" onclick="toggleFilterPanel()">Filter Companies</button>
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-title">Select companies to display:</div>
+                <div class="filter-checkboxes" id="filterCheckboxes">
+                    <!-- Checkboxes will be generated here -->
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-button" onclick="selectAllCompanies()">Select All</button>
+                    <button class="filter-button clear" onclick="clearAllCompanies()">Clear All</button>
+                    <button class="filter-button" onclick="applyFilters()">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
         <div id="loading" class="loading">Loading jobs...</div>
         <div id="error" class="error" style="display: none;"></div>
         <div id="jobsContainer" class="jobs-container"></div>
@@ -162,6 +273,10 @@
     <script>
         // Configuration: Path to the CSV file
         const CSV_FILE_PATH = 'jobs_data.csv';
+        
+        // Store all jobs and filtered jobs
+        let allJobs = [];
+        let selectedCompanies = new Set();
 
         // Simple CSV parser
         function parseCSV(text) {
@@ -224,6 +339,9 @@
 
                 const csvText = await response.text();
                 const jobs = parseCSV(csvText);
+                
+                // Store all jobs globally
+                allJobs = jobs;
 
                 // Update stats
                 totalJobsEl.textContent = jobs.length;
@@ -238,64 +356,11 @@
                     lastUpdatedEl.textContent = 'No jobs found';
                 }
 
+                // Create filter checkboxes
+                createFilterCheckboxes(jobs);
+                
                 // Display jobs grouped by company
-                if (jobs.length === 0) {
-                    jobsContainer.innerHTML = '<div class="no-jobs">No jobs found at this time.</div>';
-                } else {
-                    // Group jobs by company
-                    const jobsByCompany = {};
-                    jobs.forEach(job => {
-                        const company = job.company || 'Unknown';
-                        if (!jobsByCompany[company]) {
-                            jobsByCompany[company] = [];
-                        }
-                        jobsByCompany[company].push(job);
-                    });
-                    
-                    // Sort companies alphabetically
-                    const companies = Object.keys(jobsByCompany).sort();
-                    
-                    // Create sections for each company
-                    companies.forEach(company => {
-                        // Company header
-                        const companySection = document.createElement('div');
-                        companySection.className = 'company-section';
-                        
-                        const companyHeader = document.createElement('div');
-                        companyHeader.className = 'company-header';
-                        companyHeader.textContent = company;
-                        companySection.appendChild(companyHeader);
-                        
-                        // Jobs container for this company
-                        const companyJobs = document.createElement('div');
-                        companyJobs.className = 'company-jobs';
-                        
-                        // Sort jobs by time_scraped (most recent first)
-                        jobsByCompany[company].sort((a, b) => {
-                            return new Date(b.time_scraped) - new Date(a.time_scraped);
-                        });
-                        
-                        // Create job cards for this company
-                        jobsByCompany[company].forEach(job => {
-                            const jobCard = document.createElement('div');
-                            jobCard.className = 'job-card';
-                            
-                            jobCard.innerHTML = `
-                                <div class="job-title">
-                                    <a href="${escapeHtml(job.link)}" target="_blank" rel="noopener noreferrer">
-                                        ${escapeHtml(job.job_name)}
-                                    </a>
-                                </div>
-                                <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
-                            `;
-                            
-                            companyJobs.appendChild(jobCard);
-                        });
-                        
-                        companySection.appendChild(companyJobs);
-                        jobsContainer.appendChild(companySection);
-                    });
-                }
+                displayJobs(jobs);
 
                 loadingEl.style.display = 'none';
             } catch (error) {
@@ -310,6 +375,143 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function createFilterCheckboxes(jobs) {
+            const filterCheckboxes = document.getElementById('filterCheckboxes');
+            filterCheckboxes.innerHTML = '';
+            
+            // Get unique companies
+            const companies = [...new Set(jobs.map(job => job.company || 'Unknown'))].sort();
+            
+            // Initialize all companies as selected
+            companies.forEach(company => {
+                selectedCompanies.add(company);
+            });
+            
+            // Create checkboxes
+            companies.forEach(company => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'filter-checkbox-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `company-${company}`;
+                checkbox.value = company;
+                checkbox.checked = true;
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedCompanies.add(company);
+                    } else {
+                        selectedCompanies.delete(company);
+                    }
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `company-${company}`;
+                label.textContent = company;
+                
+                checkboxItem.appendChild(checkbox);
+                checkboxItem.appendChild(label);
+                filterCheckboxes.appendChild(checkboxItem);
+            });
+        }
+
+        function displayJobs(jobs) {
+            const jobsContainer = document.getElementById('jobsContainer');
+            jobsContainer.innerHTML = '';
+            
+            // Filter jobs by selected companies
+            const filteredJobs = jobs.filter(job => {
+                const company = job.company || 'Unknown';
+                return selectedCompanies.has(company);
+            });
+            
+            if (filteredJobs.length === 0) {
+                jobsContainer.innerHTML = '<div class="no-jobs">No jobs found for selected companies.</div>';
+                return;
+            }
+            
+            // Group jobs by company
+            const jobsByCompany = {};
+            filteredJobs.forEach(job => {
+                const company = job.company || 'Unknown';
+                if (!jobsByCompany[company]) {
+                    jobsByCompany[company] = [];
+                }
+                jobsByCompany[company].push(job);
+            });
+            
+            // Sort companies alphabetically
+            const companies = Object.keys(jobsByCompany).sort();
+            
+            // Create sections for each company
+            companies.forEach(company => {
+                // Company header
+                const companySection = document.createElement('div');
+                companySection.className = 'company-section';
+                
+                const companyHeader = document.createElement('div');
+                companyHeader.className = 'company-header';
+                companyHeader.textContent = company;
+                companySection.appendChild(companyHeader);
+                
+                // Jobs container for this company
+                const companyJobs = document.createElement('div');
+                companyJobs.className = 'company-jobs';
+                
+                // Sort jobs by time_scraped (most recent first)
+                jobsByCompany[company].sort((a, b) => {
+                    return new Date(b.time_scraped) - new Date(a.time_scraped);
+                });
+                
+                // Create job cards for this company
+                jobsByCompany[company].forEach(job => {
+                    const jobCard = document.createElement('div');
+                    jobCard.className = 'job-card';
+                    
+                    jobCard.innerHTML = `
+                        <div class="job-title">
+                            <a href="${escapeHtml(job.link)}" target="_blank" rel="noopener noreferrer">
+                                ${escapeHtml(job.job_name)}
+                            </a>
+                        </div>
+                        <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
+                    `;
+                    
+                    companyJobs.appendChild(jobCard);
+                });
+                
+                companySection.appendChild(companyJobs);
+                jobsContainer.appendChild(companySection);
+            });
+        }
+
+        function toggleFilterPanel() {
+            const panel = document.getElementById('filterPanel');
+            panel.classList.toggle('active');
+        }
+
+        function selectAllCompanies() {
+            const checkboxes = document.querySelectorAll('#filterCheckboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+                selectedCompanies.add(checkbox.value);
+            });
+        }
+
+        function clearAllCompanies() {
+            const checkboxes = document.querySelectorAll('#filterCheckboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                selectedCompanies.delete(checkbox.value);
+            });
+        }
+
+        function applyFilters() {
+            displayJobs(allJobs);
+            // Optionally close the filter panel after applying
+            // document.getElementById('filterPanel').classList.remove('active');
         }
 
         // Load jobs on page load
