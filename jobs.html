@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings - ML-MMA</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Jobs-specific styling */
+        .jobs-header {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .jobs-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background-color: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #666;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .jobs-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .job-card {
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #333;
+        }
+
+        .job-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .job-title a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .job-title a:hover {
+            color: #ff623b;
+            text-decoration: underline;
+        }
+
+        .job-company {
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .job-time {
+            color: #999;
+            font-size: 0.85em;
+            font-style: italic;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .error {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        .no-jobs {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner -->
+    <header class="banner">
+        <div class="banner-container">
+            <!-- ML-MMA in the Center -->
+            <h1 class="center"><a href="index.html">ML-MMA</a></h1>
+
+            <!-- Navigation Links on the Right -->
+            <nav class="nav">
+                <a href="about.html">About</a>
+                <a href="news.html">News / Updates</a>
+                <a href="jobs.html">Job Listings</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="jobs-header">
+            <h2>Job Listings</h2>
+            <div class="last-updated" id="lastUpdated">Loading...</div>
+        </div>
+
+        <div class="jobs-stats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalJobs">0</div>
+                <div class="stat-label">Total Jobs</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">Loading jobs...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="jobsContainer" class="jobs-container"></div>
+    </main>
+
+    <script>
+        // Configuration: Path to the CSV file
+        const CSV_FILE_PATH = 'jobs_data.csv';
+
+        // Simple CSV parser
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length < 2) return [];
+            
+            // Get headers
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            
+            // Parse data rows
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let j = 0; j < lines[i].length; j++) {
+                    const char = lines[i][j];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim()); // Add last value
+                
+                if (values.length === headers.length) {
+                    const obj = {};
+                    headers.forEach((header, index) => {
+                        obj[header] = values[index].replace(/^"|"$/g, '');
+                    });
+                    data.push(obj);
+                }
+            }
+            
+            return data;
+        }
+
+        async function loadJobs() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const jobsContainer = document.getElementById('jobsContainer');
+            const lastUpdatedEl = document.getElementById('lastUpdated');
+            const totalJobsEl = document.getElementById('totalJobs');
+
+            try {
+                loadingEl.style.display = 'block';
+                errorEl.style.display = 'none';
+                jobsContainer.innerHTML = '';
+
+                const response = await fetch(CSV_FILE_PATH);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const csvText = await response.text();
+                const jobs = parseCSV(csvText);
+
+                // Update stats
+                totalJobsEl.textContent = jobs.length;
+                
+                // Get the most recent scrape time
+                if (jobs.length > 0) {
+                    const mostRecent = jobs.reduce((latest, job) => {
+                        return job.time_scraped > latest.time_scraped ? job : latest;
+                    }, jobs[0]);
+                    lastUpdatedEl.textContent = `Last updated: ${mostRecent.time_scraped}`;
+                } else {
+                    lastUpdatedEl.textContent = 'No jobs found';
+                }
+
+                // Display jobs (most recent first)
+                if (jobs.length === 0) {
+                    jobsContainer.innerHTML = '<div class="no-jobs">No jobs found at this time.</div>';
+                } else {
+                    // Sort by time_scraped (most recent first)
+                    jobs.sort((a, b) => {
+                        return new Date(b.time_scraped) - new Date(a.time_scraped);
+                    });
+                    
+                    jobs.forEach(job => {
+                        const jobCard = document.createElement('div');
+                        jobCard.className = 'job-card';
+                        
+                        jobCard.innerHTML = `
+                            <div class="job-title">
+                                <a href="${escapeHtml(job.link)}" target="_blank" rel="noopener noreferrer">
+                                    ${escapeHtml(job.job_name)}
+                                </a>
+                            </div>
+                            <div class="job-company">${escapeHtml(job.company)}</div>
+                            <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
+                        `;
+                        
+                        jobsContainer.appendChild(jobCard);
+                    });
+                }
+
+                loadingEl.style.display = 'none';
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = `Error loading jobs: ${error.message}`;
+                console.error('Error loading jobs:', error);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load jobs on page load
+        loadJobs();
+
+        // Optionally: Auto-refresh every 5 minutes
+        // setInterval(loadJobs, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
+
