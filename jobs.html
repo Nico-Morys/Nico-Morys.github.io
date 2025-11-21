@@ -247,8 +247,6 @@
             </div>
         </div>
 
-        <div class="last-updated" id="lastUpdated">Loading...</div>
-
         <div class="filter-section">
             <button class="filter-toggle" onclick="toggleFilterPanel()">Filter Companies</button>
             <div class="filter-panel" id="filterPanel">
@@ -263,6 +261,8 @@
                 </div>
             </div>
         </div>
+        
+        <div class="last-updated" id="lastUpdated">Loading...</div>
 
         <div id="loading" class="loading">Loading jobs...</div>
         <div id="error" class="error" style="display: none;"></div>
@@ -350,7 +350,7 @@
                     const mostRecent = jobs.reduce((latest, job) => {
                         return job.time_scraped > latest.time_scraped ? job : latest;
                     }, jobs[0]);
-                    lastUpdatedEl.textContent = `Last updated: ${mostRecent.time_scraped}`;
+                    lastUpdatedEl.textContent = `Last updated: ${formatTimestamp(mostRecent.time_scraped)}`;
                 } else {
                     lastUpdatedEl.textContent = 'No jobs found';
                 }
@@ -374,6 +374,40 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function formatTimestamp(utcTimeString) {
+            // Parse the UTC timestamp "2025-11-20 20:19:48"
+            const [datePart, timePart] = utcTimeString.split(' ');
+            const [year, month, day] = datePart.split('-');
+            const [hours, minutes, seconds] = timePart.split(':');
+            
+            // Create a date object in UTC
+            const dateObj = new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+            
+            // Format: "November 20th, 2025 - 8:42 PM"
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const monthName = monthNames[dateObj.getUTCMonth()];
+            const dayNum = dateObj.getUTCDate();
+            const yearNum = dateObj.getUTCFullYear();
+            
+            // Add ordinal suffix (st, nd, rd, th)
+            let suffix = 'th';
+            if (dayNum % 10 === 1 && dayNum !== 11) suffix = 'st';
+            else if (dayNum % 10 === 2 && dayNum !== 12) suffix = 'nd';
+            else if (dayNum % 10 === 3 && dayNum !== 13) suffix = 'rd';
+            
+            // Convert to 12-hour format
+            let hour12 = dateObj.getUTCHours();
+            const ampm = hour12 >= 12 ? 'PM' : 'AM';
+            if (hour12 > 12) hour12 -= 12;
+            else if (hour12 === 0) hour12 = 12;
+            
+            const minuteStr = dateObj.getUTCMinutes().toString().padStart(2, '0');
+            
+            return `${monthName} ${dayNum}${suffix}, ${yearNum} - ${hour12}:${minuteStr} ${ampm}`;
         }
 
         function createFilterCheckboxes(jobs) {
@@ -475,7 +509,7 @@
                                 ${escapeHtml(job.job_name)}
                             </a>
                         </div>
-                        <div class="job-time">Found: ${escapeHtml(job.time_scraped)}</div>
+                        <div class="job-time">Found: ${formatTimestamp(job.time_scraped)}</div>
                     `;
                     
                     companyJobs.appendChild(jobCard);
