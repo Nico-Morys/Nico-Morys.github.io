@@ -1,0 +1,4 @@
+job_name,company,time_scraped,link
+Test Job 0,TestCompany,2025-11-21 23:59:08,https://example.com/job/0-1763791148
+Test Job 1,TestCompany,2025-11-21 23:59:08,https://example.com/job/1-1763791148
+Test Job 2,TestCompany,2025-11-21 23:59:08,https://example.com/job/2-1763791148
