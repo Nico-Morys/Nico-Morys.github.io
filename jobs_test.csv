@@ -1,4 +1,5 @@
 job_name,company,time_scraped,link
-Test Job 0,TestCompany,2025-11-21 23:59:08,https://example.com/job/0-1763791148
-Test Job 1,TestCompany,2025-11-21 23:59:08,https://example.com/job/1-1763791148
-Test Job 2,TestCompany,2025-11-21 23:59:08,https://example.com/job/2-1763791148
+Existing Job 1,TestCompany,2025-11-22 00:00:17,https://example.com/job/existing-1
+Existing Job 2,TestCompany,2025-11-22 00:00:17,https://example.com/job/existing-2
+Existing Job 3,TestCompany,2025-11-22 00:00:17,https://example.com/job/existing-3
+Brand New Job 4,TestCompany,2025-11-22 00:00:17,https://example.com/job/new-1763791217
