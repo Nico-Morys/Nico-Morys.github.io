@@ -6,6 +6,10 @@ body, h1, h2, table {
     font-family: 'Open Sans', sans-serif;
 }
 
+body {
+    background: #e5e7eb !important;
+}
+
 /* Banner */
 .banner {
     background-color: #333;

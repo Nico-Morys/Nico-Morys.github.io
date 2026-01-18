@@ -1,0 +1,516 @@
+{
+  "1": [
+    {
+      "name": "Shell",
+      "price": 3.45,
+      "distance": 0.3,
+      "latitude": 40.7145,
+      "longitude": -74.0075
+    },
+    {
+      "name": "BP",
+      "price": 3.42,
+      "distance": 0.5,
+      "latitude": 40.7110,
+      "longitude": -74.0045
+    },
+    {
+      "name": "Exxon",
+      "price": 3.48,
+      "distance": 0.7,
+      "latitude": 40.7155,
+      "longitude": -74.0085
+    },
+    {
+      "name": "Chevron",
+      "price": 3.50,
+      "distance": 0.9,
+      "latitude": 40.7100,
+      "longitude": -74.0035
+    },
+    {
+      "name": "Mobil",
+      "price": 3.44,
+      "distance": 1.1,
+      "latitude": 40.7165,
+      "longitude": -74.0095
+    }
+  ],
+  "2": [
+    {
+      "name": "Shell",
+      "price": 3.38,
+      "distance": 0.4,
+      "latitude": 40.7595,
+      "longitude": -73.9865
+    },
+    {
+      "name": "BP",
+      "price": 3.40,
+      "distance": 0.6,
+      "latitude": 40.7565,
+      "longitude": -73.9845
+    },
+    {
+      "name": "Exxon",
+      "price": 3.35,
+      "distance": 0.8,
+      "latitude": 40.7605,
+      "longitude": -73.9875
+    },
+    {
+      "name": "Chevron",
+      "price": 3.42,
+      "distance": 1.0,
+      "latitude": 40.7555,
+      "longitude": -73.9835
+    }
+  ],
+  "3": [
+    {
+      "name": "Shell",
+      "price": 3.52,
+      "distance": 0.2,
+      "latitude": 40.7495,
+      "longitude": -73.9690
+    },
+    {
+      "name": "BP",
+      "price": 3.49,
+      "distance": 0.4,
+      "latitude": 40.7483,
+      "longitude": -73.9670
+    },
+    {
+      "name": "Exxon",
+      "price": 3.55,
+      "distance": 0.6,
+      "latitude": 40.7505,
+      "longitude": -73.9700
+    },
+    {
+      "name": "Chevron",
+      "price": 3.51,
+      "distance": 0.8,
+      "latitude": 40.7475,
+      "longitude": -73.9660
+    },
+    {
+      "name": "Mobil",
+      "price": 3.47,
+      "distance": 1.0,
+      "latitude": 40.7515,
+      "longitude": -73.9710
+    }
+  ],
+  "4": [
+    {
+      "name": "Shell",
+      "price": 3.41,
+      "distance": 0.3,
+      "latitude": 40.7625,
+      "longitude": -73.9785
+    },
+    {
+      "name": "BP",
+      "price": 3.39,
+      "distance": 0.5,
+      "latitude": 40.7603,
+      "longitude": -73.9765
+    },
+    {
+      "name": "Exxon",
+      "price": 3.43,
+      "distance": 0.7,
+      "latitude": 40.7635,
+      "longitude": -73.9795
+    },
+    {
+      "name": "Chevron",
+      "price": 3.45,
+      "distance": 0.9,
+      "latitude": 40.7595,
+      "longitude": -73.9755
+    }
+  ],
+  "5": [
+    {
+      "name": "Shell",
+      "price": 3.46,
+      "distance": 0.4,
+      "latitude": 40.7295,
+      "longitude": -73.9950
+    },
+    {
+      "name": "BP",
+      "price": 3.44,
+      "distance": 0.6,
+      "latitude": 40.7270,
+      "longitude": -73.9930
+    },
+    {
+      "name": "Exxon",
+      "price": 3.48,
+      "distance": 0.8,
+      "latitude": 40.7305,
+      "longitude": -73.9960
+    },
+    {
+      "name": "Chevron",
+      "price": 3.50,
+      "distance": 1.0,
+      "latitude": 40.7260,
+      "longitude": -73.9920
+    },
+    {
+      "name": "Mobil",
+      "price": 3.43,
+      "distance": 1.2,
+      "latitude": 40.7315,
+      "longitude": -73.9970
+    }
+  ],
+  "6": [
+    {
+      "name": "Shell",
+      "price": 3.50,
+      "distance": 0.3,
+      "latitude": 41.8795,
+      "longitude": -87.6305
+    },
+    {
+      "name": "BP",
+      "price": 3.48,
+      "distance": 0.5,
+      "latitude": 41.8765,
+      "longitude": -87.6285
+    },
+    {
+      "name": "Exxon",
+      "price": 3.54,
+      "distance": 0.7,
+      "latitude": 41.8805,
+      "longitude": -87.6315
+    },
+    {
+      "name": "Chevron",
+      "price": 3.55,
+      "distance": 0.9,
+      "latitude": 41.8755,
+      "longitude": -87.6275
+    },
+    {
+      "name": "Mobil",
+      "price": 3.49,
+      "distance": 1.1,
+      "latitude": 41.8815,
+      "longitude": -87.6325
+    }
+  ],
+  "7": [
+    {
+      "name": "Shell",
+      "price": 3.35,
+      "distance": 0.4,
+      "latitude": 42.3325,
+      "longitude": -83.0465
+    },
+    {
+      "name": "BP",
+      "price": 3.33,
+      "distance": 0.6,
+      "latitude": 42.3303,
+      "longitude": -83.0445
+    },
+    {
+      "name": "Exxon",
+      "price": 3.40,
+      "distance": 0.8,
+      "latitude": 42.3335,
+      "longitude": -83.0475
+    },
+    {
+      "name": "Chevron",
+      "price": 3.42,
+      "distance": 1.0,
+      "latitude": 42.3295,
+      "longitude": -83.0435
+    }
+  ],
+  "8": [
+    {
+      "name": "Shell",
+      "price": 3.38,
+      "distance": 0.3,
+      "latitude": 43.0395,
+      "longitude": -87.9075
+    },
+    {
+      "name": "BP",
+      "price": 3.36,
+      "distance": 0.5,
+      "latitude": 43.0383,
+      "longitude": -87.9055
+    },
+    {
+      "name": "Exxon",
+      "price": 3.42,
+      "distance": 0.7,
+      "latitude": 43.0405,
+      "longitude": -87.9085
+    },
+    {
+      "name": "Chevron",
+      "price": 3.44,
+      "distance": 0.9,
+      "latitude": 43.0375,
+      "longitude": -87.9045
+    },
+    {
+      "name": "Mobil",
+      "price": 3.37,
+      "distance": 1.1,
+      "latitude": 43.0415,
+      "longitude": -87.9095
+    }
+  ],
+  "9": [
+    {
+      "name": "Shell",
+      "price": 3.32,
+      "distance": 0.2,
+      "latitude": 44.9785,
+      "longitude": -93.2660
+    },
+    {
+      "name": "BP",
+      "price": 3.30,
+      "distance": 0.4,
+      "latitude": 44.9773,
+      "longitude": -93.2640
+    },
+    {
+      "name": "Exxon",
+      "price": 3.36,
+      "distance": 0.6,
+      "latitude": 44.9795,
+      "longitude": -93.2670
+    },
+    {
+      "name": "Chevron",
+      "price": 3.38,
+      "distance": 0.8,
+      "latitude": 44.9765,
+      "longitude": -93.2630
+    },
+    {
+      "name": "Mobil",
+      "price": 3.31,
+      "distance": 1.0,
+      "latitude": 44.9805,
+      "longitude": -93.2680
+    }
+  ],
+  "10": [
+    {
+      "name": "Shell",
+      "price": 3.41,
+      "distance": 0.4,
+      "latitude": 39.7695,
+      "longitude": -86.1590
+    },
+    {
+      "name": "BP",
+      "price": 3.39,
+      "distance": 0.6,
+      "latitude": 39.7673,
+      "longitude": -86.1570
+    },
+    {
+      "name": "Exxon",
+      "price": 3.45,
+      "distance": 0.8,
+      "latitude": 39.7705,
+      "longitude": -86.1600
+    },
+    {
+      "name": "Chevron",
+      "price": 3.47,
+      "distance": 1.0,
+      "latitude": 39.7665,
+      "longitude": -86.1560
+    }
+  ],
+  "11": [
+    {
+      "name": "Shell",
+      "price": 3.43,
+      "distance": 0.3,
+      "latitude": 39.9625,
+      "longitude": -82.9995
+    },
+    {
+      "name": "BP",
+      "price": 3.41,
+      "distance": 0.5,
+      "latitude": 39.9603,
+      "longitude": -82.9975
+    },
+    {
+      "name": "Exxon",
+      "price": 3.47,
+      "distance": 0.7,
+      "latitude": 39.9635,
+      "longitude": -83.0005
+    },
+    {
+      "name": "Chevron",
+      "price": 3.49,
+      "distance": 0.9,
+      "latitude": 39.9595,
+      "longitude": -82.9965
+    },
+    {
+      "name": "Mobil",
+      "price": 3.42,
+      "distance": 1.1,
+      "latitude": 39.9645,
+      "longitude": -83.0015
+    }
+  ],
+  "12": [
+    {
+      "name": "Shell",
+      "price": 3.40,
+      "distance": 0.4,
+      "latitude": 41.5005,
+      "longitude": -81.6955
+    },
+    {
+      "name": "BP",
+      "price": 3.38,
+      "distance": 0.6,
+      "latitude": 41.4983,
+      "longitude": -81.6935
+    },
+    {
+      "name": "Exxon",
+      "price": 3.44,
+      "distance": 0.8,
+      "latitude": 41.5015,
+      "longitude": -81.6965
+    },
+    {
+      "name": "Chevron",
+      "price": 3.46,
+      "distance": 1.0,
+      "latitude": 41.4975,
+      "longitude": -81.6925
+    }
+  ],
+  "13": [
+    {
+      "name": "Shell",
+      "price": 3.26,
+      "distance": 0.3,
+      "latitude": 38.6285,
+      "longitude": -90.2005
+    },
+    {
+      "name": "BP",
+      "price": 3.24,
+      "distance": 0.5,
+      "latitude": 38.6263,
+      "longitude": -90.1985
+    },
+    {
+      "name": "Exxon",
+      "price": 3.30,
+      "distance": 0.7,
+      "latitude": 38.6295,
+      "longitude": -90.2015
+    },
+    {
+      "name": "Chevron",
+      "price": 3.32,
+      "distance": 0.9,
+      "latitude": 38.6255,
+      "longitude": -90.1975
+    },
+    {
+      "name": "Mobil",
+      "price": 3.25,
+      "distance": 1.1,
+      "latitude": 38.6305,
+      "longitude": -90.2025
+    }
+  ],
+  "14": [
+    {
+      "name": "Shell",
+      "price": 3.28,
+      "distance": 0.4,
+      "latitude": 39.1010,
+      "longitude": -94.5795
+    },
+    {
+      "name": "BP",
+      "price": 3.26,
+      "distance": 0.6,
+      "latitude": 39.0988,
+      "longitude": -94.5775
+    },
+    {
+      "name": "Exxon",
+      "price": 3.32,
+      "distance": 0.8,
+      "latitude": 39.1020,
+      "longitude": -94.5805
+    },
+    {
+      "name": "Chevron",
+      "price": 3.34,
+      "distance": 1.0,
+      "latitude": 39.0980,
+      "longitude": -94.5765
+    }
+  ],
+  "15": [
+    {
+      "name": "Shell",
+      "price": 3.45,
+      "distance": 0.3,
+      "latitude": 39.1045,
+      "longitude": -84.5130
+    },
+    {
+      "name": "BP",
+      "price": 3.43,
+      "distance": 0.5,
+      "latitude": 39.1023,
+      "longitude": -84.5110
+    },
+    {
+      "name": "Exxon",
+      "price": 3.49,
+      "distance": 0.7,
+      "latitude": 39.1055,
+      "longitude": -84.5140
+    },
+    {
+      "name": "Chevron",
+      "price": 3.51,
+      "distance": 0.9,
+      "latitude": 39.1015,
+      "longitude": -84.5100
+    },
+    {
+      "name": "Mobil",
+      "price": 3.44,
+      "distance": 1.1,
+      "latitude": 39.1065,
+      "longitude": -84.5150
+    }
+  ]
+}
+
