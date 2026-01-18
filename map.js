@@ -159,15 +159,28 @@ async function loadManifest() {
         
         // Extract dates from filenames
         availableDates = manifest.all.map(filename => {
-            const match = filename.match(/RRMudflapsPrices_(\d{4}-\d{2}-\d{2})_/);
+            const match = filename.match(
+                /RRMudflapsPrices_(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})/
+            );
+
+            if (!match) return null;
+
+            const datePart = match[1];          // 2026-01-19
+            const timePart = match[2];          // 17-34-46
+            const isoTime = timePart.replace(/-/g, ':'); // 17:34:46
+
             return {
-                date: match ? match[1] : null,
-                filename: filename
+                date: datePart,
+                time: isoTime,
+                timestamp: `${datePart}T${isoTime}`, // local-safe
+                filename
             };
-        }).filter(item => item.date !== null);
+        }).filter(Boolean);
         
         // Sort by date (newest first)
-        availableDates.sort((a, b) => new Date(b.date) - new Date(a.date));
+        availableDates.sort((a, b) => {
+            return new Date(b.timestamp) - new Date(a.timestamp);
+        });
         
         // Set current to latest
         currentDateIndex = 0;
@@ -193,12 +206,17 @@ function updateDateDisplay() {
     const nextBtn = document.getElementById('next-date');
     
     if (availableDates.length > 0 && availableDates[currentDateIndex]) {
-        const currentDate = new Date(availableDates[currentDateIndex].date);
-        const formattedDate = currentDate.toLocaleDateString('en-US', {
+        const { date, time } = availableDates[currentDateIndex];
+
+        // Force LOCAL time (no UTC shift)
+        const currentDate = new Date(`${date}T${time}`);
+        const formattedDate = currentDate.toLocaleString('en-US', {
             weekday: 'short',
             year: 'numeric',
             month: 'short',
-            day: 'numeric'
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
         });
         dateDisplay.textContent = formattedDate;
         
