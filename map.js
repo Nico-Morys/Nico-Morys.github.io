@@ -654,9 +654,9 @@ function showCompetitors(station, marker) {
                 const midLng = (station.longitude + competitor.longitude) / 2;
                 const numberIcon = L.divIcon({
                     className: 'competitor-number-label',
-                    html: `<div style="background: #fff; color: #1976d2; border-radius: 50%; border: 2px solid #1976d2; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.12);">#${index + 1}</div>`,
-                    iconSize: [26, 26],
-                    iconAnchor: [13, 13]
+                    html: `<div style="background: #fff; color: #1976d2; border-radius: 50%; border: 2px solid #1976d2; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.12);">#${index + 1}</div>`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
                 });
                 const numberMarker = L.marker([midLat, midLng], { icon: numberIcon, interactive: false }).addTo(map);
                 stationData.numberMarkers.push(numberMarker);
