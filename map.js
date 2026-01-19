@@ -940,6 +940,9 @@ document.addEventListener('DOMContentLoaded', function() {
     map = L.map('map', {
         wheelPxPerZoomLevel: 100
     }).setView([41.0, -87.0], 6);
+
+    map.options.minZoom = 12;
+    map.options.maxZoom = 14;
     
     // Map click handler - only close panel if clicking on the map itself, not on markers
     map.on('click', function(e) {
