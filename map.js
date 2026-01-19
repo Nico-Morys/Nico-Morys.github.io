@@ -936,7 +936,7 @@ function hideCompetitorPanel() {
 
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize map centered on US with full country view
+    // Initialize map centered on Midwest Chicago Area
     map = L.map('map', {
         wheelPxPerZoomLevel: 100,
         minZoom: 4, // Prevent zooming out too far
