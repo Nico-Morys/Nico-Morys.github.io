@@ -38,9 +38,10 @@ let selectedStations = new Map(); // Track multiple selected stations: stationId
 let competitorMarkers = [];
 let competitorPanel;
 
-// Date navigation
-let availableDates = [];
-let currentDateIndex = 0;
+let filesByDate = {};        // { "2026-01-19": [fileObjects...] }
+let availableDays = [];     // ["2026-01-19", "2026-01-18"]
+let currentDayIndex = 0;
+let currentTimeIndex = 0;
 let currentDataFile = '';
 
 // Function to normalize brand name for better matching
@@ -156,98 +157,153 @@ async function loadManifest() {
     try {
         const response = await fetch('manifest.json?v=' + Date.now());
         const manifest = await response.json();
-        
-        // Extract dates from filenames
-        availableDates = manifest.all.map(filename => {
+
+        filesByDate = {};
+
+        manifest.all.forEach(filename => {
             const match = filename.match(
                 /RRMudflapsPrices_(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})/
             );
+            if (!match) return;
 
-            if (!match) return null;
+            const date = match[1];
+            const time = match[2].replace(/-/g, ':');
+            const [y, m, d] = date.split('-').map(Number);
+            const [hh, mm, ss] = time.split(':').map(Number);
 
-            const datePart = match[1];          // 2026-01-19
-            const timePart = match[2];          // 17-34-46
-            const isoTime = timePart.replace(/-/g, ':'); // 17:34:46
+            const timestamp = new Date(y, m - 1, d, hh, mm, ss || 0);
 
-            return {
-                date: datePart,
-                time: isoTime,
-                timestamp: `${datePart}T${isoTime}`, // local-safe
+            if (!filesByDate[date]) {
+                filesByDate[date] = [];
+            }
+
+            filesByDate[date].push({
+                date,
+                time,
+                timestamp,
                 filename
-            };
-        }).filter(Boolean);
-        
-        // Sort by date (newest first)
-        availableDates.sort((a, b) => {
-            return new Date(b.timestamp) - new Date(a.timestamp);
+            });
         });
-        
-        // Set current to latest
-        currentDateIndex = 0;
-        currentDataFile = availableDates[currentDateIndex]?.filename || manifest.latest;
-        
-        console.log('Available dates:', availableDates);
+
+        // Sort days newest → oldest
+        availableDays = Object.keys(filesByDate).sort(
+            (a, b) => new Date(b) - new Date(a)
+        );
+
+        // Sort times oldest → newest within each day
+        availableDays.forEach(day => {
+            filesByDate[day].sort(
+                (a, b) => a.timestamp - b.timestamp
+            );
+        });
+
+        currentDayIndex = 0;
+        currentTimeIndex = filesByDate[availableDays[0]].length - 1;
+        currentDataFile = filesByDate[availableDays[0]][currentTimeIndex].filename;
+
         updateDateDisplay();
-        
-        // Load initial data
         await loadDataForCurrentDate();
-        
+
     } catch (error) {
         console.error('Error loading manifest:', error);
-        currentDataFile = 'store_comparison_results.json';
-        await loadDataForCurrentDate();
     }
 }
+
+
 
 // Update date display
 function updateDateDisplay() {
     const dateDisplay = document.getElementById('current-date');
     const prevBtn = document.getElementById('prev-date');
     const nextBtn = document.getElementById('next-date');
-    
-    if (availableDates.length > 0 && availableDates[currentDateIndex]) {
-        const { date, time } = availableDates[currentDateIndex];
 
-        // Force LOCAL time (no UTC shift)
-        const currentDate = new Date(`${date}T${time}`);
-        const formattedDate = currentDate.toLocaleString('en-US', {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit'
-        });
-        dateDisplay.textContent = formattedDate;
-        
-        prevBtn.disabled = (currentDateIndex >= availableDates.length - 1);
-        nextBtn.disabled = (currentDateIndex <= 0);
-    } else {
-        dateDisplay.textContent = 'Latest Data';
+    if (availableDays.length === 0) {
+        dateDisplay.textContent = 'No Data';
         prevBtn.disabled = true;
         nextBtn.disabled = true;
+        return;
     }
+
+    const day = availableDays[currentDayIndex];
+    const entry = filesByDate[day][currentTimeIndex];
+
+    const [year, month, dayNum] = entry.date.split('-').map(Number);
+    const [hour, minute, second] = entry.time.split(':').map(Number);
+
+    const localDate = new Date(
+        year,
+        month - 1,
+        dayNum,
+        hour,
+        minute,
+        second || 0
+    );
+
+    dateDisplay.textContent = localDate.toLocaleString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+    });
+
+    // Disable buttons at absolute bounds
+    const atOldest =
+        currentDayIndex === availableDays.length - 1 &&
+        currentTimeIndex === 0;
+
+    const atNewest =
+        currentDayIndex === 0 &&
+        currentTimeIndex === filesByDate[availableDays[0]].length - 1;
+
+    prevBtn.disabled = atOldest;
+    nextBtn.disabled = atNewest;
 }
+
+
 
 // Go to previous date
 async function goToPreviousDate() {
-    if (currentDateIndex < availableDates.length - 1) {
-        currentDateIndex++;
-        currentDataFile = availableDates[currentDateIndex].filename;
-        updateDateDisplay();
-        await loadDataForCurrentDate();
+    if (currentTimeIndex > 0) {
+        currentTimeIndex--;
+    } else if (currentDayIndex < availableDays.length - 1) {
+        currentDayIndex++;
+        currentTimeIndex =
+            filesByDate[availableDays[currentDayIndex]].length - 1;
+    } else {
+        return;
     }
+
+    const day = availableDays[currentDayIndex];
+    currentDataFile = filesByDate[day][currentTimeIndex].filename;
+
+    updateDateDisplay();
+    await loadDataForCurrentDate();
 }
+
 
 // Go to next date
 async function goToNextDate() {
-    if (currentDateIndex > 0) {
-        currentDateIndex--;
-        currentDataFile = availableDates[currentDateIndex].filename;
-        updateDateDisplay();
-        await loadDataForCurrentDate();
+    const day = availableDays[currentDayIndex];
+    const times = filesByDate[day];
+
+    if (currentTimeIndex < times.length - 1) {
+        currentTimeIndex++;
+    } else if (currentDayIndex > 0) {
+        currentDayIndex--;
+        currentTimeIndex = 0;
+    } else {
+        return;
     }
+
+    const newDay = availableDays[currentDayIndex];
+    currentDataFile = filesByDate[newDay][currentTimeIndex].filename;
+
+    updateDateDisplay();
+    await loadDataForCurrentDate();
 }
+
 
 // Load data for current date
 async function loadDataForCurrentDate() {
@@ -907,6 +963,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePanelBtn = document.getElementById('close-panel');
     const prevBtn = document.getElementById('prev-date');
     const nextBtn = document.getElementById('next-date');
+
+
 
     // Set up event listeners
     if (closePanelBtn) {
