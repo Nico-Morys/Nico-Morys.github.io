@@ -939,9 +939,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize map centered on US with full country view
     map = L.map('map', {
         wheelPxPerZoomLevel: 100,
-        minZoom: 3, // Prevent zooming out too far
+        minZoom: 2, // Prevent zooming out too far
         maxZoom: 18  // Optional: set max zoom for performance
-    }).setView([39.8, -98.5], 3);
+    }).setView([41.0, -87.0], 2);
     
     
     // Map click handler - only close panel if clicking on the map itself, not on markers
