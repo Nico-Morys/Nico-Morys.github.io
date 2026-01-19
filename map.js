@@ -939,7 +939,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize map centered on US with full country view
     map = L.map('map', {
         wheelPxPerZoomLevel: 100,
-        minZoom: 5, // Prevent zooming out too far
+        minZoom: 4, // Prevent zooming out too far
         maxZoom: 18  // Optional: set max zoom for performance
     }).setView([41.0, -87.0], 6);
     
