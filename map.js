@@ -37,6 +37,8 @@ let competitors = {};
 let selectedStations = new Map(); // Track multiple selected stations: stationId -> {marker, competitorMarkers, lines, numberMarkers}
 let competitorMarkers = [];
 let competitorPanel;
+let checkedStations = new Set(); // Track which stations have been reviewed
+let stationMarkers = new Map(); // Track all station markers: stationId -> marker
 
 let filesByDate = {};        // { "2026-01-19": [fileObjects...] }
 let availableDays = [];     // ["2026-01-19", "2026-01-18"]
@@ -86,7 +88,7 @@ function normalizeBrandName(name) {
 
 // Function to get brand initials/abbreviation
 function getBrandInitials(brand) {
-    if (!brand) return 'ÃƒÂ¢Ã¢â‚¬ÂºÃ‚Â½';
+    if (!brand) return '';
     
     const brandInitials = {
         'Road Ranger': 'RR',
@@ -134,7 +136,7 @@ function getBrandColor(brand) {
 
 // Function to get logo image URL for a brand
 function getBrandLogo(brand) {
-    if (!brand) return 'ÃƒÂ¢Ã¢â‚¬ÂºÃ‚Â½';
+    if (!brand) return '';
     
     // Normalize the brand name
     const normalizedBrand = normalizeBrandName(brand);
@@ -185,12 +187,12 @@ async function loadManifest() {
             });
         });
 
-        // Sort days newest → oldest
+        // Sort days newest to oldest
         availableDays = Object.keys(filesByDate).sort(
             (a, b) => new Date(b) - new Date(a)
         );
 
-        // Sort times oldest → newest within each day
+        // Sort times oldest to newest within each day
         availableDays.forEach(day => {
             filesByDate[day].sort(
                 (a, b) => a.timestamp - b.timestamp
@@ -304,26 +306,92 @@ async function goToNextDate() {
     await loadDataForCurrentDate();
 }
 
+// ============================================
+// PROGRESS COUNTER FUNCTIONS
+// ============================================
+
+// Update the progress counter display
+function updateProgressCounter() {
+    const checkedCount = checkedStations.size;
+    const totalCount = stations.length;
+    const percentage = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
+    
+    document.getElementById('checked-count').textContent = checkedCount;
+    document.getElementById('total-count').textContent = totalCount;
+    document.getElementById('progress-bar').style.width = percentage + '%';
+}
+
+// Toggle checked status for a station
+function toggleStationChecked(stationId, marker) {
+    const stationIdStr = stationId.toString();
+    
+    if (checkedStations.has(stationIdStr)) {
+        // Uncheck the station
+        checkedStations.delete(stationIdStr);
+        marker.getElement().classList.remove('checked');
+    } else {
+        // Check the station
+        checkedStations.add(stationIdStr);
+        marker.getElement().classList.add('checked');
+    }
+    
+    updateProgressCounter();
+}
+
+// Check all stations
+function checkAllStations() {
+    stations.forEach(station => {
+        const stationId = station.id.toString();
+        checkedStations.add(stationId);
+        
+        const marker = stationMarkers.get(stationId);
+        if (marker && marker.getElement()) {
+            marker.getElement().classList.add('checked');
+        }
+    });
+    
+    updateProgressCounter();
+}
+
+// Uncheck all stations
+function uncheckAllStations() {
+    checkedStations.clear();
+    
+    stationMarkers.forEach((marker, stationId) => {
+        if (marker && marker.getElement()) {
+            marker.getElement().classList.remove('checked');
+        }
+    });
+    
+    updateProgressCounter();
+}
+
+
+
+// Load data for current date
 
 // Load data for current date
 async function loadDataForCurrentDate() {
     try {
-        // Clear existing station markers
+        // Store currently selected station IDs and checked stations
+        const previouslySelectedStationIds = Array.from(selectedStations.keys());
+        const previouslyCheckedStationIds = Array.from(checkedStations);
+        
+        // IMPORTANT: Remove all competitor visuals BEFORE clearing the map
+        removeAllCompetitorVisuals();
+        
+        // Clear existing station markers and polylines
         map.eachLayer(layer => {
-            if (layer instanceof L.Marker) {
+            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
                 map.removeLayer(layer);
             }
         });
         
-        // Clear data and selections
+        // Clear data and selections (we'll restore them after loading)
         stations = [];
         competitors = {};
         selectedStations.clear();
-        
-        // Hide panel if open
-        if (competitorPanel && !competitorPanel.classList.contains('hidden')) {
-            hideCompetitorPanel();
-        }
+        stationMarkers.clear();
         
         // Fetch data
         const response = await fetch(currentDataFile + '?v=' + Date.now());
@@ -336,6 +404,30 @@ async function loadDataForCurrentDate() {
         
         // Process and display data
         processStationData(data);
+        
+        // Restore checked stations
+        checkedStations.clear();
+        previouslyCheckedStationIds.forEach(stationId => {
+            checkedStations.add(stationId);
+            const marker = stationMarkers.get(stationId);
+            if (marker && marker.getElement()) {
+                marker.getElement().classList.add('checked');
+            }
+        });
+        updateProgressCounter();
+        
+        // Restore selected stations with updated data
+        if (previouslySelectedStationIds.length > 0) {
+            previouslySelectedStationIds.forEach(stationId => {
+                const station = stations.find(s => s.id.toString() === stationId);
+                const marker = stationMarkers.get(stationId);
+                
+                if (station && marker) {
+                    // Re-select the station with new data
+                    showCompetitors(station, marker);
+                }
+            });
+        }
         
     } catch (error) {
         console.error('Error loading data:', error);
@@ -434,9 +526,17 @@ function processStationData(data) {
     
     console.log(`Processed ${stations.length} stations`);
     
+    // Update progress counter
+    updateProgressCounter();
+    
+    // Only fit bounds on initial load, not when refreshing with date navigation
+    const isInitialLoad = map.getZoom() === 6; // Initial zoom level
+    
     if (stations.length > 0) {
-        const bounds = stations.map(s => [s.latitude, s.longitude]);
-        map.fitBounds(bounds, { padding: [50, 50] });
+        if (isInitialLoad) {
+            const bounds = stations.map(s => [s.latitude, s.longitude]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
         
         stations.forEach(station => {
             try {
@@ -454,6 +554,9 @@ function addStationMarker(station) {
         console.error(`Invalid coordinates for station ${station.id}:`, station);
         return;
     }
+    
+    const stationId = station.id.toString();
+    
     // Get logo for the station brand (initials or emoji only)
     const logo = getBrandLogo(station.brand || '');
     
@@ -462,8 +565,11 @@ function addStationMarker(station) {
         `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
         '';
     
+    // Add 'checked' class if this station is already checked
+    const checkedClass = checkedStations.has(stationId) ? 'checked' : '';
+    
     const fuelIcon = L.divIcon({
-        className: 'fuel-marker',
+        className: `fuel-marker ${checkedClass}`,
         html: `
             <div class="fuel-icon" style="position: relative; width: 32px; height: 32px;">${logo}</div>
             ${priceBadge}
@@ -472,11 +578,26 @@ function addStationMarker(station) {
         iconAnchor: [16, 32],
         popupAnchor: [0, -32]
     });
+    
     try {
         const marker = L.marker([station.latitude, station.longitude], {
             icon: fuelIcon
         }).addTo(map);
-        marker.on('click', function() {
+        
+        // Store marker reference
+        stationMarkers.set(stationId, marker);
+        
+        // Handle click events
+        marker.on('click', function(e) {
+            // Ctrl+Click to check/uncheck station
+            if (e.originalEvent.ctrlKey || e.originalEvent.metaKey) {
+                toggleStationChecked(station.id, marker);
+                // Prevent the showCompetitors from triggering
+                L.DomEvent.stopPropagation(e);
+                return;
+            }
+            
+            // Normal click shows competitors
             showCompetitors(station, marker);
         });
     } catch (error) {
@@ -528,8 +649,13 @@ function showCompetitors(station, marker) {
     const stationPriceBadge = station.price ? 
         `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
         '';
+    
+    // Preserve checked state
+    const isChecked = checkedStations.has(stationId);
+    const checkedClass = isChecked ? 'checked' : '';
+    
     const highlightedIcon = L.divIcon({
-        className: 'fuel-marker highlighted',
+        className: `fuel-marker highlighted ${checkedClass}`,
         html: `
             <div class="fuel-icon pulse">${stationLogo}</div>
             ${stationPriceBadge}
@@ -692,8 +818,13 @@ function deselectStation(stationId) {
     const stationPriceBadge = station.price ? 
         `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
         '';
+    
+    // Preserve checked state
+    const isChecked = checkedStations.has(stationId);
+    const checkedClass = isChecked ? 'checked' : '';
+    
     marker.setIcon(L.divIcon({
-        className: 'fuel-marker',
+        className: `fuel-marker ${checkedClass}`,
         html: `
             <div class="fuel-icon">${stationLogo}</div>
             ${stationPriceBadge}
@@ -803,10 +934,10 @@ function updatePanelForMultipleSelections() {
             const stationHeader = document.createElement('div');
             stationHeader.style.cssText = `
                 background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-                padding: 12px 14px;
+                padding: 14px 16px;
                 border-radius: 8px;
-                margin-bottom: 10px;
-                margin-top: ${stationIndex > 0 ? '20px' : '0'};
+                margin-bottom: 12px;
+                margin-top: ${stationIndex > 0 ? '24px' : '0'};
                 border: 2px solid rgba(59, 130, 246, 0.5);
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -825,17 +956,14 @@ function updatePanelForMultipleSelections() {
             
             const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'N/A';
             stationHeader.innerHTML = `
-                <div style="font-weight: bold; font-size: 16px; margin-bottom: 4px; color: white;">
+                <div style="font-weight: bold; font-size: 15px; margin-bottom: 6px; color: white; line-height: 1.3;">
                     ${station.name}
                 </div>
-                <div style="font-size: 12px; opacity: 0.9; color: #e0e7ff;">
-                    ${station.address || 'Location'}
-                </div>
-                <div style="margin-top: 6px; font-size: 14px; color: #ffeb3b; font-weight: bold;">
+                <div style="font-size: 13px; margin-bottom: 8px; color: #ffeb3b; font-weight: bold;">
                     Your Price: ${priceText}
                 </div>
-                <div style="font-size: 11px; opacity: 0.8; margin-top: 6px; color: #bfdbfe;">
-                    Click to deselect Ã¢â‚¬Â¢ ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''}
+                <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
+                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} • Click to deselect
                 </div>
             `;
             
@@ -966,6 +1094,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePanelBtn = document.getElementById('close-panel');
     const prevBtn = document.getElementById('prev-date');
     const nextBtn = document.getElementById('next-date');
+    const checkAllBtn = document.getElementById('check-all-btn');
+    const uncheckAllBtn = document.getElementById('uncheck-all-btn');
 
 
 
@@ -984,6 +1114,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (prevBtn) prevBtn.addEventListener('click', goToPreviousDate);
     if (nextBtn) nextBtn.addEventListener('click', goToNextDate);
+    
+    // Progress counter button listeners
+    if (checkAllBtn) checkAllBtn.addEventListener('click', checkAllStations);
+    if (uncheckAllBtn) uncheckAllBtn.addEventListener('click', uncheckAllStations);
 
     // Load manifest and initial data
     loadManifest();

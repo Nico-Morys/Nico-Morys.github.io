@@ -399,22 +399,24 @@ html, body {
 
 .close-btn {
     position: absolute;
-    top: 8px;
-    right: 12px;
-    background: none;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.2);
     border: none;
-    font-size: 24px;
+    font-size: 20px;
     color: #ccc;
     cursor: pointer;
     line-height: 1;
     padding: 0;
-    width: 26px;
-    height: 26px;
+    margin: 0;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     transition: all 0.2s ease;
+    text-align: center;
 }
 
 .close-btn:hover {
@@ -557,4 +559,125 @@ html, body {
             transform: translateY(0);
         }
     }
+}
+
+/* ============================================
+   PROGRESS COUNTER & CHECKED STATIONS
+   ============================================ */
+
+/* Progress Counter */
+.progress-counter {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: #2c2c2c;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    min-width: 200px;
+}
+
+.progress-counter-title {
+    color: #aaa;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.progress-counter-stats {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.progress-counter-stats .checked {
+    color: #4ade80;
+}
+
+.progress-counter-stats .total {
+    color: #aaa;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progress-counter-hint {
+    color: #888;
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.progress-counter-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.progress-btn {
+    flex: 1;
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.progress-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.progress-btn.danger {
+    background: #dc2626;
+}
+
+.progress-btn.danger:hover {
+    background: #ef4444;
+}
+
+/* Checked station marker style */
+.fuel-marker.checked .fuel-icon {
+    border: 3px solid #4ade80 !important;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3), 0 4px 16px rgba(74, 222, 128, 0.4) !important;
+}
+
+.fuel-marker.checked::after {
+    content: '✓';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #4ade80;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
 }
