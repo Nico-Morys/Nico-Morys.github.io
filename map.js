@@ -936,10 +936,13 @@ function hideCompetitorPanel() {
 
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize map centered on Midwest (Chicago area)
+    // Initialize map centered on Midwest Chicago Area
     map = L.map('map', {
-        wheelPxPerZoomLevel: 100
+        wheelPxPerZoomLevel: 100,
+        minZoom: 4, // Prevent zooming out too far
+        maxZoom: 18  // Optional: set max zoom for performance
     }).setView([41.0, -87.0], 6);
+    
     
     // Map click handler - only close panel if clicking on the map itself, not on markers
     map.on('click', function(e) {
@@ -948,7 +951,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Dark theme map
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         subdomains: 'abcd',
         maxZoom: 20,
