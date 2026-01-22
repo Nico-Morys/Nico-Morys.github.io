@@ -568,7 +568,7 @@ html, body {
 /* Progress Counter */
 .progress-counter {
     position: fixed;
-    bottom: 20px;
+    bottom: 220px;
     left: 20px;
     z-index: 1000;
     background: #2c2c2c;
@@ -579,19 +579,112 @@ html, body {
     min-width: 200px;
 }
 
-.progress-counter-title {
+/* Notes Section */
+.notes-section {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: #2c2c2c;
+    padding: 16px 8px 16px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    width: 320px;
+    max-height: 180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-section-title {
     color: #aaa;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
+    margin-left: 0;
+    padding-right: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.notes-station-name {
+    color: #4ade80 ;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 8px;
+    margin-left: 0;
+    padding-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notes-textarea {
+    width: 100%;
+    margin-left: 0;
+    min-height: 80px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    resize: vertical;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+.notes-textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.notes-textarea::placeholder {
+    color: #666;
+}
+
+.notes-hint {
+    color: #666;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.notes-section.hidden {
+    display: none;
+}
+
+.clear-note-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 10px;
+    padding: 0;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.clear-note-btn:hover {
+    color: #dc2626;
+}
+
+.progress-counter-title {
+    color: #aaa;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
 }
 
 .progress-counter-stats {
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .progress-counter-stats .checked {
@@ -604,11 +697,11 @@ html, body {
 
 .progress-bar-container {
     width: 100%;
-    height: 8px;
+    height: 6px;
     background: #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .progress-bar-fill {
@@ -622,13 +715,13 @@ html, body {
     color: #888;
     font-size: 11px;
     font-style: italic;
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .progress-counter-actions {
     display: flex;
-    gap: 8px;
-    margin-top: 12px;
+    gap: 6px;
+    margin-top: 10px;
 }
 
 .progress-btn {
@@ -636,9 +729,9 @@ html, body {
     background: #1e3a8a;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
 }

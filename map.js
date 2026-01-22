@@ -45,6 +45,56 @@ let availableDays = [];     // ["2026-01-19", "2026-01-18"]
 let currentDayIndex = 0;
 let currentTimeIndex = 0;
 let currentDataFile = '';
+let currentSelectedStationForNotes = null; // Track currently selected station for notes
+
+// ============================================
+// NOTES MANAGEMENT FUNCTIONS
+// ============================================
+
+// Get notes for a specific station from localStorage
+function getStationNote(stationId) {
+    const key = `rr-station-note-${stationId}`;
+    return localStorage.getItem(key) || '';
+}
+
+// Save note for a specific station to localStorage
+function saveStationNote(stationId, note) {
+    const key = `rr-station-note-${stationId}`;
+    if (note.trim() === '') {
+        localStorage.removeItem(key);
+    } else {
+        localStorage.setItem(key, note);
+    }
+}
+
+// Update notes section UI
+function updateNotesSection(station) {
+    const notesSection = document.getElementById('notes-section');
+    const notesStationName = document.getElementById('notes-station-name');
+    const notesTextarea = document.getElementById('notes-textarea');
+    
+    if (!station) {
+        notesSection.classList.add('hidden');
+        currentSelectedStationForNotes = null;
+        notesTextarea.value = '';
+        return;
+    }
+    
+    currentSelectedStationForNotes = station;
+    notesSection.classList.remove('hidden');
+    notesStationName.textContent = station.name;
+    notesTextarea.value = getStationNote(station.id);
+    notesTextarea.placeholder = `Add notes for ${station.name}...`;
+}
+
+// Clear current note
+function clearCurrentNote() {
+    if (currentSelectedStationForNotes) {
+        const notesTextarea = document.getElementById('notes-textarea');
+        notesTextarea.value = '';
+        saveStationNote(currentSelectedStationForNotes.id, '');
+    }
+}
 
 // Function to normalize brand name for better matching
 function normalizeBrandName(name) {
@@ -597,8 +647,9 @@ function addStationMarker(station) {
                 return;
             }
             
-            // Normal click shows competitors
+            // Normal click shows competitors AND updates notes section
             showCompetitors(station, marker);
+            updateNotesSection(station);
         });
     } catch (error) {
         console.error(`Error creating marker for station ${station.id}:`, error, station);
@@ -963,7 +1014,7 @@ function updatePanelForMultipleSelections() {
                     Your Price: ${priceText}
                 </div>
                 <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
-                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} • Click to deselect
+                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} â€¢ Click to deselect
                 </div>
             `;
             
@@ -1058,6 +1109,9 @@ function hideCompetitorPanel() {
         stationIds.forEach(stationId => {
             deselectStation(stationId);
         });
+        
+        // Hide notes section
+        updateNotesSection(null);
     }, 300);
 }
 
@@ -1118,6 +1172,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Progress counter button listeners
     if (checkAllBtn) checkAllBtn.addEventListener('click', checkAllStations);
     if (uncheckAllBtn) uncheckAllBtn.addEventListener('click', uncheckAllStations);
+
+    // Notes section event listeners
+    const notesTextarea = document.getElementById('notes-textarea');
+    const clearNoteBtn = document.getElementById('clear-note-btn');
+    
+    if (notesTextarea) {
+        // Auto-save notes as user types (with debouncing)
+        let saveTimeout;
+        notesTextarea.addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                if (currentSelectedStationForNotes) {
+                    saveStationNote(currentSelectedStationForNotes.id, notesTextarea.value);
+                }
+            }, 500); // Wait 500ms after user stops typing
+        });
+    }
+    
+    if (clearNoteBtn) {
+        clearNoteBtn.addEventListener('click', clearCurrentNote);
+    }
 
     // Load manifest and initial data
     loadManifest();
