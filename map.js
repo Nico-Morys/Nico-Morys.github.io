@@ -1132,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Panel can only be closed via the X button
     });
 
-    // Dark theme map
+    // Light theme map
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         subdomains: 'abcd',
