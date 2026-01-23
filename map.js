@@ -468,15 +468,149 @@ async function loadDataForCurrentDate() {
         
         // Restore selected stations with updated data
         if (previouslySelectedStationIds.length > 0) {
-            previouslySelectedStationIds.forEach(stationId => {
+            previouslySelectedStationIds.forEach((stationId, index) => {
                 const station = stations.find(s => s.id.toString() === stationId);
                 const marker = stationMarkers.get(stationId);
                 
                 if (station && marker) {
                     // Re-select the station with new data
-                    showCompetitors(station, marker);
+                    // Preserve order by using index-based timestamp
+                    const stationData = {
+                        station: station,
+                        marker: marker,
+                        competitorMarkers: [],
+                        lines: [],
+                        numberMarkers: [],
+                        timestamp: Date.now() - (previouslySelectedStationIds.length - index) * 1000
+                    };
+                    selectedStations.set(stationId, stationData);
+                    
+                    // Re-add visuals without calling showCompetitors to avoid resetting order
+                    const stationLogo = getBrandLogo(station.brand || '');
+                    const stationPriceBadge = station.price ? 
+                        `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
+                        '';
+                    
+                    const isChecked = checkedStations.has(stationId);
+                    const checkedClass = isChecked ? 'checked' : '';
+                    
+                    const highlightedIcon = L.divIcon({
+                        className: `fuel-marker highlighted ${checkedClass}`,
+                        html: `
+                            <div class="fuel-icon pulse">${stationLogo}</div>
+                            ${stationPriceBadge}
+                        `,
+                        iconSize: [40, 40],
+                        iconAnchor: [20, 40],
+                        popupAnchor: [0, -40]
+                    });
+                    marker.setIcon(highlightedIcon);
+
+                    // Add competitor markers
+                    const stationCompetitors = competitors[stationId] || [];
+                    const stationPrice = station.price || 0;
+                    
+                    if (stationCompetitors.length > 0) {
+                        const sortedCompetitors = [...stationCompetitors].sort((a, b) => a.distance - b.distance);
+                        
+                        sortedCompetitors.forEach((competitor, compIndex) => {
+                            if (competitor.latitude && competitor.longitude && !isNaN(competitor.latitude) && !isNaN(competitor.longitude)) {
+                                const priceDiff = competitor.price - stationPrice;
+                                const absDiff = Math.abs(priceDiff);
+                                const isLower = competitor.price < stationPrice;
+                                const isHigher = competitor.price > stationPrice;
+                                const isSame = absDiff < 0.01;
+                                
+                                let markerColor = '#9e9e9e';
+                                if (isLower) markerColor = '#d32f2f';
+                                else if (isHigher) markerColor = '#388e3c';
+                                
+                                let haloClass = 'halo-small';
+                                if (absDiff >= 0.20) haloClass = 'halo-large';
+                                else if (absDiff >= 0.10) haloClass = 'halo-medium';
+                                
+                                const haloType = isLower ? 'halo-cheaper' : 'halo-expensive';
+                                const badgeClass = isLower ? 'badge-cheaper' : (isHigher ? 'badge-expensive' : '');
+                                const priceBadge = `<div class="price-badge ${badgeClass}">$${competitor.price.toFixed(2)}</div>`;
+                                const priceHalo = isSame ? '' : `<div class="price-halo ${haloType} ${haloClass}"></div>`;
+                                const competitorLogo = getBrandLogo(competitor.brand || competitor.name);
+                                
+                                const competitorIcon = L.divIcon({
+                                    className: 'competitor-marker-wrapper',
+                                    html: `
+                                        ${priceHalo}
+                                        <div class="competitor-icon" style="background-color: ${markerColor}; border-color: ${markerColor};">
+                                            ${competitorLogo}
+                                        </div>
+                                        ${priceBadge}
+                                    `,
+                                    iconSize: [26, 26],
+                                    iconAnchor: [13, 26],
+                                    popupAnchor: [0, -26]
+                                });
+                                
+                                const competitorMarker = L.marker([competitor.latitude, competitor.longitude], {
+                                    icon: competitorIcon
+                                }).addTo(map);
+                                
+                                const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${absDiff.toFixed(2)}`;
+                                competitorMarker.bindPopup(`
+                                    <strong>${competitor.name}</strong><br>
+                                    Price: <span style="color: #ffeb3b; font-weight: bold;">$${competitor.price.toFixed(2)}</span><br>
+                                    ${diffText} vs ${station.name}<br>
+                                    ${competitor.distance.toFixed(1)} mi away
+                                `);
+                                stationData.competitorMarkers.push(competitorMarker);
+
+                                // Add gradient polyline
+                                const startColor = '#1e3a8a';
+                                const endColor = isLower ? '#d32f2f' : '#388e3c';
+                                const segments = 5;
+                                const latStep = (competitor.latitude - station.latitude) / segments;
+                                const lngStep = (competitor.longitude - station.longitude) / segments;
+                                
+                                for (let i = 0; i < segments; i++) {
+                                    const ratio = i / (segments - 1);
+                                    const segmentColor = interpolateColor(startColor, endColor, ratio);
+                                    const segmentOpacity = 0.5 + (ratio * 0.3);
+                                    
+                                    const segStart = [
+                                        station.latitude + (latStep * i),
+                                        station.longitude + (lngStep * i)
+                                    ];
+                                    const segEnd = [
+                                        station.latitude + (latStep * (i + 1)),
+                                        station.longitude + (lngStep * (i + 1))
+                                    ];
+                                    
+                                    const line = L.polyline([segStart, segEnd], {
+                                        color: segmentColor,
+                                        weight: 3,
+                                        opacity: segmentOpacity,
+                                        dashArray: '8, 6'
+                                    }).addTo(map);
+                                    stationData.lines.push(line);
+                                }
+
+                                // Add number marker
+                                const midLat = (station.latitude + competitor.latitude) / 2;
+                                const midLng = (station.longitude + competitor.longitude) / 2;
+                                const numberIcon = L.divIcon({
+                                    className: 'competitor-number-label',
+                                    html: `<div style="background: #fff; color: #1976d2; border-radius: 50%; border: 2px solid #1976d2; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.12);">#${compIndex + 1}</div>`,
+                                    iconSize: [28, 28],
+                                    iconAnchor: [14, 14]
+                                });
+                                const numberMarker = L.marker([midLat, midLng], { icon: numberIcon, interactive: false }).addTo(map);
+                                stationData.numberMarkers.push(numberMarker);
+                            }
+                        });
+                    }
                 }
             });
+            
+            // Update panel with restored selections
+            updatePanelForMultipleSelections();
         }
         
     } catch (error) {
@@ -680,18 +814,24 @@ function showCompetitors(station, marker) {
     
     // Check if this station is already selected
     if (selectedStations.has(stationId)) {
-        // Deselect this station
-        deselectStation(stationId);
+        // Move this station to the front (most recent)
+        const existingData = selectedStations.get(stationId);
+        selectedStations.delete(stationId);
+        selectedStations.set(stationId, existingData);
+        
+        // Update panel to reflect new order
+        updatePanelForMultipleSelections();
         return;
     }
     
-    // Add this station to selected stations
+    // Add this station to selected stations (at the end, which becomes the front in iteration)
     const stationData = {
         station: station,
         marker: marker,
         competitorMarkers: [],
         lines: [],
-        numberMarkers: []
+        numberMarkers: [],
+        timestamp: Date.now() // Add timestamp for ordering
     };
     selectedStations.set(stationId, stationData);
     
@@ -921,11 +1061,10 @@ function updatePanelForMultipleSelections() {
         if (stationCompetitors.length === 0) {
             competitorsList.innerHTML = '<p class="no-competitors">No competitor data available</p>';
         } else {
-            // Sort by distance and show top 5
+            // Sort by distance and show ALL competitors
             const sortedCompetitors = [...stationCompetitors].sort((a, b) => a.distance - b.distance);
-            const topCompetitors = sortedCompetitors.slice(0, 5);
             
-            topCompetitors.forEach((competitor, index) => {
+            sortedCompetitors.forEach((competitor, index) => {
                 const competitorCard = document.createElement('div');
                 
                 const isLower = competitor.price < stationPrice;
@@ -953,27 +1092,19 @@ function updatePanelForMultipleSelections() {
                 
                 competitorsList.appendChild(competitorCard);
             });
-            
-            if (stationCompetitors.length > 5) {
-                const moreText = document.createElement('p');
-                moreText.style.textAlign = 'center';
-                moreText.style.color = '#aaa';
-                moreText.style.marginTop = '10px';
-                moreText.style.fontSize = '12px';
-                competitorsList.appendChild(moreText);
-                moreText.textContent = `+${stationCompetitors.length - 5} more on map`;
-            }
         }
     } else {
         // Multiple stations selected - show all with their competitors
         document.getElementById('station-name').textContent = `${selectedStations.size} Stations Selected`;
-        document.getElementById('station-address').innerHTML = `Click a selected station again to deselect it.<br>Scroll to see all competitors.`;
+        document.getElementById('station-address').innerHTML = `Scroll to see all competitors.`;
         
         competitorsList.innerHTML = '';
         
-        // Sort stations by ID for consistent ordering
+        // Sort stations by timestamp (most recent first) - reverse chronological order
         const sortedStations = Array.from(selectedStations.entries()).sort((a, b) => {
-            return parseInt(a[0]) - parseInt(b[0]);
+            const timestampA = a[1].timestamp || 0;
+            const timestampB = b[1].timestamp || 0;
+            return timestampB - timestampA; // Most recent first
         });
         
         sortedStations.forEach(([stationId, stationData], stationIndex) => {
@@ -1002,7 +1133,15 @@ function updatePanelForMultipleSelections() {
                 stationHeader.style.boxShadow = 'none';
             };
             stationHeader.onclick = () => {
-                deselectStation(stationId);
+                // Move this station to the top by updating its timestamp
+                const stationData = selectedStations.get(stationId);
+                stationData.timestamp = Date.now();
+                
+                // Re-trigger update to show new order
+                updatePanelForMultipleSelections();
+                
+                // Also update the notes section for this station
+                updateNotesSection(station);
             };
             
             const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'N/A';
@@ -1014,7 +1153,7 @@ function updatePanelForMultipleSelections() {
                     Your Price: ${priceText}
                 </div>
                 <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
-                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} â€¢ Click to deselect
+                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} • Click to move to top
                 </div>
             `;
             
@@ -1023,9 +1162,9 @@ function updatePanelForMultipleSelections() {
             // Show competitors for this station
             if (stationCompetitors.length > 0) {
                 const sortedCompetitors = [...stationCompetitors].sort((a, b) => a.distance - b.distance);
-                const topCompetitors = sortedCompetitors.slice(0, 5);
                 
-                topCompetitors.forEach((competitor, index) => {
+                
+                sortedCompetitors.forEach((competitor, index) => {
                     const competitorCard = document.createElement('div');
                     
                     const isLower = competitor.price < stationPrice;
@@ -1054,19 +1193,7 @@ function updatePanelForMultipleSelections() {
                     competitorsList.appendChild(competitorCard);
                 });
                 
-                if (stationCompetitors.length > 5) {
-                    const moreText = document.createElement('p');
-                    moreText.style.cssText = `
-                        text-align: center;
-                        color: #aaa;
-                        margin-top: 8px;
-                        margin-bottom: 0;
-                        font-size: 11px;
-                        font-style: italic;
-                    `;
-                    moreText.textContent = `+${stationCompetitors.length - 5} more on map`;
-                    competitorsList.appendChild(moreText);
-                }
+                
             } else {
                 const noCompText = document.createElement('p');
                 noCompText.style.cssText = `
@@ -1098,21 +1225,60 @@ function showCompetitorPanel() {
 
 // Hide competitor panel and clear all selections
 function hideCompetitorPanel() {
+    // Get all station IDs first
+    const stationIds = Array.from(selectedStations.keys());
+    
+    // Remove all visuals WITHOUT updating the panel each time
+    stationIds.forEach(stationId => {
+        const stationData = selectedStations.get(stationId);
+        if (!stationData) return;
+        
+        // Remove competitor markers
+        stationData.competitorMarkers.forEach(marker => map.removeLayer(marker));
+        
+        // Remove lines
+        stationData.lines.forEach(line => map.removeLayer(line));
+        
+        // Remove number markers
+        stationData.numberMarkers.forEach(marker => map.removeLayer(marker));
+        
+        // Reset station marker to normal
+        const station = stationData.station;
+        const marker = stationData.marker;
+        const stationLogo = getBrandLogo(station.brand || '');
+        const stationPriceBadge = station.price ? 
+            `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
+            '';
+        
+        // Preserve checked state
+        const isChecked = checkedStations.has(stationId);
+        const checkedClass = isChecked ? 'checked' : '';
+        
+        marker.setIcon(L.divIcon({
+            className: `fuel-marker ${checkedClass}`,
+            html: `
+                <div class="fuel-icon">${stationLogo}</div>
+                ${stationPriceBadge}
+            `,
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+            popupAnchor: [0, -30]
+        }));
+    });
+    
+    // Clear all selections at once
+    selectedStations.clear();
+    
+    // Hide notes section immediately
+    updateNotesSection(null);
+    
+    // Then animate the panel closing
     competitorPanel.classList.remove('visible');
     
-    setTimeout(() => {
-        competitorPanel.classList.remove('show');
-        competitorPanel.style.display = 'none';
-        
-        // Deselect all stations
-        const stationIds = Array.from(selectedStations.keys());
-        stationIds.forEach(stationId => {
-            deselectStation(stationId);
-        });
-        
-        // Hide notes section
-        updateNotesSection(null);
-    }, 300);
+    
+    competitorPanel.classList.remove('show');
+    competitorPanel.style.display = 'none';
+    
 }
 
 
@@ -1132,7 +1298,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Panel can only be closed via the X button
     });
 
-    // Light theme map
+    // Dark theme map
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         subdomains: 'abcd',
@@ -1193,6 +1359,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clearNoteBtn) {
         clearNoteBtn.addEventListener('click', clearCurrentNote);
     }
+
+       // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Spacebar to close competitor panel
+        if (e.key === ' ' || e.code === 'Space') {
+            if (selectedStations.size > 0) {
+                e.preventDefault(); // Prevent page scroll
+                hideCompetitorPanel();
+            }
+        }
+    });
 
     // Load manifest and initial data
     loadManifest();
