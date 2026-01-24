@@ -1178,7 +1178,7 @@ function updatePanelForMultipleSelections() {
                         competitorCard.className = 'competitor-card competitor-equal';
                     }
                     
-                    competitorCard.style.animationDelay = `${index * 0.05}s`;
+                    
                     
                     const priceDiff = competitor.price - stationPrice;
                     const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
