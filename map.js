@@ -251,7 +251,7 @@ async function loadManifest() {
 
         currentDayIndex = 0;
         currentTimeIndex = filesByDate[availableDays[0]].length - 1;
-        currentDataFile = filesByDate[availableDays[0]][currentTimeIndex].filename;
+        currentDataFile = 'pricedata/' + filesByDate[availableDays[0]][currentTimeIndex].filename;
 
         updateDateDisplay();
         await loadDataForCurrentDate();
@@ -328,7 +328,7 @@ async function goToPreviousDate() {
     }
 
     const day = availableDays[currentDayIndex];
-    currentDataFile = filesByDate[day][currentTimeIndex].filename;
+    currentDataFile = 'pricedata/' + filesByDate[day][currentTimeIndex].filename;
 
     updateDateDisplay();
     await loadDataForCurrentDate();
@@ -350,7 +350,7 @@ async function goToNextDate() {
     }
 
     const newDay = availableDays[currentDayIndex];
-    currentDataFile = filesByDate[newDay][currentTimeIndex].filename;
+    currentDataFile = 'pricedata/' + filesByDate[newDay][currentTimeIndex].filename;
 
     updateDateDisplay();
     await loadDataForCurrentDate();
