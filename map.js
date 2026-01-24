@@ -207,7 +207,7 @@ function getBrandLogo(brand) {
 // Load manifest and get available dates
 async function loadManifest() {
     try {
-        const response = await fetch('manifest.json?v=' + Date.now());
+        const response = await fetch('pricedata/manifest.json?v=' + Date.now());
         const manifest = await response.json();
 
         filesByDate = {};
@@ -1362,8 +1362,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
        // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
-        // Spacebar to close competitor panel
+        // Spacebar to close competitor panel (only if not typing in notes)
         if (e.key === ' ' || e.code === 'Space') {
+            // Don't trigger if user is typing in the notes textarea
+            const notesTextarea = document.getElementById('notes-textarea');
+            if (notesTextarea && document.activeElement === notesTextarea) {
+                return; // Allow normal spacebar behavior in textarea
+            }
+            
             if (selectedStations.size > 0) {
                 e.preventDefault(); // Prevent page scroll
                 hideCompetitorPanel();
