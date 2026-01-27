@@ -773,3 +773,25 @@ html, body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
+
+/* Store number badge - always visible on bottom left */
+.store-number-badge {
+    position: absolute;
+    bottom: -6px;
+    left: -6px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: white;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    padding: 0 4px;
+    white-space: nowrap;
+}

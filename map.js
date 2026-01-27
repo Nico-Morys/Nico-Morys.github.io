@@ -160,6 +160,21 @@ function getBrandInitials(brand) {
     return brandInitials[brand] || brand.substring(0, 2).toUpperCase();
 }
 
+// Function to extract store number from station name
+function getStoreNumber(stationName) {
+    if (!stationName) return '';
+    
+    // Match patterns like "Road Ranger 118", "Road Ranger #118", etc.
+    const match = stationName.match(/(?:Road Ranger|RR)\s*#?(\d+)/i);
+    if (match && match[1]) {
+        return match[1];
+    }
+    
+    // Fallback: look for any number in the name
+    const numberMatch = stationName.match(/\d+/);
+    return numberMatch ? numberMatch[0] : '';
+}
+
 // Function to get brand color
 function getBrandColor(brand) {
     if (!brand) return '#1e3a8a';
@@ -494,10 +509,16 @@ async function loadDataForCurrentDate() {
                     const isChecked = checkedStations.has(stationId);
                     const checkedClass = isChecked ? 'checked' : '';
                     
+                    // Get store number
+                    const storeNumber = getStoreNumber(station.name);
+                    const storeNumberBadge = storeNumber ? 
+                        `<div class="store-number-badge">${storeNumber}</div>` : '';
+                    
                     const highlightedIcon = L.divIcon({
                         className: `fuel-marker highlighted ${checkedClass}`,
                         html: `
                             <div class="fuel-icon pulse">${stationLogo}</div>
+                            ${storeNumberBadge}
                             ${stationPriceBadge}
                         `,
                         iconSize: [40, 40],
@@ -749,6 +770,11 @@ function addStationMarker(station) {
         `<div class="price-badge price-badge-rr">$${station.price.toFixed(2)}</div>` : 
         '';
     
+    // Get store number for the badge
+    const storeNumber = getStoreNumber(station.name);
+    const storeNumberBadge = storeNumber ? 
+        `<div class="store-number-badge">${storeNumber}</div>` : '';
+    
     // Add 'checked' class if this station is already checked
     const checkedClass = checkedStations.has(stationId) ? 'checked' : '';
     
@@ -756,6 +782,7 @@ function addStationMarker(station) {
         className: `fuel-marker ${checkedClass}`,
         html: `
             <div class="fuel-icon" style="position: relative; width: 32px; height: 32px;">${logo}</div>
+            ${storeNumberBadge}
             ${priceBadge}
         `,
         iconSize: [32, 32],
@@ -845,10 +872,16 @@ function showCompetitors(station, marker) {
     const isChecked = checkedStations.has(stationId);
     const checkedClass = isChecked ? 'checked' : '';
     
+    // Get store number
+    const storeNumber = getStoreNumber(station.name);
+    const storeNumberBadge = storeNumber ? 
+        `<div class="store-number-badge">${storeNumber}</div>` : '';
+    
     const highlightedIcon = L.divIcon({
         className: `fuel-marker highlighted ${checkedClass}`,
         html: `
             <div class="fuel-icon pulse">${stationLogo}</div>
+            ${storeNumberBadge}
             ${stationPriceBadge}
         `,
         iconSize: [40, 40],
@@ -1014,10 +1047,16 @@ function deselectStation(stationId) {
     const isChecked = checkedStations.has(stationId);
     const checkedClass = isChecked ? 'checked' : '';
     
+    // Get store number
+    const storeNumber = getStoreNumber(station.name);
+    const storeNumberBadge = storeNumber ? 
+        `<div class="store-number-badge">${storeNumber}</div>` : '';
+    
     marker.setIcon(L.divIcon({
         className: `fuel-marker ${checkedClass}`,
         html: `
             <div class="fuel-icon">${stationLogo}</div>
+            ${storeNumberBadge}
             ${stationPriceBadge}
         `,
         iconSize: [30, 30],
@@ -1254,10 +1293,16 @@ function hideCompetitorPanel() {
         const isChecked = checkedStations.has(stationId);
         const checkedClass = isChecked ? 'checked' : '';
         
+        // Get store number
+        const storeNumber = getStoreNumber(station.name);
+        const storeNumberBadge = storeNumber ? 
+            `<div class="store-number-badge">${storeNumber}</div>` : '';
+        
         marker.setIcon(L.divIcon({
             className: `fuel-marker ${checkedClass}`,
             html: `
                 <div class="fuel-icon">${stationLogo}</div>
+                ${storeNumberBadge}
                 ${stationPriceBadge}
             `,
             iconSize: [30, 30],
