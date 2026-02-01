@@ -219,118 +219,6 @@ function getBrandLogo(brand) {
 // DATE NAVIGATION FUNCTIONS
 // ============================================
 
-// Calculate total number of timestamps across all days
-function getTotalTimestampCount() {
-    let total = 0;
-    availableDays.forEach(day => {
-        total += filesByDate[day].length;
-    });
-    return total;
-}
-
-// Get absolute index from day and time indices
-function getAbsoluteIndex(dayIndex, timeIndex) {
-    let index = 0;
-    
-    // availableDays[0] = newest day, availableDays[last] = oldest day
-    // We want absolute index 0 = oldest overall, highest = newest overall
-    
-    // Count all timestamps in days OLDER than current day (higher dayIndex)
-    for (let i = availableDays.length - 1; i > dayIndex; i--) {
-        index += filesByDate[availableDays[i]].length;
-    }
-    
-    // Add timestamps from the current day (times are sorted oldest to newest)
-    index += timeIndex;
-    
-    return index;
-}
-
-// Convert absolute index back to day and time indices
-function getIndicesFromAbsolute(absoluteIndex) {
-    let remaining = absoluteIndex;
-    
-    // Iterate from oldest day (highest dayIdx) to newest (dayIdx 0)
-    for (let dayIdx = availableDays.length - 1; dayIdx >= 0; dayIdx--) {
-        const timesInDay = filesByDate[availableDays[dayIdx]].length;
-        
-        if (remaining < timesInDay) {
-            return { dayIndex: dayIdx, timeIndex: remaining };
-        }
-        
-        remaining -= timesInDay;
-    }
-    
-    // Fallback to newest
-    return { dayIndex: 0, timeIndex: filesByDate[availableDays[0]].length - 1 };
-}
-
-// Update scrubber position
-function updateScrubberPosition() {
-    const thumb = document.getElementById('scrubber-thumb');
-    const tooltip = document.getElementById('scrubber-tooltip');
-    
-    if (!thumb || !tooltip) return;
-    
-    const totalCount = getTotalTimestampCount();
-    if (totalCount <= 1) {
-        thumb.style.left = '100%';
-        return;
-    }
-    
-    const absoluteIndex = getAbsoluteIndex(currentDayIndex, currentTimeIndex);
-    // absoluteIndex 0 = oldest (left, 0%), highest = newest (right, 100%)
-    const percentage = (absoluteIndex / (totalCount - 1)) * 100;
-    
-    thumb.style.left = percentage + '%';
-    
-    // Update tooltip with current date
-    const day = availableDays[currentDayIndex];
-    const entry = filesByDate[day][currentTimeIndex];
-    const [year, month, dayNum] = entry.date.split('-').map(Number);
-    const [hour, minute, second] = entry.time.split(':').map(Number);
-    const localDate = new Date(year, month - 1, dayNum, hour, minute, second || 0);
-    
-    tooltip.textContent = localDate.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-    });
-}
-
-// Update scrubber labels
-function updateScrubberLabels() {
-    const startLabel = document.getElementById('scrubber-start');
-    const endLabel = document.getElementById('scrubber-end');
-    
-    if (!startLabel || !endLabel || availableDays.length === 0) return;
-    
-    // Oldest timestamp (left side of bar)
-    const oldestDay = availableDays[availableDays.length - 1];
-    const oldestEntry = filesByDate[oldestDay][0];
-    const [oldYear, oldMonth, oldDay] = oldestEntry.date.split('-').map(Number);
-    const [oldHour, oldMinute, oldSecond] = oldestEntry.time.split(':').map(Number);
-    const oldestDate = new Date(oldYear, oldMonth - 1, oldDay, oldHour, oldMinute, oldSecond || 0);
-    
-    // Newest timestamp (right side of bar)
-    const newestDay = availableDays[0];
-    const newestEntry = filesByDate[newestDay][filesByDate[newestDay].length - 1];
-    const [newYear, newMonth, newDay] = newestEntry.date.split('-').map(Number);
-    const [newHour, newMinute, newSecond] = newestEntry.time.split(':').map(Number);
-    const newestDate = new Date(newYear, newMonth - 1, newDay, newHour, newMinute, newSecond || 0);
-    
-    startLabel.textContent = oldestDate.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric'
-    });
-    
-    endLabel.textContent = newestDate.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
 // Load manifest and get available dates
 async function loadManifest() {
     try {
@@ -381,8 +269,6 @@ async function loadManifest() {
         currentDataFile = 'pricedata/' + filesByDate[availableDays[0]][currentTimeIndex].filename;
 
         updateDateDisplay();
-        updateScrubberLabels();
-        updateScrubberPosition();
         await loadDataForCurrentDate();
 
     } catch (error) {
@@ -440,9 +326,6 @@ function updateDateDisplay() {
 
     prevBtn.disabled = atOldest;
     nextBtn.disabled = atNewest;
-    
-    // Update scrubber position
-    updateScrubberPosition();
 }
 
 
@@ -559,48 +442,14 @@ async function loadDataForCurrentDate() {
         const previouslySelectedStationIds = Array.from(selectedStations.keys());
         const previouslyCheckedStationIds = Array.from(checkedStations);
         
+        // IMPORTANT: Remove all competitor visuals BEFORE clearing the map
+        removeAllCompetitorVisuals();
         
-        
-        // First, explicitly remove all competitor markers, lines, and number markers from selectedStations
-        selectedStations.forEach(stationData => {
-            // Remove competitor markers
-            if (stationData.competitorMarkers) {
-                stationData.competitorMarkers.forEach(marker => {
-                    if (map.hasLayer(marker)) {
-                        map.removeLayer(marker);
-                    }
-                });
-            }
-            // Remove lines
-            if (stationData.lines) {
-                stationData.lines.forEach(line => {
-                    if (map.hasLayer(line)) {
-                        map.removeLayer(line);
-                    }
-                });
-            }
-            // Remove number markers
-            if (stationData.numberMarkers) {
-                stationData.numberMarkers.forEach(marker => {
-                    if (map.hasLayer(marker)) {
-                        map.removeLayer(marker);
-                    }
-                });
-            }
-        });
-        
-        // Clear ALL remaining markers and polylines from the map
-        // We need to collect them first to avoid modifying the collection while iterating
-        const layersToRemove = [];
+        // Clear existing station markers and polylines
         map.eachLayer(layer => {
             if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-                layersToRemove.push(layer);
+                map.removeLayer(layer);
             }
-        });
-        
-        // Now remove all collected layers
-        layersToRemove.forEach(layer => {
-            map.removeLayer(layer);
         });
         
         // Clear data and selections (we'll restore them after loading)
@@ -973,30 +822,15 @@ function removeAllCompetitorVisuals() {
     selectedStations.forEach((stationData) => {
         // Remove competitor markers
         if (stationData.competitorMarkers) {
-            stationData.competitorMarkers.forEach(marker => {
-                if (map.hasLayer(marker)) {
-                    map.removeLayer(marker);
-                }
-            });
-            stationData.competitorMarkers = [];
+            stationData.competitorMarkers.forEach(marker => map.removeLayer(marker));
         }
         // Remove lines
         if (stationData.lines) {
-            stationData.lines.forEach(line => {
-                if (map.hasLayer(line)) {
-                    map.removeLayer(line);
-                }
-            });
-            stationData.lines = [];
+            stationData.lines.forEach(line => map.removeLayer(line));
         }
         // Remove number markers
         if (stationData.numberMarkers) {
-            stationData.numberMarkers.forEach(marker => {
-                if (map.hasLayer(marker)) {
-                    map.removeLayer(marker);
-                }
-            });
-            stationData.numberMarkers = [];
+            stationData.numberMarkers.forEach(marker => map.removeLayer(marker));
         }
     });
 }
@@ -1549,84 +1383,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Progress counter button listeners
     if (checkAllBtn) checkAllBtn.addEventListener('click', checkAllStations);
     if (uncheckAllBtn) uncheckAllBtn.addEventListener('click', uncheckAllStations);
-
-    // ============================================
-    // DATE SCRUBBER EVENT LISTENERS
-    // ============================================
-    
-    const scrubberTrack = document.getElementById('scrubber-track');
-    const scrubberThumb = document.getElementById('scrubber-thumb');
-    
-    let isDragging = false;
-    
-    // Function to set date from scrubber position
-    async function setDateFromPosition(clientX) {
-        const rect = scrubberTrack.getBoundingClientRect();
-        const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-        
-        const totalCount = getTotalTimestampCount();
-        const targetIndex = Math.round(percentage * (totalCount - 1));
-        
-        const { dayIndex, timeIndex } = getIndicesFromAbsolute(targetIndex);
-        
-        // Only update if changed
-        if (dayIndex !== currentDayIndex || timeIndex !== currentTimeIndex) {
-            currentDayIndex = dayIndex;
-            currentTimeIndex = timeIndex;
-            
-            const day = availableDays[currentDayIndex];
-            currentDataFile = 'pricedata/' + filesByDate[day][currentTimeIndex].filename;
-            
-            updateDateDisplay();
-            await loadDataForCurrentDate();
-        }
-    }
-    
-    // Mouse down on thumb - start dragging
-    if (scrubberThumb) {
-        scrubberThumb.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            e.preventDefault();
-        });
-    }
-    
-    // Mouse move - drag
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            setDateFromPosition(e.clientX);
-        }
-    });
-    
-    // Mouse up - stop dragging
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
-    
-    // Click on track - jump to position
-    if (scrubberTrack) {
-        scrubberTrack.addEventListener('click', (e) => {
-            if (e.target === scrubberTrack) {
-                setDateFromPosition(e.clientX);
-            }
-        });
-    }
-    
-    // Mouse wheel on scrubber - scroll through dates
-    if (scrubberTrack) {
-        scrubberTrack.addEventListener('wheel', async (e) => {
-            e.preventDefault();
-            
-            // Scroll DOWN (positive deltaY) = go to PREVIOUS (older/backwards in time)
-            // Scroll UP (negative deltaY) = go to NEXT (newer/forwards in time)
-            if (e.deltaY > 0) {
-                // Scroll down - go to previous date (backward in time)
-                await goToPreviousDate();
-            } else if (e.deltaY < 0) {
-                // Scroll up - go to next date (forward in time)
-                await goToNextDate();
-            }
-        }, { passive: false });
-    }
 
     // Notes section event listeners
     const notesTextarea = document.getElementById('notes-textarea');
