@@ -1,0 +1,257 @@
+
+----------------------------------------------------------------------------------------------------
+HYBRID CHANGERS -- price changes at both midnight and during the day
+----------------------------------------------------------------------------------------------------
+
+  Speedway #43528
+  Stripes/7FLEET #42514
+  Kwik Trip #240
+  Iron Horse Travel Center
+  Mach 1 #10
+  Kwik Star #569
+  Kwik Star #1276
+  Speedway #43628
+  Kwik Trip #796
+  Mach 1 #12
+  Mach 1 #21
+  Kwik Trip #648
+  Speedway #43507
+  Cloverdale Travel Plaza
+  TA Mt Vernon #43
+  Gas N Wash - Kankakee, IL
+  TA Express Mount Vernon #286
+  Speedway #46066
+  TA Express Riverton #433
+  Knapp Truckstop - Nashville, IL
+  Speedway #43943
+  Speedway #46078
+  Kwik Trip #673
+  Casey's General Store #3292
+  Circle K #4701432
+  TA Hillsboro #333
+  Texas Travel Center - Jarrell, TX
+  TA Bernardo #270
+  TA Express Fairfield #290
+  TA Amarillo #55
+  Truckomat of North Little Rock - North Little Rock, AR
+  Little Nashville - Nashville, IL
+  Energy Express Travel Center - St. Louis, MO
+  Petro Rochelle #359
+  46 Travel Center - Mount Vernon, MO
+  Petro Amarillo #307
+  Petro Carl's Corner #533
+  Kwik Trip #775
+  Express Mart - Pevely, MO
+  Casey's General Store #4384
+  Sapp bros Peru
+  Mach 1 #18
+  Xoom - Harlingen, TX
+  Junction Travel Center - Junction, TX
+  TA Earle #33
+  Speedway #47321
+  New Deal Travel Center Hop In #469
+  Petro W. Memphis #311
+  Allsup's #2390
+  Gordo's Travel Center - Junction, TX
+  Stripes/7FLEET #42524
+  Petro Beaumont #304
+  Ozark Travel Center / TA Mount Vernon #924
+  PWI #112
+  PWI #123
+  TA Express New Lisbon #982
+  TA Express Kilgore #281
+  Petro Gary #369
+  TA Terrell #233
+  TA Gary #10
+  Speedway #43849
+  Gas N Wash Cicero & Pershing - Stickney, IL
+  Speedway #46161
+  Sapp Bros Peru
+  Casey's General Store #3856
+  Circle K #2741831
+  Trainer Mart - Marion, TX
+  Fuel America Travel Center - Laredo, TX
+  Huck's Food & Fuel #54
+  Speedway #43539
+  Atlanta Truck Stop - Atlanta, IL
+  Phillips 66 Alta #6515 - St Louis, MO
+  Black River Oasis Travel
+  Mauston Interstate BP
+  Refuel #1350
+  PWI #168
+  7-Eleven #40530 - Del Rio, TX
+  PWI #110
+  Stripes #42387
+  Stripes/7FLEET #42428
+  Allsup's #2428
+  Bar-B Travel Plaza - Gordon, TX
+  Marietta Petroleum
+  Truck and Travel - Weatherford, TX
+  Refuel #1326
+  Peotone Travel Center - Peotone, IL
+  Tex Best #530
+  Casey's General Store #4256
+  Speedway #43682
+  Maverik/Kum & Go #5314
+  Fuel Mart 787
+  Haymakers 707
+  Speedway #43681
+  TA Cuba #461
+  7-Eleven #40736
+  Speedway #43773
+  7-Eleven #42340
+  PWI #167
+  Stripes/7Fleet #42132
+  Circle K #4701408
+  Speedway #43526
+  Stuckey's - Newburg, MO
+  Circle K #2706340
+  Circle K #2741328
+  Yumm! - Laredo, TX
+  Circle K #2741564
+  TA Cicero #490
+  Speedway #43525
+  7-Eleven #40547
+  Stripes #42503
+  Catarina One Stop
+  Stripes/7FLEET #42564
+  PWI #164
+  Big Apple Travel Center - Joplin, MO
+  PWI #120
+  Elgin Shell - Elgin, IL
+  Mach 1 #14
+  Maverik/Kum & Go #5323
+  Circle K #2709057
+
+
+----------------------------------------------------------------------------------------------------
+MIDNIGHT-ONLY CHANGERS -- automated overnight batch updates
+----------------------------------------------------------------------------------------------------
+
+  Casey's General Store #2867
+  TA Laredo #153
+  PWI #113
+  McDonald's Fuel Stop - Terrell, TX
+  Speedway #43679
+  Gas N Wash - Bourbonnais, IL
+  Petro Weatherford #302
+  TA Bloomington #92
+  Petro Pearsall #538
+  TA Lake Station #543
+  TA Madison #50
+  TA Morris #236
+  Circle K #4701445
+  TA Express Osseo #431
+  A One Stop - Ennis, TX
+  Huck's Food & Fuel #367
+  Petro N. Little Rock #326
+  B&B Country Store
+  TA Denton #266
+  Mach 1 #13
+  Double Quick #0093
+  Lonestar Market Truckstop - Dilley TX
+  Joplin 44 Petro #354
+  7-Eleven #40513 (Westbound)
+  Casey's General Store #3988
+  Speedway #43968
+  Petro Brazil #376
+  Express Mart Union
+  Little Point Auto & Truck Stop
+  TA Elgin #44
+  7-Eleven #40514 (Eastbound)
+  7-Eleven #40558
+  TA Porter 220
+  Monroe Center Oasis - Monroe Center, IL
+  Monroe Center Oasis
+  Allsup's #2399
+
+
+----------------------------------------------------------------------------------------------------
+DAYTIME-ONLY CHANGERS -- active daytime price management
+----------------------------------------------------------------------------------------------------
+
+  Kwik Star #1530
+  Huck's Food & Fuel #355
+  Stuckey's Travel Center - Orange, TX
+  Texstar Travel Center
+  Pleasant Springs Travel Plaza
+  Lambo's #5
+  Walburg Travel Center
+  PWI #115 - Buffalo, TX
+  PWI #109
+  Casey's General Store #3686
+  Huck's Food & Fuel #371
+  Kwik Trip #1029
+  Maverik/Kum & Go #5302
+  Tex Best Travel Center #506
+  PWI #105
+  Speedway #43671
+  Lambo's #3
+  Flash Fuel Express #4 - Vinton, LA
+  Midway #34 - Tyler, TX
+  Gas N Wash 50th & Central - Chicago, IL
+  Kwik Trip #239
+  Casey's General Store #3472
+  Toot'n Totum #128
+  PWI #169
+  Woody's Diesel Express - Centerville, TX
+  Beck's Express Mart #22
+  Neoga BP
+  Beck's #27
+  Haymakers 786
+  Circle K #2709231
+  Chubbys At Forrest City - Forrest City, AR
+  Kwik Trip #282
+  Beck's #14
+  Beck's Express Mart #26
+  Circle K #4701251
+  Garrison's Convenience Store
+  Circle K #4701438
+  Allsup's #2283
+  Toot'n Totum #127
+  Charge Up 96
+  Casey's General Store #4554
+  Huck's Food & Fuel #379
+  K&H Truck Plaza #669
+  Casey's General Store #3088
+  Casey's General Store #3705
+  Gilberts Shell - Gilberts, IL
+  Huck's Food & Fuel #186
+  Chubby's Travel Center - Natalia, TX
+  1803 North Food Mart (Shell)
+  Cubbies Travel Center - Mt Pleasant, TX
+  Allsup's #2506
+  Fuel America Travel Center #2
+  Allsup's #2504
+  Abbott's Travel Center
+  Allsup's #2401
+  Allsup's #2468
+  Eastland Truck Stop
+  Allsup's #2304
+  Gateway Travel Plaza - Vidor, TX
+  Allsup's #2480
+  Abbott's Travel Center - Abbott, TX
+  PWI #363
+
+
+----------------------------------------------------------------------------------------------------
+OFF-PEAK / OTHER-HOURS CHANGERS -- unusual timing
+----------------------------------------------------------------------------------------------------
+
+  Waco Truck Stop
+
+
+----------------------------------------------------------------------------------------------------
+NO CHANGES DETECTED -- price held flat across the entire collection window
+----------------------------------------------------------------------------------------------------
+
+  Allsup's #2481
+  Big's 301
+  Big's 304
+  Circle K #4701443
+  Elan #03
+  Garrison's Crossroads
+  Haymakers 798
+  Stockton Travel Center - Stockton, IL
+  Zippy J's #6 - Longview, TX
+
