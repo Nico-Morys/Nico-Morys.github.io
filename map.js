@@ -46,6 +46,8 @@ let currentDayIndex = 0;
 let currentTimeIndex = 0;
 let currentDataFile = '';
 let currentSelectedStationForNotes = null; // Track currently selected station for notes
+let currentFetchController = null; // AbortController to cancel stale scrub fetches
+let hasInitiallyLoaded = false; // True after the very first data load completes
 
 // ============================================
 // NOTES MANAGEMENT FUNCTIONS
@@ -219,6 +221,118 @@ function getBrandLogo(brand) {
 // DATE NAVIGATION FUNCTIONS
 // ============================================
 
+// Calculate total number of timestamps across all days
+function getTotalTimestampCount() {
+    let total = 0;
+    availableDays.forEach(day => {
+        total += filesByDate[day].length;
+    });
+    return total;
+}
+
+// Get absolute index from day and time indices
+function getAbsoluteIndex(dayIndex, timeIndex) {
+    let index = 0;
+    
+    // availableDays[0] = newest day, availableDays[last] = oldest day
+    // We want absolute index 0 = oldest overall, highest = newest overall
+    
+    // Count all timestamps in days OLDER than current day (higher dayIndex)
+    for (let i = availableDays.length - 1; i > dayIndex; i--) {
+        index += filesByDate[availableDays[i]].length;
+    }
+    
+    // Add timestamps from the current day (times are sorted oldest to newest)
+    index += timeIndex;
+    
+    return index;
+}
+
+// Convert absolute index back to day and time indices
+function getIndicesFromAbsolute(absoluteIndex) {
+    let remaining = absoluteIndex;
+    
+    // Iterate from oldest day (highest dayIdx) to newest (dayIdx 0)
+    for (let dayIdx = availableDays.length - 1; dayIdx >= 0; dayIdx--) {
+        const timesInDay = filesByDate[availableDays[dayIdx]].length;
+        
+        if (remaining < timesInDay) {
+            return { dayIndex: dayIdx, timeIndex: remaining };
+        }
+        
+        remaining -= timesInDay;
+    }
+    
+    // Fallback to newest
+    return { dayIndex: 0, timeIndex: filesByDate[availableDays[0]].length - 1 };
+}
+
+// Update scrubber position
+function updateScrubberPosition() {
+    const thumb = document.getElementById('scrubber-thumb');
+    const tooltip = document.getElementById('scrubber-tooltip');
+    
+    if (!thumb || !tooltip) return;
+    
+    const totalCount = getTotalTimestampCount();
+    if (totalCount <= 1) {
+        thumb.style.left = '100%';
+        return;
+    }
+    
+    const absoluteIndex = getAbsoluteIndex(currentDayIndex, currentTimeIndex);
+    // absoluteIndex 0 = oldest (left, 0%), highest = newest (right, 100%)
+    const percentage = (absoluteIndex / (totalCount - 1)) * 100;
+    
+    thumb.style.left = percentage + '%';
+    
+    // Update tooltip with current date
+    const day = availableDays[currentDayIndex];
+    const entry = filesByDate[day][currentTimeIndex];
+    const [year, month, dayNum] = entry.date.split('-').map(Number);
+    const [hour, minute, second] = entry.time.split(':').map(Number);
+    const localDate = new Date(year, month - 1, dayNum, hour, minute, second || 0);
+    
+    tooltip.textContent = localDate.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+    });
+}
+
+// Update scrubber labels
+function updateScrubberLabels() {
+    const startLabel = document.getElementById('scrubber-start');
+    const endLabel = document.getElementById('scrubber-end');
+    
+    if (!startLabel || !endLabel || availableDays.length === 0) return;
+    
+    // Oldest timestamp (left side of bar)
+    const oldestDay = availableDays[availableDays.length - 1];
+    const oldestEntry = filesByDate[oldestDay][0];
+    const [oldYear, oldMonth, oldDay] = oldestEntry.date.split('-').map(Number);
+    const [oldHour, oldMinute, oldSecond] = oldestEntry.time.split(':').map(Number);
+    const oldestDate = new Date(oldYear, oldMonth - 1, oldDay, oldHour, oldMinute, oldSecond || 0);
+    
+    // Newest timestamp (right side of bar)
+    const newestDay = availableDays[0];
+    const newestEntry = filesByDate[newestDay][filesByDate[newestDay].length - 1];
+    const [newYear, newMonth, newDay] = newestEntry.date.split('-').map(Number);
+    const [newHour, newMinute, newSecond] = newestEntry.time.split(':').map(Number);
+    const newestDate = new Date(newYear, newMonth - 1, newDay, newHour, newMinute, newSecond || 0);
+    
+    startLabel.textContent = oldestDate.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric'
+    });
+    
+    endLabel.textContent = newestDate.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
 // Load manifest and get available dates
 async function loadManifest() {
     try {
@@ -269,6 +383,8 @@ async function loadManifest() {
         currentDataFile = 'pricedata/' + filesByDate[availableDays[0]][currentTimeIndex].filename;
 
         updateDateDisplay();
+        updateScrubberLabels();
+        updateScrubberPosition();
         await loadDataForCurrentDate();
 
     } catch (error) {
@@ -326,6 +442,9 @@ function updateDateDisplay() {
 
     prevBtn.disabled = atOldest;
     nextBtn.disabled = atNewest;
+    
+    // Update scrubber position
+    updateScrubberPosition();
 }
 
 
@@ -437,33 +556,67 @@ function uncheckAllStations() {
 
 // Load data for current date
 async function loadDataForCurrentDate() {
+    // Snapshot selection state NOW, before aborting anything — a subsequent call
+    // would otherwise see an already-cleared selectedStations map.
+    const previouslySelectedStationIds = Array.from(selectedStations.keys());
+    const previouslyCheckedStationIds = Array.from(checkedStations);
+
+    // Abort any in-flight fetch from a previous scrub position
+    if (currentFetchController) {
+        currentFetchController.abort();
+    }
+    currentFetchController = new AbortController();
+    const signal = currentFetchController.signal;
+
     try {
-        // Store currently selected station IDs and checked stations
-        const previouslySelectedStationIds = Array.from(selectedStations.keys());
-        const previouslyCheckedStationIds = Array.from(checkedStations);
+        // Fetch data first — don't touch the DOM until we know this request won't be discarded
+        const response = await fetch(currentDataFile + '?v=' + Date.now(), { signal });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
         
-        // IMPORTANT: Remove all competitor visuals BEFORE clearing the map
-        removeAllCompetitorVisuals();
-        
-        // Clear existing station markers and polylines
-        map.eachLayer(layer => {
-            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-                map.removeLayer(layer);
+        // If this request was superseded by a newer scrub position, bail out entirely
+        // (leaves the map untouched for the winning request to handle)
+        if (signal.aborted) return;
+
+        // --- Safe to mutate the map from here — this is the winning request ---
+
+        // Remove competitor markers, lines, and number markers from selectedStations
+        selectedStations.forEach(stationData => {
+            if (stationData.competitorMarkers) {
+                stationData.competitorMarkers.forEach(marker => {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                });
+            }
+            if (stationData.lines) {
+                stationData.lines.forEach(line => {
+                    if (map.hasLayer(line)) map.removeLayer(line);
+                });
+            }
+            if (stationData.numberMarkers) {
+                stationData.numberMarkers.forEach(marker => {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                });
             }
         });
-        
+
+        // Clear ALL remaining markers and polylines from the map
+        const layersToRemove = [];
+        map.eachLayer(layer => {
+            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                layersToRemove.push(layer);
+            }
+        });
+        layersToRemove.forEach(layer => {
+            map.removeLayer(layer);
+        });
+
         // Clear data and selections (we'll restore them after loading)
         stations = [];
         competitors = {};
         selectedStations.clear();
         stationMarkers.clear();
-        
-        // Fetch data
-        const response = await fetch(currentDataFile + '?v=' + Date.now());
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
         
         console.log(`Loaded ${data.length} entries from ${currentDataFile}`);
         
@@ -635,6 +788,8 @@ async function loadDataForCurrentDate() {
         }
         
     } catch (error) {
+        // AbortError is expected when a newer scrub position cancels this fetch — ignore it silently
+        if (error.name === 'AbortError') return;
         console.error('Error loading data:', error);
         alert(`Error loading data. Check console for details.`);
     }
@@ -734,13 +889,12 @@ function processStationData(data) {
     // Update progress counter
     updateProgressCounter();
     
-    // Only fit bounds on initial load, not when refreshing with date navigation
-    const isInitialLoad = map.getZoom() === 6; // Initial zoom level
-    
+    // Only fit bounds on the very first load, not when scrubbing or navigating dates
     if (stations.length > 0) {
-        if (isInitialLoad) {
+        if (!hasInitiallyLoaded) {
             const bounds = stations.map(s => [s.latitude, s.longitude]);
             map.fitBounds(bounds, { padding: [50, 50] });
+            hasInitiallyLoaded = true;
         }
         
         stations.forEach(station => {
@@ -822,15 +976,30 @@ function removeAllCompetitorVisuals() {
     selectedStations.forEach((stationData) => {
         // Remove competitor markers
         if (stationData.competitorMarkers) {
-            stationData.competitorMarkers.forEach(marker => map.removeLayer(marker));
+            stationData.competitorMarkers.forEach(marker => {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            });
+            stationData.competitorMarkers = [];
         }
         // Remove lines
         if (stationData.lines) {
-            stationData.lines.forEach(line => map.removeLayer(line));
+            stationData.lines.forEach(line => {
+                if (map.hasLayer(line)) {
+                    map.removeLayer(line);
+                }
+            });
+            stationData.lines = [];
         }
         // Remove number markers
         if (stationData.numberMarkers) {
-            stationData.numberMarkers.forEach(marker => map.removeLayer(marker));
+            stationData.numberMarkers.forEach(marker => {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            });
+            stationData.numberMarkers = [];
         }
     });
 }
@@ -1192,7 +1361,7 @@ function updatePanelForMultipleSelections() {
                     Your Price: ${priceText}
                 </div>
                 <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
-                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} • Click to move to top
+                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} â€¢ Click to move to top
                 </div>
             `;
             
@@ -1383,6 +1552,92 @@ document.addEventListener('DOMContentLoaded', function() {
     // Progress counter button listeners
     if (checkAllBtn) checkAllBtn.addEventListener('click', checkAllStations);
     if (uncheckAllBtn) uncheckAllBtn.addEventListener('click', uncheckAllStations);
+
+    // ============================================
+    // DATE SCRUBBER EVENT LISTENERS
+    // ============================================
+    
+    const scrubberTrack = document.getElementById('scrubber-track');
+    const scrubberThumb = document.getElementById('scrubber-thumb');
+    
+    let isDragging = false;
+    let scrubAnimFrame = null; // rAF handle for throttling mousemove during scrub
+    
+    // Function to set date from scrubber position
+    async function setDateFromPosition(clientX) {
+        const rect = scrubberTrack.getBoundingClientRect();
+        const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        
+        const totalCount = getTotalTimestampCount();
+        const targetIndex = Math.round(percentage * (totalCount - 1));
+        
+        const { dayIndex, timeIndex } = getIndicesFromAbsolute(targetIndex);
+        
+        // Only update if changed
+        if (dayIndex !== currentDayIndex || timeIndex !== currentTimeIndex) {
+            currentDayIndex = dayIndex;
+            currentTimeIndex = timeIndex;
+            
+            const day = availableDays[currentDayIndex];
+            currentDataFile = 'pricedata/' + filesByDate[day][currentTimeIndex].filename;
+            
+            updateDateDisplay();
+            await loadDataForCurrentDate();
+        }
+    }
+    
+    // Mouse down on thumb - start dragging
+    if (scrubberThumb) {
+        scrubberThumb.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            e.preventDefault();
+        });
+    }
+    
+    // Mouse move - drag (throttled to one update per animation frame)
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        if (scrubAnimFrame) return; // already scheduled for this frame
+        scrubAnimFrame = requestAnimationFrame(() => {
+            scrubAnimFrame = null;
+            setDateFromPosition(e.clientX);
+        });
+    });
+    
+    // Mouse up - stop dragging and cancel any pending frame
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        if (scrubAnimFrame) {
+            cancelAnimationFrame(scrubAnimFrame);
+            scrubAnimFrame = null;
+        }
+    });
+    
+    // Click on track - jump to position
+    if (scrubberTrack) {
+        scrubberTrack.addEventListener('click', (e) => {
+            if (e.target === scrubberTrack) {
+                setDateFromPosition(e.clientX);
+            }
+        });
+    }
+    
+    // Mouse wheel on scrubber - scroll through dates
+    if (scrubberTrack) {
+        scrubberTrack.addEventListener('wheel', async (e) => {
+            e.preventDefault();
+            
+            // Scroll DOWN (positive deltaY) = go to PREVIOUS (older/backwards in time)
+            // Scroll UP (negative deltaY) = go to NEXT (newer/forwards in time)
+            if (e.deltaY > 0) {
+                // Scroll down - go to previous date (backward in time)
+                await goToPreviousDate();
+            } else if (e.deltaY < 0) {
+                // Scroll up - go to next date (forward in time)
+                await goToNextDate();
+            }
+        }, { passive: false });
+    }
 
     // Notes section event listeners
     const notesTextarea = document.getElementById('notes-textarea');
