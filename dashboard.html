@@ -321,9 +321,9 @@ function transformJSON(raw, timestamp) {
 // ============================================================
 
 async function discoverFiles() {
-  // 1. Try manifest first
+  // Try manifest first
   try {
-    const res = await fetch('manifest.json');
+    const res = await fetch('pricedata/manifest.json');
     if (res.ok) {
       const list = await res.json();
       // Support two manifest shapes:
@@ -333,35 +333,17 @@ async function discoverFiles() {
       if (list && Array.isArray(list.all) && list.all.length > 0) return list.all;
       if (list && typeof list.latest === 'string') return [list.latest];
     }
-  } catch (e) { /* no manifest, that's fine */ }
-
-  // 2. No manifest — scan for files matching the known prefix.
-  //    We try a range of recent dates (last 30 days) at common
-  //    scrape-hour intervals.  Any that 404 are simply skipped.
-  //    This is lightweight and needs no server-side support.
-  const candidates = [];
-  const now = new Date();
-  for (let dayOffset = 0; dayOffset < 30; dayOffset++) {
-    const d = new Date(now);
-    d.setDate(d.getDate() - dayOffset);
-    const dateStr = d.toISOString().slice(0, 10); // "2026-01-22"
-    // Try every hour of that day (24 attempts per day max)
-    for (let h = 0; h < 24; h++) {
-      const hh = String(h).padStart(2, '0');
-      // We don't know minutes/seconds, so try a few common minute marks
-      for (const mm of ['00','15','18','20','21','22','24','26','30','45']) {
-        candidates.push(`${JSON_GLOB}${dateStr}_${hh}-${mm}-00${JSON_EXT}`);
-        candidates.push(`${JSON_GLOB}${dateStr}_${hh}-${mm}-24${JSON_EXT}`);
-      }
-    }
+  } catch (e) { 
+    console.error('Failed to load manifest:', e);
   }
-  // Dedupe
-  return [...new Set(candidates)];
+  
+  // No manifest found
+  return [];
 }
 
 async function tryFetch(filename) {
   try {
-    const res = await fetch(filename);
+    const res = await fetch('pricedata/' + filename);
     if (res.ok) {
       const json = await res.json();
       return { filename, json };
