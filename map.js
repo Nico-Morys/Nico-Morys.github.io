@@ -1361,7 +1361,7 @@ function updatePanelForMultipleSelections() {
                     Your Price: ${priceText}
                 </div>
                 <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
-                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''} â€¢ Click to move to top
+                    ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''}  Click to move to top
                 </div>
             `;
             
