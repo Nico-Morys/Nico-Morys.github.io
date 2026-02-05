@@ -312,7 +312,7 @@
             border-radius: 4px;
             opacity: 0;
             transform: translateY(10px);
-            transition: all 0.3s ease;
+            transition: all 0.1s ease;
             pointer-events: none;
         }
 
@@ -395,10 +395,6 @@
                     <div class="stat-label">With Notes</div>
                     <div class="stat-value" id="notes-count">0</div>
                 </div>
-                <div class="stat">
-                    <div class="stat-label">Empty</div>
-                    <div class="stat-value" id="empty-count">55</div>
-                </div>
             </div>
 
             <div class="search-container">
@@ -467,7 +463,6 @@
         const saveIndicator = document.getElementById('save-indicator');
         const totalCount = document.getElementById('total-count');
         const notesCount = document.getElementById('notes-count');
-        const emptyCount = document.getElementById('empty-count');
         const exportBtn = document.getElementById('export-btn');
         const importBtn = document.getElementById('import-btn');
         const importFile = document.getElementById('import-file');
@@ -611,7 +606,7 @@
             saveIndicator.classList.add('show');
             setTimeout(() => {
                 saveIndicator.classList.remove('show');
-            }, 2000);
+            }, 1000);
         }
 
         // Update stats
@@ -626,7 +621,6 @@
             
             totalCount.textContent = stores.length;
             notesCount.textContent = withNotes;
-            emptyCount.textContent = stores.length - withNotes;
         }
 
         // Search stores
@@ -721,7 +715,7 @@
                 clearTimeout(saveTimeout);
                 saveTimeout = setTimeout(() => {
                     saveStoreNotes(currentStore, editor.value);
-                }, 1000);
+                }, 300);
             });
 
             // Import
