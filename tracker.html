@@ -104,33 +104,6 @@
             will-change: transform;
         }
 
-        .search-container {
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-primary);
-            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--shadow);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-
         .stores-list {
             flex: 1;
             overflow-y: auto;
@@ -397,16 +370,6 @@
                 </div>
             </div>
 
-            <div class="search-container">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="search-input" 
-                    placeholder="Search stores..."
-                    autocomplete="off"
-                >
-            </div>
-
             <div class="stores-list" id="stores-list"></div>
 
             <div class="footer">
@@ -454,7 +417,6 @@
 
         // DOM elements
         const storesList = document.getElementById('stores-list');
-        const searchInput = document.getElementById('search-input');
         const editor = document.getElementById('editor');
         const editorView = document.getElementById('editor-view');
         const emptyState = document.getElementById('empty-state');
@@ -623,19 +585,6 @@
             notesCount.textContent = withNotes;
         }
 
-        // Search stores
-        function searchStores(query) {
-            const lowerQuery = query.toLowerCase();
-            document.querySelectorAll('.store-item').forEach(item => {
-                const storeName = item.dataset.store.toLowerCase();
-                if (storeName.includes(lowerQuery)) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
-
         // Export all notes
         function exportAllNotes() {
             const allNotes = {};
@@ -703,11 +652,6 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Search
-            searchInput.addEventListener('input', (e) => {
-                searchStores(e.target.value);
-            });
-
             // Editor auto-save
             editor.addEventListener('input', () => {
                 if (!currentStore) return;
