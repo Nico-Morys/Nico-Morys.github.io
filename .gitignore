@@ -1,0 +1,16 @@
+# Ignore everything by default
+*
+
+# Allow master_price_data.csv in root
+!master_price_data.csv
+
+# Allow historical folder and its CSV files
+!historical/
+!historical/*.csv
+
+# Allow .gitignore itself
+!.gitignore
+
+# Optionally allow price-index.html if you want it on GitHub Pages
+# Uncomment the line below if you want to include it:
+# !price-index.html
