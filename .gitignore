@@ -8,6 +8,9 @@
 !historical/
 !historical/*.csv
 
+# Allow manifest.json (tracks historical files for price-index.html)
+!manifest.json
+
 # Allow .gitignore itself
 !.gitignore
 
