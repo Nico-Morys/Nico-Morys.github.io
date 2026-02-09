@@ -1574,6 +1574,13 @@
                     }
                 });
                 rrData = Array.from(rrLocationsMap.values());
+                // Sort Road Ranger locations numerically by store number
+                rrData.sort((a, b) => {
+                    // Extract numbers from "Road Ranger #123" format
+                    const numA = parseInt(a.rr_store.replace(/\D/g, ''));
+                    const numB = parseInt(b.rr_store.replace(/\D/g, ''));
+                    return numA - numB;
+                });
                 
                 console.log(`Extracted ${rrData.length} Road Ranger locations`);
                 
