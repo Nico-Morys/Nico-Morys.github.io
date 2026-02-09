@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RR Mudflaps – Diesel Pricing Intelligence</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap');
+  :root {
+    --bg:#0a0e17;--surface:#111827;--surface2:#1a2234;--border:#2a3548;
+    --text:#e2e8f0;--muted:#64748b;
+    --rr:#00d9ff;--rr-g:rgba(0,217,255,.15);
+    --teal:#14b8a6;--teal-g:rgba(20,184,166,.15);
+    --rose:#f43f5e;--rose-g:rgba(244,63,94,.15);
+    --sky:#38bdf8;--violet:#a78bfa;--green:#22c55e;--green-g:rgba(34,197,94,.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 28px;
+    background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(249,115,22,.06),transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%,rgba(20,184,166,.05),transparent 60%)}
+
+  /* HEADER */
+  .hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+  .hdr-l h1{font-family:'Syne',sans-serif;font-weight:800;font-size:1.55rem;letter-spacing:-.02em}
+  .hdr-l h1 span{color:var(--rr)}
+  .hdr-l p{font-size:.6rem;color:var(--muted);margin-top:3px;letter-spacing:.08em;text-transform:uppercase}
+  .hdr-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+  /* MARKET SELECT */
+  .mkt-sel{font-family:'DM Mono',monospace;font-size:.67rem;background:var(--surface);border:1px solid var(--border);
+    color:var(--text);padding:6px 10px;border-radius:7px;cursor:pointer;outline:none;min-width:185px;transition:border-color .2s}
+  .mkt-sel:focus{border-color:var(--rr)}
+  .mkt-sel option{background:#1a2234;color:var(--text)}
+
+  /* CONTROLS BAR */
+  .ctrl-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding:10px 14px;
+    background:var(--surface);border:1px solid var(--border);border-radius:9px}
+
+  /* PILL GROUPS */
+  .pill-group{display:flex;gap:3px;background:var(--surface2);border-radius:6px;padding:2px}
+  .pill{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;padding:5px 9px;border-radius:5px;
+    border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.03em;white-space:nowrap}
+  .pill:hover{color:var(--text);background:rgba(255,255,255,.06)}
+  .pill.active{background:var(--rr);color:#fff;box-shadow:0 2px 8px var(--rr-g)}
+  .pill.live-active{background:var(--green);color:#fff;box-shadow:0 2px 8px var(--green-g)}
+
+  /* LIVE BADGE */
+  .live-badge{display:none;align-items:center;gap:5px;background:var(--green-g);border:1px solid var(--green);
+    border-radius:14px;padding:3px 9px;font-size:.58rem;color:var(--green);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+  .live-badge.show{display:flex}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 1.8s infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{opacity:.7;box-shadow:0 0 0 4px rgba(34,197,94,0)}}
+
+  .ctrl-div{width:1px;height:24px;background:var(--border);flex-shrink:0}
+
+  /* CUSTOM RANGE */
+  .custom-range{display:none;align-items:center;gap:6px;flex-wrap:wrap}
+  .custom-range.show{display:flex}
+  .cr-label{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+  .cr-input{font-family:'DM Mono',monospace;font-size:.62rem;background:var(--surface2);border:1px solid var(--border);
+    color:var(--text);padding:4px 7px;border-radius:5px;outline:none;transition:border-color .2s;
+    -webkit-appearance:none;appearance:none;color-scheme:dark;min-width:130px}
+  .cr-input:focus{border-color:var(--sky)}
+  .cr-input::-webkit-calendar-picker-indicator{filter:invert(1) brightness(.6);cursor:pointer;padding-left:2px}
+  .cr-arrow{color:var(--muted);font-size:.7rem}
+  .cr-apply{font-family:'DM Mono',monospace;font-size:.6rem;padding:4px 10px;border-radius:5px;border:1px solid var(--sky);
+    background:transparent;color:var(--sky);cursor:pointer;transition:all .2s;white-space:nowrap}
+  .cr-apply:hover{background:var(--sky);color:#0a0e17}
+
+  /* KPI ROW */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;
+    position:relative;overflow:hidden;transition:border-color .25s}
+  .kpi:hover{border-color:var(--kc)}
+  .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc)}
+  .kpi .lbl{font-size:.57rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+  .kpi .val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;color:var(--kc);line-height:1}
+  .kpi .sub{font-size:.56rem;color:var(--muted);margin-top:5px}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 290px;gap:12px;margin-bottom:18px}
+
+  /* PANEL */
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+  .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .pt{font-family:'Syne',sans-serif;font-weight:600;font-size:.78rem}
+  .pb{font-size:.54rem;text-transform:uppercase;letter-spacing:.1em;background:var(--surface2);
+    color:var(--muted);padding:2px 7px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
+
+  /* LEGEND */
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .li{display:flex;align-items:center;gap:5px;font-size:.58rem;color:var(--muted);letter-spacing:.02em}
+  .ld{width:9px;height:9px;border-radius:2px}
+
+  /* CHART */
+  .cw{position:relative;width:100%;height:270px}
+
+  /* BOTTOM */
+  .bot-grid{display:grid;grid-template-columns:240px 1fr;gap:12px}
+  .pie-w{position:relative;width:100%;height:205px}
+
+  /* COMP CHIPS */
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .chip{font-family:'DM Mono',monospace;font-size:.56rem;padding:4px 8px;border-radius:12px;
+    border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;
+    transition:all .18s;white-space:nowrap;max-width:125px;overflow:hidden;text-overflow:ellipsis}
+  .chip:hover{border-color:var(--sky);color:var(--text)}
+  .chip.on{background:var(--sky);color:#0a0e17;border-color:var(--sky);font-weight:500}
+
+  /* TABLE */
+  .tbl{width:100%;border-collapse:collapse;font-size:.85rem}
+  .tbl th{text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;
+    font-weight:500;padding:0 0 8px;border-bottom:1px solid var(--border);font-size:.80rem}
+  .tbl td{padding:6px 0;border-bottom:1px solid rgba(42,53,72,.4);color:var(--text)}
+  .tbl tr:last-child td{border-bottom:none}
+  .hi{color:var(--teal)} .lo{color:var(--rose)} .eq{color:var(--muted)}
+  .st{font-size:.53rem;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:9px}
+  .st-hi{background:var(--teal-g);color:var(--teal)}
+  .st-lo{background:var(--rose-g);color:var(--rose)}
+  .st-eq{background:var(--surface2);color:var(--muted)}
+
+  .no-data{color:var(--muted);font-size:.65rem;padding:24px 0;text-align:center;letter-spacing:.04em}
+  .no-data span{color:var(--rose);font-weight:500}
+
+  .footer{text-align:center;margin-top:20px;font-size:.55rem;color:var(--muted);letter-spacing:.06em}
+
+  /* LOADING STATE */
+  .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;z-index:100;gap:12px}
+  .loading-overlay.hide{display:none}
+  .load-spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--rr);
+    border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .load-text{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+  .load-error{color:var(--rose);font-size:.65rem;text-align:center;max-width:420px;line-height:1.6;letter-spacing:.02em}
+  .load-error code{background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:.6rem;color:var(--sky)}
+
+  @media(max-width:880px){
+    .main-grid{grid-template-columns:1fr}
+    .bot-grid{grid-template-columns:1fr}
+    .kpi-row{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY (shown until fetch completes) -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="load-spinner"></div>
+  <div class="load-text" id="loadText">Scanning for data files…</div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-l">
+    <h1><span>RR</span> Mudflaps – Diesel Pricing Intelligence</h1>
+    <p id="period">Analysis Period: –</p>
+  </div>
+  <div class="hdr-r">
+    <select class="mkt-sel" id="mktSel"></select>
+  </div>
+</div>
+
+<!-- CONTROLS BAR -->
+<div class="ctrl-bar">
+  <!-- Preset pills are injected dynamically based on dates in the data -->
+  <div class="pill-group" id="presetPills"></div>
+
+  <div class="ctrl-div"></div>
+
+  <div class="pill-group" id="livePills">
+    <button class="pill" data-live="12">Last 12h</button>
+    <button class="pill" data-live="24">Last 24h</button>
+  </div>
+
+  <div class="live-badge" id="liveBadge"><div class="live-dot"></div>LIVE</div>
+
+  <div class="ctrl-div"></div>
+
+  <div class="custom-range" id="customRange">
+    <span class="cr-label">From</span>
+    <input type="datetime-local" class="cr-input" id="crFrom">
+    <span class="cr-arrow">→</span>
+    <input type="datetime-local" class="cr-input" id="crTo">
+    <button class="cr-apply" id="crApply">Apply</button>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-row">
+  <div class="kpi" style="--kc:var(--rr)"><div class="lbl">RR Price (Mudflap)</div><div class="val" id="v1">–</div><div class="sub">Discounted price</div></div>
+  <div class="kpi" style="--kc:var(--sky)"><div class="lbl">Active Competitors</div><div class="val" id="v2">–</div><div class="sub" id="s2">In market</div></div>
+  <div class="kpi" style="--kc:var(--teal)"><div class="lbl">Avg Spread vs RR</div><div class="val" id="v3">–</div><div class="sub" id="s3">Positive = comp. higher</div></div>
+  <div class="kpi" style="--kc:var(--violet)"><div class="lbl">Price Changes</div><div class="val" id="v4">–</div><div class="sub" id="s4">In timeframe</div></div>
+</div>
+
+<!-- MAIN: LINE CHART + COMPETITOR TOGGLES -->
+<div class="main-grid">
+  <div class="panel">
+    <div class="ph"><span class="pt">Market Price Trend</span><span class="pb" id="cBadge">All</span></div>
+    <div class="legend" id="leg"></div>
+    <div class="cw"><canvas id="lineChart"></canvas></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="pt">Toggle Competitors</span><span class="pb">Click to show/hide</span></div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<!-- BOTTOM: PIE + TABLE -->
+<div class="bot-grid">
+  <div class="panel">
+    <div class="ph"><span class="pt">Positioning vs RR</span><span class="pb">Latest in range</span></div>
+    <div class="pie-w"><canvas id="pieChart"></canvas></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="pt">Competitor Snapshot</span><span class="pb" id="sBadge">Latest</span></div>
+    <table class="tbl"><thead><tr>
+      <th>Competitor</th><th style="text-align:right">Price</th><th style="text-align:right">vs RR</th><th style="text-align:right">Status</th>
+    </tr></thead><tbody id="tbody"></tbody></table>
+  </div>
+</div>
+
+<div class="footer" id="footer">RR Mudflaps Competitive Intelligence</div>
+
+<script>
+// ============================================================
+// CONFIG — edit this if your JSON files live somewhere else.
+// The dashboard globs for any file matching this pattern in the
+// same directory.  You can also set it to a single filename.
+// ============================================================
+const JSON_GLOB = 'RRMudflapsPrices_';   // prefix to scan for
+const JSON_EXT  = '.json';               // extension
+
+// ============================================================
+// RUNTIME GLOBALS (populated after fetch)
+// ============================================================
+let DATA = [];                  // flat rows [{ts, rr, comp, rr_price, comp_price, diff}, …]
+let ALL_TIMESTAMPS = [];        // sorted unique timestamp strings
+let FIRST_TS = '';
+let LAST_TS  = '';
+let UNIQUE_DATES = [];          // sorted unique date strings ["2026-01-21", …]
+
+const COLORS = ['#38bdf8','#a78bfa','#f43f5e','#34d399','#fb923c','#60a5fa','#f472b6','#a3e635','#e879f9','#facc15','#22d3ee','#fb7185','#4ade80','#c084fc','#fbbf24'];
+let lineChart = null, pieChart = null;
+
+let state = {
+  market:     null,
+  mode:       'preset',
+  presetKey:  'all',
+  liveHours:  null,
+  customFrom: '',
+  customTo:   '',
+  vis:        new Set()
+};
+
+// ============================================================
+// TRANSFORM: nested scrape JSON  →  flat dashboard rows
+// ============================================================
+// The scrape JSON looks like:
+//   [ { rr_store: "Road Ranger 118",
+//       rr_store_data: { prices: ["$3.03","$3.41"], … },
+//       competitors: [
+//         { name: "TA Express …",
+//           data: { prices: ["$3.17","$3.35"], … } }
+//       ]
+//     }, … ]
+//
+// prices[0] is always the mudflap-discounted price.
+// The timestamp is extracted from the filename:
+//   RRMudflapsPrices_2026-01-22_03-26-24.json  →  "2026-01-22T03:26"
+//
+function extractTimestamp(filename) {
+  // Match: YYYY-MM-DD_HH-MM-SS  (seconds are dropped to match existing format)
+  const m = filename.match(/(\d{4}-\d{2}-\d{2})_(\d{2})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  return `${m[1]}T${m[2]}:${m[3]}`;  // "2026-01-22T03:26"
+}
+
+function parseDollar(str) {
+  // "$3.03" → 3.03
+  return parseFloat(str.replace('$', ''));
+}
+
+function transformJSON(raw, timestamp) {
+  const rows = [];
+  raw.forEach(store => {
+    const rrPrice = parseDollar(store.rr_store_data.prices[0]);
+    store.competitors.forEach(comp => {
+      const compPrice = parseDollar(comp.data.prices[0]);
+      rows.push({
+        ts:         timestamp,
+        rr:         store.rr_store,
+        comp:       comp.name,
+        rr_price:   rrPrice,
+        comp_price: compPrice,
+        diff:       Math.round((compPrice - rrPrice) * 1000) / 1000   // 3-decimal precision
+      });
+    });
+  });
+  return rows;
+}
+
+// ============================================================
+// DATA LOADING
+// ============================================================
+// Strategy: we don't know filenames ahead of time, and a plain
+// browser can't readdir().  So we try fetching candidate filenames.
+// In practice you'll have one (or a few) JSON files sitting next
+// to this HTML.  We scan by trying common naming conventions and
+// also accept a user-provided list via a manifest file.
+//
+// Simplest reliable approach for a local server:
+//   1. Try fetching "manifest.json" — if it exists, it should be
+//      an array of filenames: ["RRMudflapsPrices_2026-01-22_03-26-24.json", …]
+//   2. Fall back to trying the single well-known filename pattern.
+//
+// This keeps it zero-config for the common single-file case while
+// supporting multiple historical files via an optional manifest.
+// ============================================================
+
+async function discoverFiles() {
+  // Try manifest first
+  try {
+    const res = await fetch('pricedata/manifest.json');
+    if (res.ok) {
+      const list = await res.json();
+      // Support two manifest shapes:
+      // 1) An array: ["file1.json", ...]
+      // 2) An object: { latest: "...", all: ["file1.json", ...] }
+      if (Array.isArray(list) && list.length > 0) return list;
+      if (list && Array.isArray(list.all) && list.all.length > 0) return list.all;
+      if (list && typeof list.latest === 'string') return [list.latest];
+    }
+  } catch (e) { 
+    console.error('Failed to load manifest:', e);
+  }
+  
+  // No manifest found
+  return [];
+}
+
+async function tryFetch(filename) {
+  try {
+    const res = await fetch('pricedata/' + filename);
+    if (res.ok) {
+      const json = await res.json();
+      return { filename, json };
+    }
+  } catch (e) { /* not found or network error */ }
+  return null;
+}
+
+async function loadAllData() {
+  const loadText = document.getElementById('loadText');
+
+  // --- Step A: discover candidate filenames ---
+  loadText.textContent = 'Scanning for data files…';
+  const candidates = await discoverFiles();
+
+  // --- Step B: fetch all that exist (parallel, fast) ---
+  loadText.textContent = `Probing ${candidates.length} candidates…`;
+  const results = await Promise.all(candidates.map(f => tryFetch(f)));
+  const found = results.filter(r => r !== null);
+
+  if (found.length === 0) {
+    showLoadError();
+    return false;
+  }
+
+  // --- Step C: transform each file and merge into DATA ---
+  loadText.textContent = `Loaded ${found.length} file${found.length>1?'s':''} — building dataset…`;
+  found.forEach(({ filename, json }) => {
+    const ts = extractTimestamp(filename);
+    if (!ts) {
+      console.warn('Could not extract timestamp from filename:', filename);
+      return;
+    }
+    const rows = transformJSON(json, ts);
+    DATA.push(...rows);
+  });
+
+  // --- Step D: deduplicate rows (same ts+rr+comp = keep first) ---
+  const seen = new Set();
+  DATA = DATA.filter(row => {
+    const key = `${row.ts}|${row.rr}|${row.comp}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // --- Step E: derive global timestamp info ---
+  ALL_TIMESTAMPS = [...new Set(DATA.map(d => d.ts))].sort();
+  FIRST_TS       = ALL_TIMESTAMPS[0];
+  LAST_TS        = ALL_TIMESTAMPS[ALL_TIMESTAMPS.length - 1];
+  UNIQUE_DATES   = [...new Set(ALL_TIMESTAMPS.map(t => t.substring(0, 10)))].sort();
+
+  // --- Step F: seed state defaults ---
+  state.customFrom = FIRST_TS;
+  state.customTo   = LAST_TS;
+
+  return true;
+}
+
+function showLoadError() {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.innerHTML = `
+    <div class="load-error">
+      <strong style="color:var(--rr)">No data files found.</strong><br><br>
+      Place one or more scrape JSON files in the same directory as this HTML:<br>
+      <code>RRMudflapsPrices_YYYY-MM-DD_HH-MM-SS.json</code><br><br>
+      Or create a <code>manifest.json</code> listing your filenames:<br>
+      <code>["RRMudflapsPrices_2026-01-22_03-26-24.json"]</code><br><br>
+      Then reload this page.
+    </div>`;
+}
+
+// ============================================================
+// DYNAMIC PRESET PILLS
+// Generates one pill per unique date in the dataset (limited to 7 most recent),
+// plus "All" and "Custom".
+// ============================================================
+function buildPresetPills() {
+  const container = document.getElementById('presetPills');
+  container.innerHTML = '';
+
+  // One pill per date, limited to 7 most recent (dates are already sorted)
+  const datesToShow = UNIQUE_DATES.slice(-7);  // Last 7 dates
+  datesToShow.forEach(date => {
+    // Label: "Jan 22" style
+    const d     = new Date(date + 'T12:00:00');   // noon to avoid TZ edge
+    const label = d.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    const btn   = document.createElement('button');
+    btn.className  = 'pill';
+    btn.dataset.preset = date;   // e.g. "2026-01-22"
+    btn.textContent = label;
+    container.appendChild(btn);
+  });
+
+  // "All" pill
+  const allBtn = document.createElement('button');
+  allBtn.className  = 'pill active';   // default selection
+  allBtn.dataset.preset = 'all';
+  allBtn.textContent = 'All';
+  container.appendChild(allBtn);
+
+  // "Custom" pill
+  const custBtn = document.createElement('button');
+  custBtn.className  = 'pill';
+  custBtn.dataset.preset = 'custom';
+  custBtn.textContent = 'Custom';
+  container.appendChild(custBtn);
+}
+
+// ============================================================
+// CORE FILTER — single source of truth for what data is shown
+// ============================================================
+function getFilteredData() {
+  // Step 1: filter to selected market
+  let sub = DATA.filter(d => d.rr === state.market);
+
+  // Step 2: determine the set of timestamps we want to include
+  let allowedTS = null; // null = no filter (show all)
+
+  if (state.mode === 'preset') {
+    if (state.presetKey === 'all') {
+      allowedTS = null;   // no filter
+    } else {
+      // presetKey is a date string like "2026-01-22"
+      allowedTS = ALL_TIMESTAMPS.filter(t => t.startsWith(state.presetKey));
+    }
+  }
+  else if (state.mode === 'live') {
+    // "Last Nh" = walk back N hours from LAST_TS (the newest snapshot in the dataset).
+    const targetMs = state.liveHours * 60 * 60 * 1000;
+    const lastMs   = new Date(LAST_TS + ':00').getTime();
+    const cutoffMs = lastMs - targetMs;
+
+    allowedTS = ALL_TIMESTAMPS.filter(t => new Date(t + ':00').getTime() >= cutoffMs);
+
+    if (allowedTS.length === 0) {
+      // Fallback: gap in data ate the whole window — show latest date's cluster
+      const lastDate = LAST_TS.substring(0, 10);
+      allowedTS = ALL_TIMESTAMPS.filter(t => t.startsWith(lastDate));
+    }
+  }
+  else if (state.mode === 'custom') {
+    allowedTS = ALL_TIMESTAMPS.filter(t => t >= state.customFrom && t <= state.customTo);
+  }
+
+  // Step 3: apply the timestamp filter
+  if (allowedTS !== null) {
+    const tsSet = new Set(allowedTS);
+    sub = sub.filter(d => tsSet.has(d.ts));
+  }
+
+  return sub;
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function timestamps(d) { return [...new Set(d.map(x => x.ts))].sort(); }
+function comps(d)      { return [...new Set(d.map(x => x.comp))].sort(); }
+function rrSeries(d)   { const s={}; d.forEach(x=>{ s[x.ts]=x.rr_price; }); return s; }
+function compSeries(d) { const s={}; d.forEach(x=>{ if(!s[x.comp]) s[x.comp]={}; s[x.comp][x.ts]=x.comp_price; }); return s; }
+function countChanges(obj) { const v=Object.values(obj); let c=0; for(let i=1;i<v.length;i++) if(v[i]!==v[i-1]) c++; return c; }
+
+function isLive()   { return state.mode === 'live'; }
+function isCustom() { return state.mode === 'custom'; }
+
+// ============================================================
+// SYNC ALL UI ELEMENTS TO state
+// ============================================================
+function syncUI() {
+  document.querySelectorAll('[data-preset]').forEach(p => {
+    p.classList.toggle('active', state.mode === 'preset' && p.dataset.preset === state.presetKey);
+  });
+  document.querySelectorAll('[data-live]').forEach(p => {
+    p.classList.toggle('live-active', state.mode === 'live' && Number(p.dataset.live) === state.liveHours);
+    p.classList.remove('active');
+  });
+  document.getElementById('liveBadge').classList.toggle('show', isLive());
+  document.getElementById('customRange').classList.toggle('show', isCustom());
+  if (isCustom()) {
+    document.getElementById('crFrom').value = state.customFrom;
+    document.getElementById('crTo').value   = state.customTo;
+  }
+}
+
+// ============================================================
+// MARKET SELECTOR
+// ============================================================
+function getMarkets() {
+  const m = {};
+  DATA.forEach(d => { if (!m[d.rr]) m[d.rr] = new Set(); m[d.rr].add(d.comp); });
+  return Object.entries(m).map(([rr,s]) => ({rr, n:s.size})).sort((a,b) => a.rr.localeCompare(b.rr));
+}
+
+function initMarketSelector() {
+  const sel = document.getElementById('mktSel');
+  sel.innerHTML = '';
+  getMarkets().forEach(m => {
+    sel.innerHTML += `<option value="${m.rr}">${m.rr} (${m.n} competitors)</option>`;
+  });
+  state.market = sel.value;
+  sel.addEventListener('change', () => { state.market = sel.value; state.vis.clear(); refresh(); });
+}
+
+// ============================================================
+// CONTROL EVENT BINDINGS
+// ============================================================
+function initControls() {
+  // Preset pills (delegated on the container so it works after dynamic rebuild)
+  document.getElementById('presetPills').addEventListener('click', (e) => {
+    const pill = e.target.closest('[data-preset]');
+    if (!pill) return;
+    const key = pill.dataset.preset;
+    if (key === 'custom') {
+      state.mode = 'custom';
+    } else {
+      state.mode    = 'preset';
+      state.presetKey = key;
+    }
+    syncUI();
+    refresh();
+  });
+
+  // Live pills
+  document.querySelectorAll('[data-live]').forEach(pill => {
+    pill.addEventListener('click', () => {
+      state.mode      = 'live';
+      state.liveHours = Number(pill.dataset.live);
+      syncUI();
+      refresh();
+    });
+  });
+
+  // Custom Apply
+  document.getElementById('crApply').addEventListener('click', applyCustom);
+  ['crFrom','crTo'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') applyCustom(); });
+  });
+}
+
+function applyCustom() {
+  const from = document.getElementById('crFrom').value;
+  const to   = document.getElementById('crTo').value;
+  if (!from || !to) return;
+  state.customFrom = from;
+  state.customTo   = to;
+  state.mode       = 'custom';
+  syncUI();
+  refresh();
+}
+
+// ============================================================
+// MAIN RENDER
+// ============================================================
+function refresh() {
+  const data = getFilteredData();
+  const ts   = timestamps(data);
+  const cs   = comps(data);
+
+  // --- Period label ---
+  if (ts.length >= 2) {
+    document.getElementById('period').textContent = `Analysis Period: ${ts[0].replace('T',' ')}  →  ${ts[ts.length-1].replace('T',' ')}`;
+  } else if (ts.length === 1) {
+    document.getElementById('period').textContent = `Analysis Period: ${ts[0].replace('T',' ')} (single snapshot)`;
+  } else {
+    document.getElementById('period').textContent = 'Analysis Period: No data in selected range';
+  }
+
+  // --- Footer ---
+  document.getElementById('footer').textContent =
+    `RR Mudflaps Competitive Intelligence  •  Dataset: ${FIRST_TS.replace('T',' ')} → ${LAST_TS.replace('T',' ')}  •  ${ALL_TIMESTAMPS.length} snapshots`;
+
+  if (!data.length) { renderEmpty(); return; }
+
+  const latest  = ts[ts.length - 1];
+  const latestD = data.filter(d => d.ts === latest);
+  const rrs     = rrSeries(data);
+  const css     = compSeries(data);
+
+  // --- KPIs ---
+  document.getElementById('v1').textContent = '$' + latestD[0].rr_price.toFixed(2);
+  document.getElementById('v2').textContent = cs.length;
+  const avgSpread = latestD.reduce((s,d)=>s+d.diff,0)/latestD.length;
+  document.getElementById('v3').textContent = (avgSpread>=0?'+':'') + '$' + avgSpread.toFixed(3);
+  document.getElementById('s3').textContent = avgSpread>=0 ? 'Competitors avg higher' : 'Competitors avg lower';
+  let tc = countChanges(rrs);
+  cs.forEach(c => { if(css[c]) tc += countChanges(css[c]); });
+  document.getElementById('v4').textContent = tc;
+
+  // --- Competitor Chips ---
+  const chipsEl = document.getElementById('chips');
+  chipsEl.innerHTML = cs.map(c =>
+    `<div class="chip${state.vis.has(c)?' on':''}" data-c="${c}">${c}</div>`
+  ).join('');
+  chipsEl.querySelectorAll('.chip').forEach(el => {
+    el.addEventListener('click', () => {
+      const c = el.dataset.c;
+      state.vis.has(c) ? state.vis.delete(c) : state.vis.add(c);
+      refresh();
+    });
+  });
+
+  // --- Line Chart ---
+  const labels = ts.map(t => {
+    const d = new Date(t);
+    return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  });
+
+  const datasets = [{
+    label: state.market,
+    data: ts.map(t => rrs[t] ?? null),
+    borderColor: '#00d9ff', backgroundColor: 'rgba(0,217,255,0.08)',
+    borderWidth: 2.5, pointRadius: ts.length > 18 ? 2 : 3,
+    pointBackgroundColor: '#00d9ff', tension: 0.25, fill: true
+  }];
+
+  const showAll = state.vis.size === 0;
+  cs.forEach((c, i) => {
+    if (!showAll && !state.vis.has(c)) return;
+    datasets.push({
+      label: c,
+      data: ts.map(t => css[c]?.[t] ?? null),
+      borderColor: COLORS[i % COLORS.length], borderWidth: 1.5,
+      pointRadius: ts.length > 18 ? 1 : 2,
+      pointBackgroundColor: COLORS[i % COLORS.length],
+      tension: 0.25, fill: false
+    });
+  });
+
+  const ctx = document.getElementById('lineChart').getContext('2d');
+  if (lineChart) lineChart.destroy();
+  lineChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor:'#1a2234', titleColor:'#e2e8f0', bodyColor:'#94a3b8',
+          borderColor:'#2a3548', borderWidth:1, padding:10,
+          titleFont:{family:"'DM Mono',monospace",size:11},
+          bodyFont:{family:"'DM Mono',monospace",size:11},
+          callbacks:{ label: c => ` ${c.dataset.label}: $${c.parsed.y?.toFixed(2) ?? '–'}` }
+        }
+      },
+      scales: {
+        x: { ticks:{color:'#64748b',font:{family:"'DM Mono',monospace",size:9},maxRotation:38,maxTicksLimit:14}, grid:{color:'rgba(42,53,72,.4)'} },
+        y: { ticks:{color:'#64748b',font:{family:"'DM Mono',monospace",size:10},callback:v=>'$'+v.toFixed(2)}, grid:{color:'rgba(42,53,72,.35)'},
+             title:{display:true,text:'Price ($)',color:'#64748b',font:{family:"'DM Mono',monospace",size:10}} }
+      }
+    }
+  });
+
+  // Legend
+  document.getElementById('leg').innerHTML = datasets.map((ds,i) =>
+    `<div class="li"><div class="ld" style="background:${ds.borderColor};box-shadow:0 0 5px ${ds.borderColor}44"></div>${i===0?'<strong style="color:var(--rr)">'+ds.label+'</strong>':ds.label}</div>`
+  ).join('');
+  document.getElementById('cBadge').textContent = state.vis.size===0 ? 'All' : state.vis.size+' Selected';
+
+  // --- Pie Chart ---
+  let hi=0, lo=0, eq=0;
+  latestD.forEach(d => { if(d.diff>.005) hi++; else if(d.diff<-.005) lo++; else eq++; });
+
+  const pCtx = document.getElementById('pieChart').getContext('2d');
+  if (pieChart) pieChart.destroy();
+  pieChart = new Chart(pCtx, {
+    type:'doughnut',
+    data:{ labels:['Higher than RR','Lower than RR','Equal to RR'], datasets:[{data:[hi,lo,eq],backgroundColor:['#14b8a6','#f43f5e','#64748b'],borderColor:'#0a0e17',borderWidth:3}] },
+    options:{
+      responsive:true, maintainAspectRatio:false, cutout:'60%',
+      plugins:{
+        legend:{position:'bottom',labels:{color:'#94a3b8',font:{family:"'DM Mono',monospace",size:9.5},padding:10,usePointStyle:true,pointStyle:'rectRounded'}},
+        tooltip:{backgroundColor:'#1a2234',titleColor:'#e2e8f0',bodyColor:'#94a3b8',borderColor:'#2a3548',borderWidth:1}
+      }
+    },
+    plugins:[{
+      id:'center',
+      afterDraw(chart){
+        const {ctx,width,height}=chart; ctx.save();
+        const cy=height/2-16;
+        ctx.font="bold 19px 'Syne',sans-serif"; ctx.fillStyle='#e2e8f0'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText(hi+lo+eq, width/2, cy);
+        ctx.font="9px 'DM Mono',monospace"; ctx.fillStyle='#64748b';
+        ctx.fillText('competitors', width/2, cy+16); ctx.restore();
+      }
+    }]
+  });
+
+  // --- Competitor Table ---
+  const sorted = [...latestD].sort((a,b)=>b.diff-a.diff);
+  document.getElementById('tbody').innerHTML = sorted.map(d => {
+    let sc='st-eq', st='Equal', pc='eq';
+    if(d.diff>.005){sc='st-hi';st='Higher';pc='hi';}
+    else if(d.diff<-.005){sc='st-lo';st='Lower';pc='lo';}
+    const sign=d.diff>0?'+':'';
+    return `<tr><td>${d.comp}</td><td style="text-align:right" class="${pc}">$${d.comp_price.toFixed(2)}</td><td style="text-align:right" class="${pc}">${sign}$${d.diff.toFixed(3)}</td><td style="text-align:right"><span class="st ${sc}">${st}</span></td></tr>`;
+  }).join('');
+  document.getElementById('sBadge').textContent = `As of ${latest.replace('T',' ')}`;
+}
+
+function renderEmpty() {
+  document.getElementById('v1').textContent='–';
+  document.getElementById('v2').textContent='0';
+  document.getElementById('v3').textContent='–';
+  document.getElementById('v4').textContent='0';
+  document.getElementById('leg').innerHTML='';
+  document.getElementById('chips').innerHTML='<div class="no-data">No data in selected range.<br><span>Try adjusting the timeframe or picking a different market.</span></div>';
+  document.getElementById('tbody').innerHTML='<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted);font-size:.62rem">No data available</td></tr>';
+  document.getElementById('sBadge').textContent='–';
+  if(lineChart){lineChart.destroy();lineChart=null;}
+  if(pieChart){pieChart.destroy();pieChart=null;}
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+window.addEventListener('DOMContentLoaded', async () => {
+  const ok = await loadAllData();
+  if (!ok) return;   // error state already shown
+
+  // Build UI now that data is loaded
+  buildPresetPills();
+  initMarketSelector();
+  initControls();
+  syncUI();
+  refresh();
+
+  // Hide loading overlay
+  document.getElementById('loadingOverlay').classList.add('hide');
+});
+</script>
+</body>
+</html>

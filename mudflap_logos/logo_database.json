@@ -1,0 +1,173 @@
+{
+  "generated_at": "2026-01-18T16:45:29.805631",
+  "total_brands": 14,
+  "brands": [
+    {
+      "brand": "7-Eleven",
+      "chain": "7 Eleven/PDI",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjI2Nzk4LCJwdXIiOiJibG9iX2lkIn19--9e70e6199b6d1e64ac3e0edcc9ddf3f7669a9a1f/7-eleven.png",
+      "local_file": "7_eleven.png",
+      "location_count": 7,
+      "example_stations": [
+        "7-Eleven #40513 (Westbound)",
+        "7-Eleven #40514 (Eastbound)",
+        "7-Eleven #40736"
+      ]
+    },
+    {
+      "brand": "Casey's",
+      "chain": "Caseys",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MzIwNjEzLCJwdXIiOiJibG9iX2lkIn19--8098240ad466a6afae70f76a30f2d6cdcac78699/caseys3.png",
+      "local_file": "casey_s.png",
+      "location_count": 12,
+      "example_stations": [
+        "Casey's General Store #3292",
+        "Casey's General Store #2867",
+        "Casey's General Store #3856"
+      ]
+    },
+    {
+      "brand": "Circle K",
+      "chain": "Circle K - Corporate",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTg1OTI3MCwicHVyIjoiYmxvYl9pZCJ9fQ==--f520fa83cdd5e704b6f38e576d21928b59d644d6/CircleK.png",
+      "local_file": "circle_k.png",
+      "location_count": 5,
+      "example_stations": [
+        "Circle K #4701251",
+        "Circle K #4701251",
+        "Circle K #4701408"
+      ]
+    },
+    {
+      "brand": "Express",
+      "chain": "TA Express - Franchise",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDc3NjM4LCJwdXIiOiJibG9iX2lkIn19--f7ff14de2256206134db6bc6f75bf1a509911453/TA%20Express.png",
+      "local_file": "express.png",
+      "location_count": 2,
+      "example_stations": [
+        "Express Mart Union",
+        "Express Mart - Pevely, MO"
+      ]
+    },
+    {
+      "brand": "Huck's",
+      "chain": "Huck's",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6Mzg5NDIsInB1ciI6ImJsb2JfaWQifX0=--444a0850c37f9f76c7df4150eeaba239d6dab0be/hucks.png",
+      "local_file": "huck_s.png",
+      "location_count": 6,
+      "example_stations": [
+        "Huck's Food & Fuel #371",
+        "Huck's Food & Fuel #186",
+        "Huck's Food & Fuel #355"
+      ]
+    },
+    {
+      "brand": "Kwik Trip",
+      "chain": "Kwik Trip",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MzkwNjcsInB1ciI6ImJsb2JfaWQifX0=--4d6f7e1193fabe346ba409d8497de77d761ebe2d/kwiktrip%20(1).png",
+      "local_file": "kwik_trip.png",
+      "location_count": 5,
+      "example_stations": [
+        "Kwik Trip #673",
+        "Kwik Trip #796",
+        "Kwik Trip #1029"
+      ]
+    },
+    {
+      "brand": "Mach 1",
+      "chain": "Meyer Oil Company (Mach 1)",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6Mzg5NDYsInB1ciI6ImJsb2JfaWQifX0=--46fa16e92850ed547173560f61c224300a03aa9c/mach1%20(1).png",
+      "local_file": "mach_1.png",
+      "location_count": 6,
+      "example_stations": [
+        "Mach 1 #18",
+        "Mach 1 #14",
+        "Mach 1 #10"
+      ]
+    },
+    {
+      "brand": "Maverik",
+      "chain": "Kum & Go",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6Mjc0MTM3LCJwdXIiOiJibG9iX2lkIn19--fe69d76aa6f2502d21cd6d74d3c598b003b32734/kumgo.png",
+      "local_file": "maverik.png",
+      "location_count": 3,
+      "example_stations": [
+        "Maverik/Kum & Go #5323",
+        "Maverik/Kum & Go #5302",
+        "Maverik/Kum & Go #5314"
+      ]
+    },
+    {
+      "brand": "Petro",
+      "chain": "Petro - Franchise",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDc3NjM2LCJwdXIiOiJibG9iX2lkIn19--f6640fc651b1aae1262e3097eea42ffbb67b6e6c/Petro.png",
+      "local_file": "petro.png",
+      "location_count": 10,
+      "example_stations": [
+        "Petro Brazil #376",
+        "Petro Rochelle #359",
+        "Petro Pearsall #538"
+      ]
+    },
+    {
+      "brand": "Road Ranger",
+      "chain": "Road Ranger",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6Mzg4MzIsInB1ciI6ImJsb2JfaWQifX0=--da7e6ba81254364b98835b658044179eb7fa340d/roadranger2.png",
+      "local_file": "road_ranger.png",
+      "location_count": 53,
+      "example_stations": [
+        "Road Ranger #118 - Springfield, IL",
+        "Road Ranger #132 - Champaign, IL",
+        "Road Ranger #136 - Cottage Grove, WI"
+      ]
+    },
+    {
+      "brand": "Sapp",
+      "chain": "Sapp Brothers",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTI3NTkxMSwicHVyIjoiYmxvYl9pZCJ9fQ==--c309fc06d07a688ef3101595bbc2031630bbd861/Sapp2.png",
+      "local_file": "sapp.png",
+      "location_count": 3,
+      "example_stations": [
+        "Sapp bros Peru",
+        "Sapp Bros Peru",
+        "Sapp Bros Peru"
+      ]
+    },
+    {
+      "brand": "Speedway",
+      "chain": "Speedway Core",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTg1OTEzNiwicHVyIjoiYmxvYl9pZCJ9fQ==--6ea563b14a9723f6d621e1ad4b634ebeb36fed99/Speedway%20core.png",
+      "local_file": "speedway.png",
+      "location_count": 20,
+      "example_stations": [
+        "Speedway #43525",
+        "Speedway #46078",
+        "Speedway #43943"
+      ]
+    },
+    {
+      "brand": "Stripes",
+      "chain": "Stripes Core",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTc3MDMzMywicHVyIjoiYmxvYl9pZCJ9fQ==--a0465ec5d5cca09eff6c28816c62670fcb3cf4bc/Sunoco-stripe.png",
+      "local_file": "stripes.png",
+      "location_count": 7,
+      "example_stations": [
+        "Stripes/7Fleet #42132",
+        "Stripes/7FLEET #42428",
+        "Stripes/7FLEET #42514"
+      ]
+    },
+    {
+      "brand": "TA",
+      "chain": "TA Express - Franchise",
+      "url": "https://dashboard.mudflapinc.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDc3NjM4LCJwdXIiOiJibG9iX2lkIn19--f7ff14de2256206134db6bc6f75bf1a509911453/TA%20Express.png",
+      "local_file": "ta.png",
+      "location_count": 33,
+      "example_stations": [
+        "TA Express Riverton #433",
+        "TA Madison #50",
+        "Kwik Star #569"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1218 @@
+{
+  "total_unique_brands": 202,
+  "total_base_brands": 117,
+  "brands": [
+    {
+      "full_name": "1803 North Food Mart (Shell)",
+      "base_brand": "1803",
+      "count": 1,
+      "suggested_filename": "1803.png"
+    },
+    {
+      "full_name": "46 Travel Center - Mount Vernon, MO",
+      "base_brand": "46 Travel Center",
+      "count": 1,
+      "suggested_filename": "46_travel_center.png"
+    },
+    {
+      "full_name": "7-Eleven #40513 (Westbound)",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #40514 (Eastbound)",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #40530 - Del Rio, TX",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #40547",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #40558",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #40736",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "7-Eleven #42340",
+      "base_brand": "7-Eleven",
+      "count": 1,
+      "suggested_filename": "7-eleven.png"
+    },
+    {
+      "full_name": "A One Stop - Ennis, TX",
+      "base_brand": "A One Stop",
+      "count": 1,
+      "suggested_filename": "a_one_stop.png"
+    },
+    {
+      "full_name": "Abbott's Travel Center",
+      "base_brand": "Abbott's",
+      "count": 1,
+      "suggested_filename": "abbotts.png"
+    },
+    {
+      "full_name": "Abbott's Travel Center - Abbott, TX",
+      "base_brand": "Abbott's Travel Center",
+      "count": 1,
+      "suggested_filename": "abbotts_travel_center.png"
+    },
+    {
+      "full_name": "Allsup's #2283",
+      "base_brand": "Allsup's",
+      "count": 2,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2390",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2401",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2428",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2468",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2480",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2481",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2504",
+      "base_brand": "Allsup's",
+      "count": 1,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Allsup's #2506",
+      "base_brand": "Allsup's",
+      "count": 2,
+      "suggested_filename": "allsups.png"
+    },
+    {
+      "full_name": "Atlanta Truck Stop - Atlanta, IL",
+      "base_brand": "Atlanta Truck Stop",
+      "count": 1,
+      "suggested_filename": "atlanta_truck_stop.png"
+    },
+    {
+      "full_name": "B&B Country Store",
+      "base_brand": "B&B",
+      "count": 1,
+      "suggested_filename": "b&b.png"
+    },
+    {
+      "full_name": "Bar-B Travel Plaza - Gordon, TX",
+      "base_brand": "Bar-B Travel Plaza",
+      "count": 1,
+      "suggested_filename": "bar-b_travel_plaza.png"
+    },
+    {
+      "full_name": "Beck's #14",
+      "base_brand": "Beck's",
+      "count": 1,
+      "suggested_filename": "becks.png"
+    },
+    {
+      "full_name": "Beck's #27",
+      "base_brand": "Beck's",
+      "count": 1,
+      "suggested_filename": "becks.png"
+    },
+    {
+      "full_name": "Beck's Express Mart #22",
+      "base_brand": "Beck's Express Mart",
+      "count": 1,
+      "suggested_filename": "becks_express_mart.png"
+    },
+    {
+      "full_name": "Beck's Express Mart #26",
+      "base_brand": "Beck's Express Mart",
+      "count": 1,
+      "suggested_filename": "becks_express_mart.png"
+    },
+    {
+      "full_name": "Big Apple Travel Center - Joplin, MO",
+      "base_brand": "Big Apple Travel Center",
+      "count": 1,
+      "suggested_filename": "big_apple_travel_center.png"
+    },
+    {
+      "full_name": "Big's 301",
+      "base_brand": "Big's",
+      "count": 1,
+      "suggested_filename": "bigs.png"
+    },
+    {
+      "full_name": "Big's 304",
+      "base_brand": "Big's",
+      "count": 1,
+      "suggested_filename": "bigs.png"
+    },
+    {
+      "full_name": "Casey's General Store #2867",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3088",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3292",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3472",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3686",
+      "base_brand": "Casey's General Store",
+      "count": 2,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3705",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3856",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #3988",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #4256",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #4384",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Casey's General Store #4554",
+      "base_brand": "Casey's General Store",
+      "count": 1,
+      "suggested_filename": "caseys_general_store.png"
+    },
+    {
+      "full_name": "Catarina One Stop",
+      "base_brand": "Catarina",
+      "count": 1,
+      "suggested_filename": "catarina.png"
+    },
+    {
+      "full_name": "Charge Up 96",
+      "base_brand": "Charge",
+      "count": 1,
+      "suggested_filename": "charge.png"
+    },
+    {
+      "full_name": "Chubby's Travel Center - Natalia, TX",
+      "base_brand": "Chubby's Travel Center",
+      "count": 1,
+      "suggested_filename": "chubbys_travel_center.png"
+    },
+    {
+      "full_name": "Chubbys At Forrest City - Forrest City, AR",
+      "base_brand": "Chubbys At Forrest City",
+      "count": 1,
+      "suggested_filename": "chubbys_at_forrest_city.png"
+    },
+    {
+      "full_name": "Circle K #2706340",
+      "base_brand": "Circle K",
+      "count": 1,
+      "suggested_filename": "circle_k.png"
+    },
+    {
+      "full_name": "Circle K #2709057",
+      "base_brand": "Circle K",
+      "count": 1,
+      "suggested_filename": "circle_k.png"
+    },
+    {
+      "full_name": "Circle K #4701251",
+      "base_brand": "Circle K",
+      "count": 2,
+      "suggested_filename": "circle_k.png"
+    },
+    {
+      "full_name": "Circle K #4701408",
+      "base_brand": "Circle K",
+      "count": 1,
+      "suggested_filename": "circle_k.png"
+    },
+    {
+      "full_name": "Cloverdale Travel Plaza",
+      "base_brand": "Cloverdale",
+      "count": 1,
+      "suggested_filename": "cloverdale.png"
+    },
+    {
+      "full_name": "Cubbies Travel Center - Mt Pleasant, TX",
+      "base_brand": "Cubbies Travel Center",
+      "count": 1,
+      "suggested_filename": "cubbies_travel_center.png"
+    },
+    {
+      "full_name": "Double Quick #0093",
+      "base_brand": "Double Quick",
+      "count": 1,
+      "suggested_filename": "double_quick.png"
+    },
+    {
+      "full_name": "Eastland Truck Stop",
+      "base_brand": "Eastland",
+      "count": 1,
+      "suggested_filename": "eastland.png"
+    },
+    {
+      "full_name": "Elan #03",
+      "base_brand": "Elan",
+      "count": 1,
+      "suggested_filename": "elan.png"
+    },
+    {
+      "full_name": "Elgin Shell - Elgin, IL",
+      "base_brand": "Elgin Shell",
+      "count": 1,
+      "suggested_filename": "elgin_shell.png"
+    },
+    {
+      "full_name": "Energy Express Travel Center - St. Louis, MO",
+      "base_brand": "Energy Express Travel Center",
+      "count": 1,
+      "suggested_filename": "energy_express_travel_center.png"
+    },
+    {
+      "full_name": "Express Mart - Pevely, MO",
+      "base_brand": "Express Mart",
+      "count": 1,
+      "suggested_filename": "express_mart.png"
+    },
+    {
+      "full_name": "Express Mart Union",
+      "base_brand": "Express",
+      "count": 1,
+      "suggested_filename": "express.png"
+    },
+    {
+      "full_name": "Flash Fuel Express #4 - Vinton, LA",
+      "base_brand": "Flash Fuel Express",
+      "count": 1,
+      "suggested_filename": "flash_fuel_express.png"
+    },
+    {
+      "full_name": "Fuel America Travel Center #2",
+      "base_brand": "Fuel America Travel Center",
+      "count": 2,
+      "suggested_filename": "fuel_america_travel_center.png"
+    },
+    {
+      "full_name": "Fuel America Travel Center - Laredo, TX",
+      "base_brand": "Fuel America Travel Center",
+      "count": 1,
+      "suggested_filename": "fuel_america_travel_center.png"
+    },
+    {
+      "full_name": "Fuel Mart 787",
+      "base_brand": "Fuel",
+      "count": 1,
+      "suggested_filename": "fuel.png"
+    },
+    {
+      "full_name": "Gas N Wash - Bourbonnais, IL",
+      "base_brand": "Gas N Wash",
+      "count": 1,
+      "suggested_filename": "gas_n_wash.png"
+    },
+    {
+      "full_name": "Gas N Wash - Kankakee, IL",
+      "base_brand": "Gas N Wash",
+      "count": 1,
+      "suggested_filename": "gas_n_wash.png"
+    },
+    {
+      "full_name": "Gas N Wash 50th & Central - Chicago, IL",
+      "base_brand": "Gas N Wash 50th & Central",
+      "count": 1,
+      "suggested_filename": "gas_n_wash_50th_&_central.png"
+    },
+    {
+      "full_name": "Gas N Wash Cicero & Pershing - Stickney, IL",
+      "base_brand": "Gas N Wash Cicero & Pershing",
+      "count": 1,
+      "suggested_filename": "gas_n_wash_cicero_&_pershing.png"
+    },
+    {
+      "full_name": "Gateway Travel Plaza - Vidor, TX",
+      "base_brand": "Gateway Travel Plaza",
+      "count": 1,
+      "suggested_filename": "gateway_travel_plaza.png"
+    },
+    {
+      "full_name": "Gilberts Shell - Gilberts, IL",
+      "base_brand": "Gilberts Shell",
+      "count": 1,
+      "suggested_filename": "gilberts_shell.png"
+    },
+    {
+      "full_name": "Gordo's Travel Center - Junction, TX",
+      "base_brand": "Gordo's Travel Center",
+      "count": 1,
+      "suggested_filename": "gordos_travel_center.png"
+    },
+    {
+      "full_name": "Haymakers 707",
+      "base_brand": "Haymakers",
+      "count": 2,
+      "suggested_filename": "haymakers.png"
+    },
+    {
+      "full_name": "Haymakers 786",
+      "base_brand": "Haymakers",
+      "count": 1,
+      "suggested_filename": "haymakers.png"
+    },
+    {
+      "full_name": "Haymakers 798",
+      "base_brand": "Haymakers",
+      "count": 1,
+      "suggested_filename": "haymakers.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #186",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #355",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #367",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #371",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #379",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Huck's Food & Fuel #54",
+      "base_brand": "Huck's Food & Fuel",
+      "count": 1,
+      "suggested_filename": "hucks_food_&_fuel.png"
+    },
+    {
+      "full_name": "Iron Horse Travel Center",
+      "base_brand": "Iron",
+      "count": 1,
+      "suggested_filename": "iron.png"
+    },
+    {
+      "full_name": "Joplin 44 Petro #354",
+      "base_brand": "Joplin 44 Petro",
+      "count": 1,
+      "suggested_filename": "joplin_44_petro.png"
+    },
+    {
+      "full_name": "Junction Travel Center - Junction, TX",
+      "base_brand": "Junction Travel Center",
+      "count": 1,
+      "suggested_filename": "junction_travel_center.png"
+    },
+    {
+      "full_name": "K&H Truck Plaza #669",
+      "base_brand": "K&H Truck Plaza",
+      "count": 1,
+      "suggested_filename": "k&h_truck_plaza.png"
+    },
+    {
+      "full_name": "Knapp Truckstop - Nashville, IL",
+      "base_brand": "Knapp Truckstop",
+      "count": 1,
+      "suggested_filename": "knapp_truckstop.png"
+    },
+    {
+      "full_name": "Kwik Star #1276",
+      "base_brand": "Kwik Star",
+      "count": 1,
+      "suggested_filename": "kwik_star.png"
+    },
+    {
+      "full_name": "Kwik Star #1530",
+      "base_brand": "Kwik Star",
+      "count": 1,
+      "suggested_filename": "kwik_star.png"
+    },
+    {
+      "full_name": "Kwik Star #569",
+      "base_brand": "Kwik Star",
+      "count": 1,
+      "suggested_filename": "kwik_star.png"
+    },
+    {
+      "full_name": "Kwik Trip #1029",
+      "base_brand": "Kwik Trip",
+      "count": 1,
+      "suggested_filename": "kwik_trip.png"
+    },
+    {
+      "full_name": "Kwik Trip #239",
+      "base_brand": "Kwik Trip",
+      "count": 1,
+      "suggested_filename": "kwik_trip.png"
+    },
+    {
+      "full_name": "Kwik Trip #282",
+      "base_brand": "Kwik Trip",
+      "count": 1,
+      "suggested_filename": "kwik_trip.png"
+    },
+    {
+      "full_name": "Kwik Trip #673",
+      "base_brand": "Kwik Trip",
+      "count": 1,
+      "suggested_filename": "kwik_trip.png"
+    },
+    {
+      "full_name": "Kwik Trip #796",
+      "base_brand": "Kwik Trip",
+      "count": 1,
+      "suggested_filename": "kwik_trip.png"
+    },
+    {
+      "full_name": "Lambo's #3",
+      "base_brand": "Lambo's",
+      "count": 1,
+      "suggested_filename": "lambos.png"
+    },
+    {
+      "full_name": "Lambo's #5",
+      "base_brand": "Lambo's",
+      "count": 1,
+      "suggested_filename": "lambos.png"
+    },
+    {
+      "full_name": "Little Nashville - Nashville, IL",
+      "base_brand": "Little Nashville",
+      "count": 1,
+      "suggested_filename": "little_nashville.png"
+    },
+    {
+      "full_name": "Little Point Auto & Truck Stop",
+      "base_brand": "Little",
+      "count": 1,
+      "suggested_filename": "little.png"
+    },
+    {
+      "full_name": "Mach 1 #10",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Mach 1 #12",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Mach 1 #13",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Mach 1 #14",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Mach 1 #18",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Mach 1 #21",
+      "base_brand": "Mach 1",
+      "count": 1,
+      "suggested_filename": "mach_1.png"
+    },
+    {
+      "full_name": "Marietta Petroleum",
+      "base_brand": "Marietta",
+      "count": 1,
+      "suggested_filename": "marietta.png"
+    },
+    {
+      "full_name": "Maverik/Kum & Go #5302",
+      "base_brand": "Maverik/Kum & Go",
+      "count": 1,
+      "suggested_filename": "maverik/kum_&_go.png"
+    },
+    {
+      "full_name": "Maverik/Kum & Go #5314",
+      "base_brand": "Maverik/Kum & Go",
+      "count": 1,
+      "suggested_filename": "maverik/kum_&_go.png"
+    },
+    {
+      "full_name": "Maverik/Kum & Go #5323",
+      "base_brand": "Maverik/Kum & Go",
+      "count": 1,
+      "suggested_filename": "maverik/kum_&_go.png"
+    },
+    {
+      "full_name": "McDonald's Fuel Stop - Terrell, TX",
+      "base_brand": "McDonald's Fuel Stop",
+      "count": 1,
+      "suggested_filename": "mcdonalds_fuel_stop.png"
+    },
+    {
+      "full_name": "Midway #34 - Tyler, TX",
+      "base_brand": "Midway",
+      "count": 1,
+      "suggested_filename": "midway.png"
+    },
+    {
+      "full_name": "Monroe Center Oasis",
+      "base_brand": "Monroe",
+      "count": 1,
+      "suggested_filename": "monroe.png"
+    },
+    {
+      "full_name": "Monroe Center Oasis - Monroe Center, IL",
+      "base_brand": "Monroe Center Oasis",
+      "count": 1,
+      "suggested_filename": "monroe_center_oasis.png"
+    },
+    {
+      "full_name": "Neoga BP",
+      "base_brand": "Neoga",
+      "count": 1,
+      "suggested_filename": "neoga.png"
+    },
+    {
+      "full_name": "New Deal Travel Center Hop In #469",
+      "base_brand": "New Deal Travel Center Hop In",
+      "count": 1,
+      "suggested_filename": "new_deal_travel_center_hop_in.png"
+    },
+    {
+      "full_name": "Ozark Travel Center / TA Mount Vernon #924",
+      "base_brand": "Ozark Travel Center / TA Mount Vernon",
+      "count": 1,
+      "suggested_filename": "ozark_travel_center_/_ta_mount_vernon.png"
+    },
+    {
+      "full_name": "PWI #105",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #109",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #110",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #112",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #113",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #115 - Buffalo, TX",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #120",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #123",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #164",
+      "base_brand": "PWI",
+      "count": 2,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #167",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #168",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #169",
+      "base_brand": "PWI",
+      "count": 2,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "PWI #363",
+      "base_brand": "PWI",
+      "count": 1,
+      "suggested_filename": "pwi.png"
+    },
+    {
+      "full_name": "Peotone Travel Center - Peotone, IL",
+      "base_brand": "Peotone Travel Center",
+      "count": 1,
+      "suggested_filename": "peotone_travel_center.png"
+    },
+    {
+      "full_name": "Petro Amarillo #307",
+      "base_brand": "Petro Amarillo",
+      "count": 1,
+      "suggested_filename": "petro_amarillo.png"
+    },
+    {
+      "full_name": "Petro Beaumont #304",
+      "base_brand": "Petro Beaumont",
+      "count": 1,
+      "suggested_filename": "petro_beaumont.png"
+    },
+    {
+      "full_name": "Petro Brazil #376",
+      "base_brand": "Petro Brazil",
+      "count": 1,
+      "suggested_filename": "petro_brazil.png"
+    },
+    {
+      "full_name": "Petro Carl's Corner #533",
+      "base_brand": "Petro Carl's Corner",
+      "count": 1,
+      "suggested_filename": "petro_carls_corner.png"
+    },
+    {
+      "full_name": "Petro N. Little Rock #326",
+      "base_brand": "Petro N. Little Rock",
+      "count": 1,
+      "suggested_filename": "petro_n._little_rock.png"
+    },
+    {
+      "full_name": "Petro Pearsall #538",
+      "base_brand": "Petro Pearsall",
+      "count": 1,
+      "suggested_filename": "petro_pearsall.png"
+    },
+    {
+      "full_name": "Petro Rochelle #359",
+      "base_brand": "Petro Rochelle",
+      "count": 1,
+      "suggested_filename": "petro_rochelle.png"
+    },
+    {
+      "full_name": "Petro W. Memphis #311",
+      "base_brand": "Petro W. Memphis",
+      "count": 1,
+      "suggested_filename": "petro_w._memphis.png"
+    },
+    {
+      "full_name": "Petro Weatherford #302",
+      "base_brand": "Petro Weatherford",
+      "count": 1,
+      "suggested_filename": "petro_weatherford.png"
+    },
+    {
+      "full_name": "Phillips 66 Alta #6515 - St Louis, MO",
+      "base_brand": "Phillips 66 Alta",
+      "count": 1,
+      "suggested_filename": "phillips_66_alta.png"
+    },
+    {
+      "full_name": "Pleasant Springs Travel Plaza",
+      "base_brand": "Pleasant",
+      "count": 1,
+      "suggested_filename": "pleasant.png"
+    },
+    {
+      "full_name": "Refuel #1326",
+      "base_brand": "Refuel",
+      "count": 1,
+      "suggested_filename": "refuel.png"
+    },
+    {
+      "full_name": "Refuel #1350",
+      "base_brand": "Refuel",
+      "count": 1,
+      "suggested_filename": "refuel.png"
+    },
+    {
+      "full_name": "Sapp Bros Peru",
+      "base_brand": "Sapp",
+      "count": 2,
+      "suggested_filename": "sapp.png"
+    },
+    {
+      "full_name": "Sapp bros Peru",
+      "base_brand": "Sapp",
+      "count": 1,
+      "suggested_filename": "sapp.png"
+    },
+    {
+      "full_name": "Speedway #43507",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43525",
+      "base_brand": "Speedway",
+      "count": 2,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43526",
+      "base_brand": "Speedway",
+      "count": 2,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43528",
+      "base_brand": "Speedway",
+      "count": 2,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43539",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43628",
+      "base_brand": "Speedway",
+      "count": 3,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43679",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43681",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43773",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43943",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #43968",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #46066",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #46078",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #46161",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Speedway #47321",
+      "base_brand": "Speedway",
+      "count": 1,
+      "suggested_filename": "speedway.png"
+    },
+    {
+      "full_name": "Stockton Travel Center - Stockton, IL",
+      "base_brand": "Stockton Travel Center",
+      "count": 1,
+      "suggested_filename": "stockton_travel_center.png"
+    },
+    {
+      "full_name": "Stripes #42387",
+      "base_brand": "Stripes",
+      "count": 1,
+      "suggested_filename": "stripes.png"
+    },
+    {
+      "full_name": "Stripes #42503",
+      "base_brand": "Stripes",
+      "count": 1,
+      "suggested_filename": "stripes.png"
+    },
+    {
+      "full_name": "Stripes/7FLEET #42428",
+      "base_brand": "Stripes/7FLEET",
+      "count": 1,
+      "suggested_filename": "stripes/7fleet.png"
+    },
+    {
+      "full_name": "Stripes/7FLEET #42514",
+      "base_brand": "Stripes/7FLEET",
+      "count": 1,
+      "suggested_filename": "stripes/7fleet.png"
+    },
+    {
+      "full_name": "Stripes/7FLEET #42524",
+      "base_brand": "Stripes/7FLEET",
+      "count": 1,
+      "suggested_filename": "stripes/7fleet.png"
+    },
+    {
+      "full_name": "Stripes/7FLEET #42564",
+      "base_brand": "Stripes/7FLEET",
+      "count": 1,
+      "suggested_filename": "stripes/7fleet.png"
+    },
+    {
+      "full_name": "Stripes/7Fleet #42132",
+      "base_brand": "Stripes/7Fleet",
+      "count": 1,
+      "suggested_filename": "stripes/7fleet.png"
+    },
+    {
+      "full_name": "Stuckey's - Newburg, MO",
+      "base_brand": "Stuckey's",
+      "count": 1,
+      "suggested_filename": "stuckeys.png"
+    },
+    {
+      "full_name": "Stuckey's Travel Center - Orange, TX",
+      "base_brand": "Stuckey's Travel Center",
+      "count": 1,
+      "suggested_filename": "stuckeys_travel_center.png"
+    },
+    {
+      "full_name": "TA Amarillo #55",
+      "base_brand": "TA Amarillo",
+      "count": 1,
+      "suggested_filename": "ta_amarillo.png"
+    },
+    {
+      "full_name": "TA Bernardo #270",
+      "base_brand": "TA Bernardo",
+      "count": 1,
+      "suggested_filename": "ta_bernardo.png"
+    },
+    {
+      "full_name": "TA Bloomington #92",
+      "base_brand": "TA Bloomington",
+      "count": 2,
+      "suggested_filename": "ta_bloomington.png"
+    },
+    {
+      "full_name": "TA Cicero #490",
+      "base_brand": "TA Cicero",
+      "count": 1,
+      "suggested_filename": "ta_cicero.png"
+    },
+    {
+      "full_name": "TA Cuba #461",
+      "base_brand": "TA Cuba",
+      "count": 1,
+      "suggested_filename": "ta_cuba.png"
+    },
+    {
+      "full_name": "TA Denton #266",
+      "base_brand": "TA Denton",
+      "count": 1,
+      "suggested_filename": "ta_denton.png"
+    },
+    {
+      "full_name": "TA Earle #33",
+      "base_brand": "TA Earle",
+      "count": 1,
+      "suggested_filename": "ta_earle.png"
+    },
+    {
+      "full_name": "TA Elgin #44",
+      "base_brand": "TA Elgin",
+      "count": 1,
+      "suggested_filename": "ta_elgin.png"
+    },
+    {
+      "full_name": "TA Express Fairfield #290",
+      "base_brand": "TA Express Fairfield",
+      "count": 1,
+      "suggested_filename": "ta_express_fairfield.png"
+    },
+    {
+      "full_name": "TA Express Kilgore #281",
+      "base_brand": "TA Express Kilgore",
+      "count": 1,
+      "suggested_filename": "ta_express_kilgore.png"
+    },
+    {
+      "full_name": "TA Express Mount Vernon #286",
+      "base_brand": "TA Express Mount Vernon",
+      "count": 1,
+      "suggested_filename": "ta_express_mount_vernon.png"
+    },
+    {
+      "full_name": "TA Express New Lisbon #982",
+      "base_brand": "TA Express New Lisbon",
+      "count": 1,
+      "suggested_filename": "ta_express_new_lisbon.png"
+    },
+    {
+      "full_name": "TA Express Riverton #433",
+      "base_brand": "TA Express Riverton",
+      "count": 2,
+      "suggested_filename": "ta_express_riverton.png"
+    },
+    {
+      "full_name": "TA Hillsboro #333",
+      "base_brand": "TA Hillsboro",
+      "count": 1,
+      "suggested_filename": "ta_hillsboro.png"
+    },
+    {
+      "full_name": "TA Lake Station #543",
+      "base_brand": "TA Lake Station",
+      "count": 1,
+      "suggested_filename": "ta_lake_station.png"
+    },
+    {
+      "full_name": "TA Laredo #153",
+      "base_brand": "TA Laredo",
+      "count": 1,
+      "suggested_filename": "ta_laredo.png"
+    },
+    {
+      "full_name": "TA Madison #50",
+      "base_brand": "TA Madison",
+      "count": 1,
+      "suggested_filename": "ta_madison.png"
+    },
+    {
+      "full_name": "TA Morris #236",
+      "base_brand": "TA Morris",
+      "count": 1,
+      "suggested_filename": "ta_morris.png"
+    },
+    {
+      "full_name": "TA Mt Vernon #43",
+      "base_brand": "TA Mt Vernon",
+      "count": 1,
+      "suggested_filename": "ta_mt_vernon.png"
+    },
+    {
+      "full_name": "TA Porter 220",
+      "base_brand": "TA",
+      "count": 1,
+      "suggested_filename": "ta.png"
+    },
+    {
+      "full_name": "TA Terrell #233",
+      "base_brand": "TA Terrell",
+      "count": 1,
+      "suggested_filename": "ta_terrell.png"
+    },
+    {
+      "full_name": "Tex Best #530",
+      "base_brand": "Tex Best",
+      "count": 1,
+      "suggested_filename": "tex_best.png"
+    },
+    {
+      "full_name": "Tex Best Travel Center #506",
+      "base_brand": "Tex Best Travel Center",
+      "count": 1,
+      "suggested_filename": "tex_best_travel_center.png"
+    },
+    {
+      "full_name": "Texas Travel Center - Jarrell, TX",
+      "base_brand": "Texas Travel Center",
+      "count": 1,
+      "suggested_filename": "texas_travel_center.png"
+    },
+    {
+      "full_name": "Texstar Travel Center",
+      "base_brand": "Texstar",
+      "count": 1,
+      "suggested_filename": "texstar.png"
+    },
+    {
+      "full_name": "Toot'n Totum #127",
+      "base_brand": "Toot'n Totum",
+      "count": 1,
+      "suggested_filename": "tootn_totum.png"
+    },
+    {
+      "full_name": "Trainer Mart - Marion, TX",
+      "base_brand": "Trainer Mart",
+      "count": 1,
+      "suggested_filename": "trainer_mart.png"
+    },
+    {
+      "full_name": "Truck and Travel - Weatherford, TX",
+      "base_brand": "Truck and Travel",
+      "count": 1,
+      "suggested_filename": "truck_and_travel.png"
+    },
+    {
+      "full_name": "Truckomat of North Little Rock - North Little Rock, AR",
+      "base_brand": "Truckomat of North Little Rock",
+      "count": 1,
+      "suggested_filename": "truckomat_of_north_little_rock.png"
+    },
+    {
+      "full_name": "Waco Truck Stop",
+      "base_brand": "Waco",
+      "count": 1,
+      "suggested_filename": "waco.png"
+    },
+    {
+      "full_name": "Walburg Travel Center",
+      "base_brand": "Walburg",
+      "count": 1,
+      "suggested_filename": "walburg.png"
+    },
+    {
+      "full_name": "Woody's Diesel Express - Centerville, TX",
+      "base_brand": "Woody's Diesel Express",
+      "count": 2,
+      "suggested_filename": "woodys_diesel_express.png"
+    },
+    {
+      "full_name": "Xoom - Harlingen, TX",
+      "base_brand": "Xoom",
+      "count": 1,
+      "suggested_filename": "xoom.png"
+    },
+    {
+      "full_name": "Yumm! - Laredo, TX",
+      "base_brand": "Yumm!",
+      "count": 1,
+      "suggested_filename": "yumm!.png"
+    },
+    {
+      "full_name": "Zippy J's #6 - Longview, TX",
+      "base_brand": "Zippy J's",
+      "count": 1,
+      "suggested_filename": "zippy_js.png"
+    }
+  ]
+}

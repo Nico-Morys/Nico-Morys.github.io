@@ -1,0 +1,129 @@
+/* General Reset */
+body, h1, h2, table {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background: #e5e7eb !important;
+}
+
+/* Banner */
+.banner {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+}
+
+
+.banner h1 a, /* Link for ML-MMA */
+.banner .nav a { /* Links for About and others in the nav */
+    color: white; /* Set the text color to white */
+    text-decoration: none; /* Remove underline by default */
+}
+
+.banner h1 a:hover,
+.banner .nav a:hover {
+    text-decoration: underline; /* Add underline when hovered */
+}
+
+/* New Picks Box Styling */
+.new-picks-box {
+    background-color: #ffeb3b; /* Bright yellow background */
+    color: #333; /* Dark text */
+    text-align: center; /* Center the text */
+    padding: 10px; /* Padding to make the box larger */
+    margin-bottom: 20px; /* Space between the box and the event banners */
+    font-size: 20px; /* Larger text for better visibility */
+    font-weight: bold; /* Bold text */
+    border-radius: 8px; /* Rounded corners for modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    max-width: 600px; /* Limit the width of the box */
+    margin: 10px auto; /* Center the box horizontally with margin */
+    background-image: linear-gradient(135deg, #ff623b 0%, #fbc02d 100%); /* Gradient background */
+}
+
+/* Main Content */
+main {
+    padding: 20px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+/* Ensure the header row has the same background */
+thead {
+    background-color: #333;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    color: rgb(247, 247, 247); /* Text color for header cells */
+}
+
+/* Event Banner Styling */
+.event-banner {
+    width: 80%; /* Make it 80% width of the page */
+    margin: 20px auto; /* Center the banner horizontally */
+    padding: 15px;
+    background-color: #333; /* Same as the main banner background */
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 5px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-banner h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px; /* Match your heading font size */
+}
+
+/* Dropdown Content Styling */
+.dropdown-content {
+    display: none; /* Hide by default */
+    width: 80%;
+    margin: 0 auto 20px; /* Center align with spacing below */
+    background-color: #f4f4f4; /* Light background for the table */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling within Dropdown */
+.dropdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.dropdown-content th, .dropdown-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.dropdown-content th {
+    background-color: #333; /* Header styling matches your main theme */
+    color: white;
+}
+
+/* Ensure status images fit within the table cell */
+.dropdown-content td img {
+    width: 20px; /* Adjust the width to fit your design */
+    height: 20px; /* Adjust the height to maintain aspect ratio */
+    object-fit: contain; /* Ensures the image maintains its aspect ratio */
+}

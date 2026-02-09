@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "name": "Downtown Fuel Station",
+    "address": "123 Main Street, City Center, NY 10001",
+    "latitude": 40.7128,
+    "longitude": -74.0060,
+    "price": 3.47,
+    "brand": "Shell"
+  },
+  {
+    "id": 2,
+    "name": "Highway Express",
+    "address": "456 Highway 95, Suburbia, NY 10002",
+    "latitude": 40.7580,
+    "longitude": -73.9855,
+    "price": 3.39,
+    "brand": "BP"
+  },
+  {
+    "id": 3,
+    "name": "Riverside Gas",
+    "address": "789 Riverside Drive, Riverside, NY 10003",
+    "latitude": 40.7489,
+    "longitude": -73.9680,
+    "price": 3.53,
+    "brand": "Exxon"
+  },
+  {
+    "id": 4,
+    "name": "Northside Station",
+    "address": "321 North Avenue, Northside, NY 10004",
+    "latitude": 40.7614,
+    "longitude": -73.9776,
+    "price": 3.42,
+    "brand": "Chevron"
+  },
+  {
+    "id": 5,
+    "name": "East End Fuel",
+    "address": "654 East Boulevard, East End, NY 10005",
+    "latitude": 40.7282,
+    "longitude": -73.9942,
+    "price": 3.45,
+    "brand": "Mobil"
+  },
+  {
+    "id": 6,
+    "name": "Chicago Loop Station",
+    "address": "125 W Jackson Blvd, Chicago, IL 60661",
+    "latitude": 41.8781,
+    "longitude": -87.6298,
+    "price": 3.52,
+    "brand": "Shell"
+  },
+  {
+    "id": 7,
+    "name": "Detroit Downtown Fuel",
+    "address": "450 Woodward Ave, Detroit, MI 48226",
+    "latitude": 42.3314,
+    "longitude": -83.0458,
+    "price": 3.38,
+    "brand": "BP"
+  },
+  {
+    "id": 8,
+    "name": "Milwaukee Express",
+    "address": "789 N Water St, Milwaukee, WI 53202",
+    "latitude": 43.0389,
+    "longitude": -87.9065,
+    "price": 3.41,
+    "brand": "Exxon"
+  },
+  {
+    "id": 9,
+    "name": "Minneapolis Central",
+    "address": "234 Hennepin Ave, Minneapolis, MN 55401",
+    "latitude": 44.9778,
+    "longitude": -93.2650,
+    "price": 3.35,
+    "brand": "Chevron"
+  },
+  {
+    "id": 10,
+    "name": "Indianapolis Speedway",
+    "address": "456 W Washington St, Indianapolis, IN 46204",
+    "latitude": 39.7684,
+    "longitude": -86.1581,
+    "price": 3.44,
+    "brand": "Mobil"
+  },
+  {
+    "id": 11,
+    "name": "Columbus Main",
+    "address": "123 High St, Columbus, OH 43215",
+    "latitude": 39.9612,
+    "longitude": -82.9988,
+    "price": 3.46,
+    "brand": "Shell"
+  },
+  {
+    "id": 12,
+    "name": "Cleveland Lakefront",
+    "address": "567 Lakeside Ave, Cleveland, OH 44114",
+    "latitude": 41.4993,
+    "longitude": -81.6944,
+    "price": 3.43,
+    "brand": "BP"
+  },
+  {
+    "id": 13,
+    "name": "St. Louis Gateway",
+    "address": "789 Market St, St. Louis, MO 63101",
+    "latitude": 38.6270,
+    "longitude": -90.1994,
+    "price": 3.29,
+    "brand": "Exxon"
+  },
+  {
+    "id": 14,
+    "name": "Kansas City Plaza",
+    "address": "234 Main St, Kansas City, MO 64105",
+    "latitude": 39.0997,
+    "longitude": -94.5786,
+    "price": 3.31,
+    "brand": "Chevron"
+  },
+  {
+    "id": 15,
+    "name": "Cincinnati Riverfront",
+    "address": "456 Vine St, Cincinnati, OH 45202",
+    "latitude": 39.1031,
+    "longitude": -84.5120,
+    "price": 3.48,
+    "brand": "Mobil"
+  }
+]
+

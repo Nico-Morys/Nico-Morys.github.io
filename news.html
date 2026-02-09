@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News / Updates - ML-MMA</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+ 
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .content h2 {
+            margin-top: 0;
+        }
+        .info-box {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner -->
+    <header class="banner">
+        <h1 class="logo"><a href="index.html">ML-MMA</a></h1>
+        <nav class="nav">
+            <a href="about.html">About</a>
+            <a href="news.html">News / Updates</a>
+            <a href="jobs.html">Job Listings</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        <div class="info-box">
+            <h2>12/17/24</h2>
+            <p>
+                Model has an increased accuracy now at about 70 something odd percent and only overfitting by about a percent. With that said it still performed awful on the most recent Colby vs Buckley fight night, as expected. Many of the fighters don't have enough historical data resulting in shitty predictions.
+            </p>
+        </div>
+    </main>
+
+
+
+    <!-- Main Content -->
+    <main class="content">
+        <div class="info-box">
+            <h2>12/08/24</h2>
+            <p>
+                Changed the number of fights it goes back for each fighter before creating the model. I had it at shifting 1 fight back for each fighter that way there was no data leakage when predicting future fights. I've switched that to 2 fights back and the model has improved drastically. The model is still overfitting, but that is something I will continue to work on. It is just a painful process of messing with features / trial and error and to be honest at this moment in time that is the last thing I want to do.
+            </p>
+        </div>
+    </main>
+</body>
+</html>
