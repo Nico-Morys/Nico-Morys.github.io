@@ -2825,27 +2825,15 @@
         function selectTop10Competitors() {
             if (!currentStore) return;
             
-            const storeName = currentStore.rr_store_data.name;
             const storeNumber = currentStore.rr_store.replace('Road Ranger #', '').split(' - ')[0];
-            const allStations = masterData.filter(row => row.RR_Location === storeName);
-            const competitors = allStations
-                .filter(row => !row.Station_Name.toUpperCase().includes('ROAD RANGER'))
-                .sort((a, b) => parseFloat(a.Distance || 999) - parseFloat(b.Distance || 999));
             
             // Clear all selections first
             visibleCompetitors.clear();
             
-            // Select the indices of the top 10 closest (by distance)
-            competitors.slice(0, 10).forEach(comp => {
-                // Find the index of this competitor in the original unsorted list
-                const originalIndex = masterData
-                    .filter(row => row.RR_Location === storeName && !row.Station_Name.toUpperCase().includes('ROAD RANGER'))
-                    .findIndex(c => normalizeStationName(c.Station_Name) === normalizeStationName(comp.Station_Name) && c.Station_Address === comp.Station_Address);
-                
-                if (originalIndex !== -1) {
-                    visibleCompetitors.add(originalIndex);
-                }
-            });
+            // Competitors are already sorted by distance, so just select first 10 indices
+            for (let i = 0; i < 10; i++) {
+                visibleCompetitors.add(i);
+            }
             
             // Update checkboxes
             const checkboxes = document.querySelectorAll('.competitor-checkbox-item input[type="checkbox"]');
