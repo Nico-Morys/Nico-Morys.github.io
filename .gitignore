@@ -8,6 +8,10 @@
 !historical/
 !historical/*.csv
 
+# Allow pricedata folder and its JSON files
+!pricedata/
+!pricedata/*.json
+
 # Allow manifest.json (tracks historical files for price-index.html)
 !manifest.json
 
