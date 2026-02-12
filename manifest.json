@@ -1,0 +1,9 @@
+{
+  "latest_master_csv": "master_price_data.csv",
+  "latest_historical_csv": "historical/20260212_030929_master_price_data.csv",
+  "last_updated": "2026-02-12T03:09:29.933551",
+  "timestamp": "20260212_030929",
+  "historical_files": [
+    "historical/20260212_030929_master_price_data.csv"
+  ]
+}
