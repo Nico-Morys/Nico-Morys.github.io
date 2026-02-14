@@ -1,8 +1,8 @@
 {
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260214_042210_master_price_data.csv",
-  "last_updated": "2026-02-14T04:22:11.002371",
-  "timestamp": "20260214_042210",
+  "latest_historical_csv": "historical/20260214_060315_master_price_data.csv",
+  "last_updated": "2026-02-14T06:03:16.450283",
+  "timestamp": "20260214_060315",
   "historical_files": [
     "historical/20260212_030929_master_price_data.csv",
     "historical/20260212_045434_master_price_data.csv",
@@ -34,6 +34,7 @@
     "historical/20260213_231917_master_price_data.csv",
     "historical/20260214_010004_master_price_data.csv",
     "historical/20260214_024100_master_price_data.csv",
-    "historical/20260214_042210_master_price_data.csv"
+    "historical/20260214_042210_master_price_data.csv",
+    "historical/20260214_060315_master_price_data.csv"
   ]
 }
