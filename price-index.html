@@ -1983,12 +1983,14 @@
             const formattedDate = date.toLocaleDateString('en-US', { 
                 month: 'short', 
                 day: 'numeric',
-                year: 'numeric'
+                year: 'numeric',
+                timeZone: 'America/Chicago'
             });
             const formattedTime = date.toLocaleTimeString('en-US', { 
                 hour: 'numeric', 
                 minute: '2-digit',
-                hour12: true
+                hour12: true,
+                timeZone: 'America/Chicago'
             });
             
             document.getElementById('last-updated').textContent = `Last Updated: ${formattedDate} at ${formattedTime}`;
@@ -2531,7 +2533,7 @@
                 // Road Ranger price
                 html += `<td class="price-cell road-ranger-cell">`;
                 if (rrStation) {
-                    html += formatPrice(rrStation[fuelType.key], rrStation.Transaction_Time, rrStation.API_Updated, null, false);
+                    html += formatPrice(rrStation[fuelType.key], rrStation.API_Updated_Time || rrStation.Transaction_Time, rrStation.API_Updated, null, false);
                 } else {
                     html += '<span class="price-na">N/A</span>';
                 }
@@ -2540,7 +2542,7 @@
                 // Competitor prices
                 visibleComps.forEach(comp => {
                     html += `<td class="price-cell">`;
-                    html += formatPriceWithDiff(comp[fuelType.key], rrStation?.[fuelType.key], comp.Transaction_Time, comp.API_Updated, null);
+                    html += formatPriceWithDiff(comp[fuelType.key], rrStation?.[fuelType.key], comp.API_Updated_Time || comp.Transaction_Time, comp.API_Updated, null);
                     html += `</td>`;
                 });
                 
@@ -3314,12 +3316,14 @@
                         if (date && !isNaN(date.getTime())) {
                             const formattedDate = date.toLocaleDateString('en-US', { 
                                 month: 'short', 
-                                day: 'numeric'
+                                day: 'numeric',
+                                timeZone: 'America/Chicago'
                             });
                             const formattedTime = date.toLocaleTimeString('en-US', { 
                                 hour: 'numeric', 
                                 minute: '2-digit',
-                                hour12: true
+                                hour12: true,
+                                timeZone: 'America/Chicago'
                             });
                             formattedTimestamp = `${formattedDate} ${formattedTime}`;
                         }
@@ -3408,12 +3412,14 @@
                         if (date && !isNaN(date.getTime())) {
                             const formattedDate = date.toLocaleDateString('en-US', { 
                                 month: 'short', 
-                                day: 'numeric'
+                                day: 'numeric',
+                                timeZone: 'America/Chicago'
                             });
                             const formattedTime = date.toLocaleTimeString('en-US', { 
                                 hour: 'numeric', 
                                 minute: '2-digit',
-                                hour12: true
+                                hour12: true,
+                                timeZone: 'America/Chicago'
                             });
                             formattedTimestamp = `${formattedDate} ${formattedTime}`;
                         }
