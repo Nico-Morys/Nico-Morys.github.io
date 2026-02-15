@@ -1297,6 +1297,22 @@
             background: #14213d;
         }
 
+        /* Competitor dropdown positioning fix */
+        .store-settings-card {
+            overflow: visible !important;
+        }
+
+        .store-settings-body {
+            overflow: visible !important;
+        }
+
+        .rule-creation-form {
+            overflow: visible !important;
+        }
+
+
+
+
         /* New Rule Creation Form */
         .rule-creation-form {
             background: white;
@@ -3667,10 +3683,30 @@ function populateStoreSettingsList() {
                 <!-- Rule Creation Form -->
                 <div class="rule-creation-form">
                     <div class="rule-form-row">
-                        <select class="rule-select" id="competitor-select-${storeNumber}">
-                            <option value="">Select Competitor</option>
-                            ${competitors.map(comp => `<option value="${comp}">${comp}</option>`).join('')}
-                        </select>
+                        <div style="position: relative; display: inline-block;">
+                            <input type="text" 
+                                class="rule-select" 
+                                id="competitor-search-${storeNumber}" 
+                                placeholder="Search competitor..."
+                                autocomplete="off"
+                                style="width: 250px;"
+                                onfocus="showCompetitorDropdown('${storeNumber}')"
+                                oninput="filterCompetitors('${storeNumber}')">
+                            <div id="competitor-dropdown-${storeNumber}" 
+                                class="competitor-dropdown-menu"
+                                style="display: none; position: absolute; top: 100%; left: 0; width: 250px; max-height: 400px; overflow-y: auto; background: white; border: 2px solid #e0e0e0; border-radius: 6px; z-index: 9999; margin-top: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                ${competitors.map(comp => `
+                                    <div class="competitor-option" 
+                                        data-value="${comp}"
+                                        onclick="selectCompetitor('${storeNumber}', '${comp.replace(/'/g, "\\'")}')"
+                                        style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0;"
+                                        onmouseover="this.style.background='#f8f9fa'"
+                                        onmouseout="this.style.background='white'">
+                                        ${comp}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
                         <select class="rule-select" id="fueltype-select-${storeNumber}">
                             <option value="Regular">Regular</option>
                             <option value="Mid-Grade">Mid-Grade</option>
@@ -3731,7 +3767,8 @@ function generateRulesHTML(storeNumber, storeCity) {
 
 // Save new rule
 function saveNewRule(storeNumber, storeCity) {
-    const competitor = document.getElementById(`competitor-select-${storeNumber}`).value;
+    const competitorInput = document.getElementById(`competitor-search-${storeNumber}`);
+    const competitor = competitorInput.dataset.selectedValue || competitorInput.value;
     const fuelType = document.getElementById(`fueltype-select-${storeNumber}`).value;
     const direction = document.getElementById(`direction-select-${storeNumber}`).value;
     const cents = document.getElementById(`cents-input-${storeNumber}`).value;
@@ -3763,10 +3800,11 @@ function saveNewRule(storeNumber, storeCity) {
     });
     
     // Reset form
-    document.getElementById(`competitor-select-${storeNumber}`).value = '';
     document.getElementById(`fueltype-select-${storeNumber}`).value = 'Regular';
     document.getElementById(`direction-select-${storeNumber}`).value = 'Higher';
     document.getElementById(`cents-input-${storeNumber}`).value = '';
+    competitorInput.value = '';
+    delete competitorInput.dataset.selectedValue;
     
     // Refresh the rules list
     const rulesList = document.getElementById(`rules-list-${storeNumber}`);
@@ -3784,6 +3822,57 @@ function deleteRule(storeNumber, ruleIndex) {
     const rulesList = document.getElementById(`rules-list-${storeNumber}`);
     rulesList.innerHTML = generateRulesHTML(storeNumber, storeCity);
 }
+
+// Show competitor dropdown
+function showCompetitorDropdown(storeNumber) {
+    const dropdown = document.getElementById(`competitor-dropdown-${storeNumber}`);
+    if (dropdown) {
+        dropdown.style.display = 'block';
+    }
+}
+
+// Hide competitor dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('[id^="competitor-dropdown-"]').forEach(dropdown => {
+        if (!dropdown.parentElement.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+
+// Filter competitors based on search
+function filterCompetitors(storeNumber) {
+    const searchInput = document.getElementById(`competitor-search-${storeNumber}`);
+    const dropdown = document.getElementById(`competitor-dropdown-${storeNumber}`);
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    const options = dropdown.querySelectorAll('.competitor-option');
+    let visibleCount = 0;
+    
+    options.forEach(option => {
+        const text = option.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            option.style.display = 'block';
+            visibleCount++;
+        } else {
+            option.style.display = 'none';
+        }
+    });
+    
+    dropdown.style.display = visibleCount > 0 ? 'block' : 'none';
+}
+
+// Select a competitor from dropdown
+function selectCompetitor(storeNumber, competitor) {
+    const searchInput = document.getElementById(`competitor-search-${storeNumber}`);
+    const dropdown = document.getElementById(`competitor-dropdown-${storeNumber}`);
+    
+    searchInput.value = competitor;
+    searchInput.dataset.selectedValue = competitor;
+    dropdown.style.display = 'none';
+}
+
+
 
 // Toggle store settings card
 function toggleStoreSettingsCard(header) {
