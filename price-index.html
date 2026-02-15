@@ -1296,6 +1296,124 @@
         .modal-btn-primary:hover {
             background: #14213d;
         }
+
+        /* New Rule Creation Form */
+        .rule-creation-form {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .rule-form-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .rule-select, .rule-input {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .rule-select:focus, .rule-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .rule-input {
+            width: 100px;
+        }
+
+        .rule-cents-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .rule-save-btn {
+            padding: 8px 16px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rule-save-btn:hover {
+            background: #14213d;
+        }
+
+        /* Rules Display */
+        .rules-display-section {
+            margin-top: 16px;
+        }
+
+        .rules-display-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #14213d;
+            margin-bottom: 8px;
+        }
+
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .rule-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .rule-item-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .rule-delete-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .rule-delete-btn:hover {
+            background: #fee2e2;
+        }
+
+        .rule-delete-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .no-rules-message {
+            font-size: 13px;
+            color: #999;
+            font-style: italic;
+            padding: 12px;
+        }
     </style>
 </head>
 <body>
@@ -2022,71 +2140,63 @@
             
             const competitors = allStations.filter(row => !row.Station_Name.toUpperCase().includes('ROAD RANGER'));
             
-            const fuelTypes = [
-                { key: 'Unleaded_Regular_Price', name: 'Regular' },
-                { key: 'Unleaded_Plus_Price', name: 'Plus' },
-                { key: 'Unleaded_Premium_Price', name: 'Premium' },
-                { key: 'Diesel_Regular_Price', name: 'Diesel' }
-            ];
-            
-            // Initialize default settings if not exists
-            if (!storeAlertSettings[storeNumber]) {
-                storeAlertSettings[storeNumber] = {
-                    'Regular': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                    'Plus': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                    'Premium': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                    'Diesel': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] }
-                };
-            }
+            // Get rules for this store
+            const storeRules = storeAlertSettings[storeNumber]?.rules || [];
+            if (storeRules.length === 0) return null; // No rules set, no alerts
             
             const alerts = [];
             
-            // Check each fuel type
-            fuelTypes.forEach(fuelType => {
-                const rrPrice = parseFloat(rrStation[fuelType.key]);
+            // Fuel type mapping
+            const fuelTypeMap = {
+                'Regular': 'Unleaded_Regular_Price',
+                'Mid-Grade': 'Unleaded_Plus_Price',
+                'Premium': 'Unleaded_Premium_Price',
+                'Diesel': 'Diesel_Regular_Price'
+            };
+            
+            // Check each rule
+            storeRules.forEach(rule => {
+                const priceKey = fuelTypeMap[rule.fuelType];
+                if (!priceKey) return;
+                
+                const rrPrice = parseFloat(rrStation[priceKey]);
                 if (isNaN(rrPrice)) return;
                 
-                const settings = storeAlertSettings[storeNumber][fuelType.name];
-                const cheaperThreshold = settings.cheaperThreshold;
-                const higherThreshold = settings.higherThreshold;
-                const selectedCompetitors = settings.competitors;
+                // Find the competitor station that matches this rule
+                const matchingCompetitors = competitors.filter(comp => {
+                    return comp.Station_Name === rule.competitor;
+                });
                 
-                competitors.forEach(comp => {
-                    const compPrice = parseFloat(comp[fuelType.key]);
+                matchingCompetitors.forEach(comp => {
+                    const compPrice = parseFloat(comp[priceKey]);
                     if (isNaN(compPrice)) return;
-                    
-                    // If specific competitors selected, only check those
-                    // If none selected, don't check any (user must explicitly select)
-                    if (selectedCompetitors.length === 0) {
-                        return;
-                    }
-                    if (!selectedCompetitors.includes(normalizeStationName(comp.Station_Name))) {
-                        return;
-                    }
                     
                     const distance = parseFloat(comp.Distance || 999);
                     if (distance > 10) return; // Only check within 10 miles
                     
-                    const diff = (rrPrice - compPrice) * 100; // Convert to cents
+                    const diffCents = (compPrice - rrPrice) * 100; // Positive = competitor higher, Negative = competitor lower
                     
-                    // Alert if competitor is cheaper by threshold
-                    if (diff > cheaperThreshold) {
-                        alerts.push({
-                            type: 'underpriced',
-                            fuelType: fuelType.name,
-                            competitor: normalizeStationName(comp.Station_Name),
-                            difference: Math.abs(diff).toFixed(1)
-                        });
-                    }
-                    
-                    // Alert if we're cheaper by threshold (opportunity to raise)
-                    if (diff < -higherThreshold) {
-                        alerts.push({
-                            type: 'overpriced',
-                            fuelType: fuelType.name,
-                            competitor: normalizeStationName(comp.Station_Name),
-                            difference: Math.abs(diff).toFixed(1)
-                        });
+                    // Check if rule condition is met
+                    if (rule.direction === 'Higher') {
+                        // Alert if competitor is HIGHER than us by rule.cents
+                        if (diffCents >= rule.cents) {
+                            alerts.push({
+                                type: 'overpriced',
+                                fuelType: rule.fuelType,
+                                competitor: rule.competitor,
+                                difference: Math.abs(diffCents).toFixed(1)
+                            });
+                        }
+                    } else if (rule.direction === 'Lower') {
+                        // Alert if competitor is LOWER than us by rule.cents
+                        if (diffCents <= -rule.cents) {
+                            alerts.push({
+                                type: 'underpriced',
+                                fuelType: rule.fuelType,
+                                competitor: rule.competitor,
+                                difference: Math.abs(diffCents).toFixed(1)
+                            });
+                        }
                     }
                 });
             });
@@ -3524,21 +3634,21 @@ function populateStoreSettingsList() {
         const storeName = location.rr_store_data.name;
         const storeCity = location.rr_store.split(' - ')[1] || '';
         
-        // Initialize settings for this store if not exists
+        // Initialize rules for this store if not exists
         if (!storeAlertSettings[storeNumber]) {
-            storeAlertSettings[storeNumber] = {
-                'Regular': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                'Plus': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                'Premium': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] },
-                'Diesel': { cheaperThreshold: 5, higherThreshold: 10, competitors: [] }
-            };
+            storeAlertSettings[storeNumber] = { rules: [] };
+        }
+        if (!storeAlertSettings[storeNumber].rules) {
+            storeAlertSettings[storeNumber].rules = [];
         }
         
-        // Get competitors for this store
+        // Get competitors for this store from CSV
         const allStations = masterData
             .filter(row => row.RR_Location === storeName)
             .sort((a, b) => parseFloat(a.Distance || 999) - parseFloat(b.Distance || 999));
-        const competitors = allStations.filter(row => !row.Station_Name.toUpperCase().includes('ROAD RANGER'));
+        const competitors = allStations
+            .filter(row => !row.Station_Name.toUpperCase().includes('ROAD RANGER'))
+            .map(row => row.Station_Name);
         
         const card = document.createElement('div');
         card.className = 'store-settings-card';
@@ -3554,73 +3664,125 @@ function populateStoreSettingsList() {
                 <span class="store-settings-toggle">▼</span>
             </div>
             <div class="store-settings-body">
-        `;
-        
-        // Add fuel type settings
-        const fuelTypes = ['Regular', 'Plus', 'Premium', 'Diesel'];
-        fuelTypes.forEach(fuelType => {
-            const settings = storeAlertSettings[storeNumber][fuelType];
-            
-            cardHTML += `
-                <div class="fuel-type-settings">
-                    <div class="fuel-type-header">${fuelType}</div>
-                    <div class="threshold-row">
-                        <div class="threshold-input-group">
-                            <label class="threshold-label">Alert if competitor cheaper by (#¢)</label>
-                            <input type="number" 
-                                class="threshold-input" 
-                                value="${settings.cheaperThreshold}" 
-                                min="0" 
-                                step="1"
-                                onchange="updateStoreAlertSetting('${storeNumber}', '${fuelType}', 'cheaperThreshold', this.value)">
-                        </div>
-                        <div class="threshold-input-group">
-                            <label class="threshold-label">Alert if we're cheaper by (#¢)</label>
-                            <input type="number" 
-                                class="threshold-input" 
-                                value="${settings.higherThreshold}" 
-                                min="0" 
-                                step="1"
-                                onchange="updateStoreAlertSetting('${storeNumber}', '${fuelType}', 'higherThreshold', this.value)">
-                        </div>
-                    </div>
-                    <div class="competitor-selection-label">Alert for these competitors only (leave empty for all)</div>
-                    <div class="competitor-selection-list">
-            `;
-            
-            // Add competitor checkboxes
-            competitors.forEach((comp, idx) => {
-                const distance = parseFloat(comp.Distance || 0).toFixed(1);
-                const isChecked = settings.competitors.includes(normalizeStationName(comp.Station_Name)) ? 'checked' : '';
-                
-                cardHTML += `
-                    <div class="competitor-selection-item">
-                        <input type="checkbox" 
-                            class="competitor-selection-checkbox" 
-                            id="alert-comp-${storeNumber}-${fuelType}-${idx}"
-                            ${isChecked}
-                            onchange="updateStoreAlertCompetitor('${storeNumber}', '${fuelType}', '${normalizeStationName(comp.Station_Name)}', this.checked)">
-                        <label for="alert-comp-${storeNumber}-${fuelType}-${idx}" class="competitor-selection-name">
-                            ${normalizeStationName(comp.Station_Name)}
-                        </label>
-                        <span class="competitor-selection-distance">${distance} mi</span>
-                    </div>
-                `;
-            });
-            
-            cardHTML += `
+                <!-- Rule Creation Form -->
+                <div class="rule-creation-form">
+                    <div class="rule-form-row">
+                        <select class="rule-select" id="competitor-select-${storeNumber}">
+                            <option value="">Select Competitor</option>
+                            ${competitors.map(comp => `<option value="${comp}">${comp}</option>`).join('')}
+                        </select>
+                        <select class="rule-select" id="fueltype-select-${storeNumber}">
+                            <option value="Regular">Regular</option>
+                            <option value="Mid-Grade">Mid-Grade</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Diesel">Diesel</option>
+                        </select>
+                        <select class="rule-select" id="direction-select-${storeNumber}">
+                            <option value="Higher">Higher</option>
+                            <option value="Lower">Lower</option>
+                        </select>
+                        <input type="number" 
+                            class="rule-input" 
+                            id="cents-input-${storeNumber}" 
+                            placeholder="0" 
+                            min="0" 
+                            step="1">
+                        <span class="rule-cents-label">cents</span>
+                        <button class="rule-save-btn" onclick="saveNewRule('${storeNumber}', '${storeCity}')">Save</button>
                     </div>
                 </div>
-            `;
-        });
-        
-        cardHTML += `
+                
+                <!-- Rules Display -->
+                <div class="rules-display-section">
+                    <div class="rules-display-header">Rules set for this store:</div>
+                    <div class="rules-list" id="rules-list-${storeNumber}">
+                        ${generateRulesHTML(storeNumber, storeCity)}
+                    </div>
+                </div>
             </div>
         `;
         
         card.innerHTML = cardHTML;
         container.appendChild(card);
     });
+}
+
+// Generate HTML for rules list
+function generateRulesHTML(storeNumber, storeCity) {
+    const rules = storeAlertSettings[storeNumber]?.rules || [];
+    
+    if (rules.length === 0) {
+        return '<div class="no-rules-message">No rules set for this store yet.</div>';
+    }
+    
+    return rules.map((rule, index) => `
+        <div class="rule-item">
+            <span class="rule-item-text">
+                ${rule.competitor} - ${rule.fuelType} - ${rule.direction} - ${rule.cents} cent(s) - ${storeCity}
+            </span>
+            <button class="rule-delete-btn" onclick="deleteRule('${storeNumber}', ${index})">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </div>
+    `).join('');
+}
+
+// Save new rule
+function saveNewRule(storeNumber, storeCity) {
+    const competitor = document.getElementById(`competitor-select-${storeNumber}`).value;
+    const fuelType = document.getElementById(`fueltype-select-${storeNumber}`).value;
+    const direction = document.getElementById(`direction-select-${storeNumber}`).value;
+    const cents = document.getElementById(`cents-input-${storeNumber}`).value;
+    
+    if (!competitor) {
+        alert('Please select a competitor');
+        return;
+    }
+    
+    if (!cents || cents <= 0) {
+        alert('Please enter a valid number of cents');
+        return;
+    }
+    
+    // Initialize rules array if it doesn't exist
+    if (!storeAlertSettings[storeNumber]) {
+        storeAlertSettings[storeNumber] = { rules: [] };
+    }
+    if (!storeAlertSettings[storeNumber].rules) {
+        storeAlertSettings[storeNumber].rules = [];
+    }
+    
+    // Add the new rule
+    storeAlertSettings[storeNumber].rules.push({
+        competitor: competitor,
+        fuelType: fuelType,
+        direction: direction,
+        cents: parseFloat(cents)
+    });
+    
+    // Reset form
+    document.getElementById(`competitor-select-${storeNumber}`).value = '';
+    document.getElementById(`fueltype-select-${storeNumber}`).value = 'Regular';
+    document.getElementById(`direction-select-${storeNumber}`).value = 'Higher';
+    document.getElementById(`cents-input-${storeNumber}`).value = '';
+    
+    // Refresh the rules list
+    const rulesList = document.getElementById(`rules-list-${storeNumber}`);
+    rulesList.innerHTML = generateRulesHTML(storeNumber, storeCity);
+}
+
+// Delete a rule
+function deleteRule(storeNumber, ruleIndex) {
+    if (!storeAlertSettings[storeNumber]?.rules) return;
+    
+    storeAlertSettings[storeNumber].rules.splice(ruleIndex, 1);
+    
+    // Refresh the rules list
+    const storeCity = document.querySelector(`[data-store-number="${storeNumber}"]`)?.dataset.storeCity || '';
+    const rulesList = document.getElementById(`rules-list-${storeNumber}`);
+    rulesList.innerHTML = generateRulesHTML(storeNumber, storeCity);
 }
 
 // Toggle store settings card
@@ -3631,38 +3793,6 @@ function toggleStoreSettingsCard(header) {
     
     body.classList.toggle('expanded');
     toggle.classList.toggle('expanded');
-}
-
-// Update store alert setting
-function updateStoreAlertSetting(storeNumber, fuelType, setting, value) {
-    if (!storeAlertSettings[storeNumber]) {
-        storeAlertSettings[storeNumber] = {};
-    }
-    if (!storeAlertSettings[storeNumber][fuelType]) {
-        storeAlertSettings[storeNumber][fuelType] = { cheaperThreshold: 5, higherThreshold: 10, competitors: [] };
-    }
-    storeAlertSettings[storeNumber][fuelType][setting] = parseFloat(value) || 0;
-}
-
-// Update store alert competitor
-function updateStoreAlertCompetitor(storeNumber, fuelType, competitorName, checked) {
-    if (!storeAlertSettings[storeNumber]) {
-        storeAlertSettings[storeNumber] = {};
-    }
-    if (!storeAlertSettings[storeNumber][fuelType]) {
-        storeAlertSettings[storeNumber][fuelType] = { cheaperThreshold: 5, higherThreshold: 10, competitors: [] };
-    }
-    
-    const competitors = storeAlertSettings[storeNumber][fuelType].competitors;
-    
-    if (checked && !competitors.includes(competitorName)) {
-        competitors.push(competitorName);
-    } else if (!checked) {
-        const index = competitors.indexOf(competitorName);
-        if (index > -1) {
-            competitors.splice(index, 1);
-        }
-    }
 }
 
 // Setup modal store search
