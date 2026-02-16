@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Ranger Mudflaps — Price Elasticity Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Warm Slate palette */
+  --bg: #e8e4df;
+  --bg-sub: #dedad5;
+  --sf: #f5f3f0;
+  --sf-raised: #faf9f7;
+  --sa: #eae7e2;
+  --bd: #d1cbc4;
+  --bl: #ddd8d2;
+  --tx: #1e1c1a;
+  --tm: #5a5550;
+  --tl: #8a847d;
+  --ac: #1b6b8a;
+  --ac2: #15566f;
+  --al: #e2eff4;
+  --gn: #177a4a;
+  --gb: #ddf2e7;
+  --gn-d: #0f5c36;
+  --rd: #b03328;
+  --rb: #fce8e6;
+  --am: #9e6515;
+  --ab: #fdf2e0;
+  --pu: #6650a0;
+  --bl2: #2563eb;
+  --copper: #c4774a;
+  --f: 'DM Sans', sans-serif;
+  --m: 'IBM Plex Mono', monospace;
+  --r: 10px;
+  --sh: 0 1px 2px rgba(30,28,26,.05), 0 2px 8px rgba(30,28,26,.04);
+  --sh-lg: 0 2px 4px rgba(30,28,26,.06), 0 8px 24px rgba(30,28,26,.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--f); background: var(--bg); color: var(--tx); min-height: 100vh; }
+
+/* Subtle texture on the page background */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse at 20% 0%, rgba(27,107,138,.04) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 100%, rgba(196,119,74,.03) 0%, transparent 50%);
+}
+
+.wrap { max-width: 1300px; margin: 0 auto; padding: 28px 32px; }
+
+/* Header */
+.hdr { margin-bottom: 24px; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.hdr h1 { font-size: 22px; font-weight: 700; letter-spacing: -.4px; color: var(--tx); line-height: 1.25; }
+.hdr .sub { font-size: 12px; color: var(--tl); margin-top: 3px; font-weight: 400; }
+.badge { font-family: var(--m); font-size: 10px; font-weight: 500; padding: 5px 12px; border-radius: 20px; letter-spacing: .2px; }
+.badge-ok { background: var(--gb); color: var(--gn-d); }
+.badge-w { background: var(--ab); color: var(--am); }
+
+/* Store selector the primary nav element */
+.store-bar {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+  padding: 14px 20px; background: var(--sf-raised); border: 1px solid var(--bd);
+  border-radius: 12px; box-shadow: var(--sh-lg); flex-wrap: wrap;
+}
+.store-bar label { font-size: 11px; font-weight: 600; color: var(--tl); text-transform: uppercase; letter-spacing: .6px; }
+.store-bar select {
+  font-family: var(--m); font-size: 14px; font-weight: 600; color: var(--tx);
+  background: var(--sa); border: 2px solid var(--bd); border-radius: 8px;
+  padding: 9px 14px; min-width: 270px; cursor: pointer; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.store-bar select:focus { border-color: var(--ac); box-shadow: 0 0 0 3px rgba(27,107,138,.12); }
+.store-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sm { font-family: var(--m); font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; }
+.sm-ok { background: var(--gb); color: var(--gn-d); }
+.sm-med { background: var(--ab); color: var(--am); }
+.sm-low { background: var(--rb); color: var(--rd); }
+.sm-none { background: var(--sa); color: var(--tl); }
+
+.excl-banner { background: var(--ab); border: 1px solid #e2cfa0; border-radius: var(--r); padding: 10px 14px; margin-bottom: 18px; font-size: 12px; color: var(--am); display: flex; align-items: center; gap: 8px; }
+.hidden { display: none; }
+
+/* Cards */
+.card {
+  background: var(--sf); border: 1px solid var(--bl); border-radius: var(--r);
+  padding: 22px; box-shadow: var(--sh); margin-bottom: 18px;
+}
+.card h2 {
+  font-size: 10px; font-weight: 600; color: var(--tl); text-transform: uppercase;
+  letter-spacing: 1.2px; margin-bottom: 14px;
+}
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.st {
+  background: var(--sf); border: 1px solid var(--bl); border-radius: var(--r);
+  padding: 13px 14px; box-shadow: var(--sh);
+}
+.st .sl { font-size: 9px; font-weight: 600; color: var(--tl); text-transform: uppercase; letter-spacing: .8px; }
+.st .sv { font-family: var(--m); font-size: 20px; font-weight: 600; margin-top: 4px; }
+
+/* Simulator elevated treatment */
+.sim {
+  background: linear-gradient(135deg, var(--sf-raised) 0%, var(--sf) 100%);
+  border: 1px solid var(--bd); border-top: 3px solid var(--ac);
+  border-radius: 12px; padding: 26px; margin-bottom: 22px;
+  box-shadow: var(--sh-lg);
+}
+.sim h2 { font-size: 15px; font-weight: 700; color: var(--ac2); margin-bottom: 4px; text-transform: none; letter-spacing: -.2px; }
+.sim .hint { font-size: 11px; color: var(--tl); margin-bottom: 18px; }
+.sc { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.fld { display: flex; flex-direction: column; gap: 4px; }
+.fld label { font-size: 9px; font-weight: 600; color: var(--tl); text-transform: uppercase; letter-spacing: .5px; }
+.fld input, .fld select {
+  font-family: var(--m); font-size: 18px; font-weight: 600; color: var(--tx);
+  background: #fff; border: 2px solid var(--bd); border-radius: 8px;
+  padding: 8px 12px; width: 120px; text-align: center; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.fld input:focus, .fld select:focus { border-color: var(--ac); box-shadow: 0 0 0 3px rgba(27,107,138,.1); }
+.fld select { font-size: 13px; font-weight: 500; width: 130px; cursor: pointer; }
+.fld .cmp { font-size: 14px; color: var(--tm); width: 110px; }
+.arr { font-size: 18px; color: var(--bd); margin-bottom: 8px; }
+.dv { font-family: var(--m); font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+
+.qr { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 18px; }
+.qr > span { font-size: 9px; color: var(--tl); align-self: center; margin-right: 2px; }
+.qb {
+  font-family: var(--m); font-size: 9px; font-weight: 500;
+  background: #fff; border: 1px solid var(--bd); border-radius: 5px;
+  color: var(--tm); padding: 5px 9px; cursor: pointer; transition: all .15s;
+}
+.qb:hover { background: var(--al); color: var(--ac); border-color: var(--ac); }
+.qb.on { background: var(--ac); color: #fff; border-color: var(--ac); }
+
+.sr { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.sx {
+  text-align: center; padding: 16px 12px; background: #fff;
+  border-radius: 10px; border: 1px solid var(--bl);
+  box-shadow: 0 1px 3px rgba(30,28,26,.03);
+}
+.sx .xl { font-size: 8px; font-weight: 600; color: var(--tl); text-transform: uppercase; letter-spacing: .6px; }
+.sx .xv { font-family: var(--m); font-size: 26px; font-weight: 700; margin-top: 4px; line-height: 1.1; }
+.sx .xs { font-size: 9px; color: var(--tl); margin-top: 5px; }
+
+/* DOW grid */
+.dow-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-bottom: 8px; }
+.di {
+  text-align: center; padding: 11px 4px; background: var(--sa);
+  border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: all .15s;
+}
+.di:hover { border-color: var(--ac); background: var(--al); }
+.di.on { border-color: var(--ac); background: var(--al); box-shadow: 0 0 0 2px rgba(27,107,138,.08); }
+.di .dn { font-size: 10px; font-weight: 600; color: var(--tl); text-transform: uppercase; }
+.di .dval { font-family: var(--m); font-size: 16px; font-weight: 700; color: var(--tx); margin-top: 3px; }
+.di .dsub { font-family: var(--m); font-size: 9px; color: var(--tl); margin-top: 2px; }
+
+/* Model comparison */
+.mg { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.mb { background: var(--sa); border: 1px solid var(--bl); border-radius: 8px; padding: 14px; }
+.mb.best { border-color: var(--gn); background: var(--gb); box-shadow: inset 0 0 0 1px rgba(23,122,74,.08); }
+.mb h3 { font-size: 10px; font-weight: 600; color: var(--tl); text-transform: uppercase; margin-bottom: 8px; letter-spacing: .5px; }
+.mb .mr { display: flex; justify-content: space-between; font-size: 11px; padding: 3px 0; border-bottom: 1px solid var(--bl); }
+.mb .mr:last-child { border: none; }
+.mb .mr .k { color: var(--tl); } .mb .mr .v { font-family: var(--m); font-weight: 600; color: var(--tx); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+thead { border-bottom: 2px solid var(--bd); }
+th {
+  padding: 8px 8px; text-align: right; font-size: 9px; font-weight: 600;
+  color: var(--tl); text-transform: uppercase; letter-spacing: .5px;
+}
+th:first-child { text-align: left; }
+td { padding: 6px 8px; text-align: right; font-family: var(--m); font-size: 11px; }
+td:first-child { text-align: left; font-family: var(--f); }
+tbody tr { border-bottom: 1px solid var(--bl); transition: background .1s; }
+tbody tr:hover { background: var(--sa); }
+tr.rM { background: var(--al); }
+tr.rY { background: #d6e8f8; border-left: 3px solid var(--bl2); }
+
+.cG { color: var(--gn); } .cR { color: var(--rd); } .cD { color: var(--tl); }
+.cA { color: var(--ac); } .cAm { color: var(--am); } .cB { color: var(--bl2); }
+.cP { color: var(--pu); } .fw { font-weight: 600; }
+
+/* Scatter */
+.scatter-wrap { background: #fff; border: 1px solid var(--bl); border-radius: 8px; padding: 14px; }
+
+/* Accuracy */
+.acc-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.ai { text-align: center; padding: 11px; background: var(--sa); border-radius: 8px; border: 1px solid var(--bl); }
+.ai .al { font-size: 8px; font-weight: 600; color: var(--tl); text-transform: uppercase; letter-spacing: .4px; }
+.ai .av { font-family: var(--m); font-size: 16px; font-weight: 700; color: var(--ac); margin-top: 3px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+@media (max-width: 860px) {
+  .two-col { grid-template-columns: 1fr; }
+  .dow-row { grid-template-columns: repeat(4, 1fr); }
+  .sc { flex-direction: column; align-items: flex-start; }
+  .wrap { padding: 16px; }
+}
+
+/* Fleet table */
+.fleet-tbl { font-size: 11px; }
+.fleet-tbl th { font-size: 8px; padding: 7px 6px; }
+.fleet-tbl td { padding: 6px 6px; }
+.fleet-tbl tr { cursor: pointer; transition: background .1s; }
+.fleet-tbl tr:hover { background: var(--al); }
+.fleet-tbl tr.active-row { background: var(--al); border-left: 3px solid var(--ac); }
+
+/* Info boxes */
+.ib { border-radius: var(--r); padding: 14px 16px; font-size: 12px; margin-bottom: 18px; }
+.ib.ok { background: var(--gb); border: 1px solid #abd9be; }
+.ib.ok .t { color: var(--gn-d); font-weight: 700; margin-bottom: 4px; }
+.ib.ok p { color: #2d6e45; line-height: 1.5; }
+.ib.warn { background: var(--ab); border: 1px solid #e2cfa0; }
+.ib.warn .t { color: var(--am); font-weight: 700; margin-bottom: 4px; }
+.ib.warn p { color: #7a5a20; line-height: 1.5; }
+.ib code { background: #ddd8d0; padding: 2px 5px; border-radius: 3px; font-family: var(--m); font-size: 10px; }
+
+.footer {
+  text-align: center; font-size: 9px; color: var(--tl);
+  margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--bd);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div>
+    <h1>Road Ranger Mudflaps — Price Elasticity</h1>
+    <div class="sub" id="subText">Multi-Store Dashboard · Day-of-Week Adjusted · Storm-Excluded</div>
+  </div>
+  <span class="badge badge-w" id="statusTag">Loading...</span>
+</div>
+
+<div class="store-bar">
+  <label>Select Store</label>
+  <select id="storeSel"></select>
+  <div class="store-meta" id="storeMeta"></div>
+</div>
+
+<div id="exclBanner" class="hidden"></div>
+
+<div class="card" id="fleetCard">
+  <h2>Mudflaps Overview — All Stores</h2>
+  <div style="font-size:11px;color:var(--tl);margin-bottom:10px">Click any row to jump to that store.</div>
+  <table class="fleet-tbl"><thead><tr>
+    <th style="text-align:left">Store</th><th>RR Price</th><th>Comp Avg</th><th>Diff</th>
+    <th>Slope</th><th>R²</th><th>N</th><th>Confidence</th><th>Avg Gal/Day</th>
+  </tr></thead><tbody id="fleetTbl"></tbody></table>
+</div>
+
+<div class="stats-row" id="statsGrid"></div>
+
+<div class="sim" id="simPanel">
+  <h2 id="simTitle">Price Simulator</h2>
+  <div class="hint">Set price and day of week to see predicted gallon impact for the selected store.</div>
+  <div class="sc">
+    <div class="fld"><label>Your Price</label><input type="text" id="rrIn" value="3.08" inputmode="decimal"></div>
+    <div class="arr">→</div>
+    <div class="fld"><label>Comp Avg</label><input type="text" id="caIn" class="cmp" value="3.15" inputmode="decimal"></div>
+    <div class="arr">=</div>
+    <div class="fld"><label>Diff</label><div class="dv" id="diffD">-7.0¢</div></div>
+    <div class="fld"><label>Day</label>
+      <select id="dowSel"><option value="0">Mon</option><option value="1">Tue</option><option value="2">Wed</option><option value="3">Thu</option><option value="4">Fri</option><option value="5">Sat</option><option value="6">Sun</option></select>
+    </div>
+  </div>
+  <div class="qr" id="qBtns"></div>
+  <div class="sr" id="simRes"></div>
+</div>
+
+<div class="card"><h2>Day-of-Week Baselines</h2><div class="dow-row" id="dowGrid"></div></div>
+
+<div class="card"><h2 id="ptT">Prediction Table</h2>
+  <table><thead><tr><th style="text-align:right">Diff (¢)</th><th style="text-align:right">Scenario</th><th style="text-align:right">Predicted Gal</th><th style="text-align:right">Δ vs Parity</th><th style="text-align:right">Δ %</th></tr></thead>
+  <tbody id="ptB"></tbody></table></div>
+
+<div class="two-col">
+  <div class="card"><h2>Price Diff vs Gallons</h2><div class="scatter-wrap"><canvas id="scC"></canvas></div>
+    <div style="font-size:9px;color:var(--tl);text-align:center;margin-top:6px" id="scN"></div></div>
+  <div class="card"><h2>Competitor Breakdown</h2>
+    <table><thead><tr><th style="text-align:left">Competitor</th><th style="text-align:right">Price</th><th style="text-align:right">Diff</th></tr></thead>
+    <tbody id="cmpT"></tbody></table></div>
+</div>
+
+<div class="card" id="accCard"><h2>Model Accuracy — Fitted Values</h2>
+  <div style="font-size:11px;color:var(--tl);margin-bottom:10px">Same formula as the simulator. Storm days shown separately.</div>
+  <div class="acc-row" id="accSum"></div>
+  <table><thead><tr><th style="text-align:left">Date</th><th>Day</th><th>Diff</th><th>Actual</th><th>Predicted</th><th>Error</th><th>%Err</th></tr></thead>
+  <tbody id="accT"></tbody></table>
+  <div id="exclSec" class="hidden" style="margin-top:16px">
+    <h2 style="font-size:11px;color:var(--am);font-weight:600;margin-bottom:8px">🌨️ Excluded Days</h2>
+    <table><thead><tr><th style="text-align:left">Date</th><th>Day</th><th>Diff</th><th>Actual</th><th>Expected</th><th>Shortfall</th><th>Reason</th></tr></thead>
+    <tbody id="exclT"></tbody></table>
+  </div>
+</div>
+
+<div class="card hidden" id="noModelMsg">
+  <h2>No Model Available</h2>
+  <p id="noModelText" style="font-size:12px;color:var(--tm);line-height:1.6"></p>
+</div>
+
+<div id="statusBox"></div>
+<div class="footer">Road Ranger Mudflaps · Price Elasticity Dashboard · Day-of-Week Adjusted · Storm-Excluded</div>
+</div>
+
+<script>
+const DOW=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const DIFFS=[-15,-10,-7,-5,-3,-2,-1,0,1,2,3,5,7,10,15,20];
+let DATA=null,CUR=null;
+
+document.getElementById('dowSel').value=new Date().getDay()===0?6:new Date().getDay()-1;
+
+async function load(){
+  try{
+    const r=await fetch('./rr_all_stores_output.json?v='+Date.now());
+    if(!r.ok)throw 0; DATA=await r.json();
+    document.getElementById('statusTag').className='badge badge-ok';
+    document.getElementById('statusTag').textContent=`${DATA.models_built}/${DATA.total_stores} stores modeled`;
+    document.getElementById('subText').textContent=`Generated ${DATA.generated} · ${DATA.models_built} models · ${DATA.total_stores} stores`;
+
+    if(DATA.exclusions?.length){const b=document.getElementById('exclBanner');b.classList.remove('hidden');
+      b.innerHTML=DATA.exclusions.map(e=>`<span>🌨️</span><span>${e.reason} (${e.start} → ${e.end})</span>`).join('');}
+
+    const sel=document.getElementById('storeSel');sel.innerHTML='';
+    const sorted=[...DATA.stores].sort((a,b)=>{
+      if(a.has_model&&!b.has_model)return -1;if(!a.has_model&&b.has_model)return 1;
+      return a.store_id.localeCompare(b.store_id);
+    });
+    sorted.forEach(s=>{
+      const o=document.createElement('option');o.value=s.store_id;
+      const tag=s.has_model?`[${s.confidence}]`:`[${s.status}]`;
+      o.textContent=`${s.store_id} ${tag}`;
+      if(!s.has_model)o.style.color='#8a847d';
+      sel.appendChild(o);
+    });
+    buildFleetTable();
+    const first=sorted.find(s=>s.has_model)||sorted[0];
+    sel.value=first.store_id;switchStore(first.store_id);
+  }catch(e){
+    document.getElementById('statusTag').className='badge badge-w';
+    document.getElementById('statusTag').textContent='No data';
+    document.getElementById('statusBox').innerHTML=`<div class="ib warn"><div class="t">No fleet data found</div>
+      <p>Place <code>rr_all_stores_output.json</code> next to this file.</p>
+      <p><code>python rr_allstore_model.py --json-dir ./pricedata --gallons-dir ./gallons</code></p></div>`;
+  }
+}
+
+function buildFleetTable(){
+  document.getElementById('fleetTbl').innerHTML=DATA.stores.sort((a,b)=>a.store_id.localeCompare(b.store_id)).map(s=>{
+    const c=s.current||{},m=s.dow_model||{},g=s.gallons_stats||{};
+    const conf=s.confidence||'—';
+    const confCls=conf==='high'?'sm-ok':conf==='medium'?'sm-med':conf==='low'?'sm-low':'sm-none';
+    if(!s.has_model)return `<tr onclick="document.getElementById('storeSel').value='${s.store_id}';switchStore('${s.store_id}')" style="opacity:.45">
+      <td style="text-align:left">${s.store_id}</td><td>${c.rr_price?'$'+c.rr_price.toFixed(2):'—'}</td>
+      <td>${c.comp_avg?'$'+c.comp_avg.toFixed(2):'—'}</td><td class="cD">${c.diff_cents?c.diff_cents.toFixed(1)+'¢':'—'}</td>
+      <td colspan="5" class="cD" style="text-align:center;font-family:var(--f)">${s.status==='no_gallons'?'No gallon data':s.message||s.status}</td></tr>`;
+    return `<tr onclick="document.getElementById('storeSel').value='${s.store_id}';switchStore('${s.store_id}')">
+      <td style="text-align:left;font-weight:600">${s.store_id}</td>
+      <td>$${c.rr_price.toFixed(2)}</td><td>$${c.comp_avg.toFixed(2)}</td>
+      <td class="${c.diff_cents<0?'cG fw':'cR fw'}">${c.diff_cents>0?'+':''}${c.diff_cents.toFixed(1)}¢</td>
+      <td class="fw">${m.price_slope}</td><td>${m.r_squared}</td><td>${m.n}</td>
+      <td><span class="sm ${confCls}">${conf}</span></td>
+      <td>${g.avg?Math.round(g.avg).toLocaleString():'—'}</td></tr>`;
+  }).join('');
+}
+
+function switchStore(id){
+  CUR=DATA.stores.find(s=>s.store_id===id);if(!CUR)return;
+  document.querySelectorAll('.fleet-tbl tbody tr').forEach(r=>{
+    r.classList.toggle('active-row',r.querySelector('td')?.textContent===id);});
+
+  const meta=document.getElementById('storeMeta');
+  if(CUR.has_model){
+    const m=CUR.dow_model;const confCls=CUR.confidence==='high'?'sm-ok':CUR.confidence==='medium'?'sm-med':'sm-low';
+    meta.innerHTML=`<span class="sm ${confCls}">${CUR.confidence} confidence</span>
+      <span class="sm sm-ok">n=${m.n} days</span>
+      <span class="sm" style="background:var(--al);color:var(--ac)">R²=${m.r_squared}</span>
+      <span class="sm" style="background:var(--al);color:var(--ac)">slope=${m.price_slope}</span>`;
+    ['simPanel','accCard'].forEach(x=>document.getElementById(x).style.display='');
+    document.getElementById('noModelMsg').classList.add('hidden');
+    document.getElementById('rrIn').value=CUR.current.rr_price.toFixed(2);
+    document.getElementById('caIn').value=CUR.current.comp_avg.toFixed(2);
+    document.getElementById('simTitle').textContent=`Price Simulator — ${CUR.store_id}`;
+
+    const ac=CUR.accuracy||{};
+    document.getElementById('accSum').innerHTML='';
+
+    document.getElementById('accT').innerHTML=(ac.fitted_details||[]).sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
+      const bad=e.pct_error>40;return `<tr ${bad?'style="background:var(--rb)"':''}>
+        <td style="text-align:left">${e.date}</td><td>${e.day}</td><td>${e.diff_cents>0?'+':''}${e.diff_cents}</td>
+        <td class="fw">${e.actual.toLocaleString()}</td><td class="fw cA">${e.predicted.toLocaleString()}</td>
+        <td class="${e.error>0?'cG':'cR'} fw">${e.error>0?'+':''}${e.error.toLocaleString()}</td>
+        <td class="${bad?'cR':''}">${e.pct_error}%</td></tr>`;}).join('');
+
+    const ex=ac.excluded_details||[];
+    if(ex.length){document.getElementById('exclSec').classList.remove('hidden');
+      document.getElementById('exclT').innerHTML=ex.sort((a,b)=>a.date.localeCompare(b.date)).map(e=>`
+        <tr style="background:var(--ab)"><td style="text-align:left">${e.date}</td><td>${e.day}</td>
+        <td>${e.diff_cents>0?'+':''}${e.diff_cents}</td><td class="fw">${e.actual.toLocaleString()}</td>
+        <td class="fw cA">${e.predicted.toLocaleString()}</td><td class="cR fw">${e.error>0?'+':''}${e.error.toLocaleString()}</td>
+        <td style="font-size:9px;color:var(--am)">${e.reason||''}</td></tr>`).join('');
+    }else{document.getElementById('exclSec').classList.add('hidden');}
+  }else{
+    meta.innerHTML=`<span class="sm sm-none">${CUR.status==='no_gallons'?'No gallon data':CUR.message||CUR.status}</span>`;
+    ['simPanel','accCard'].forEach(x=>document.getElementById(x).style.display='none');
+    document.getElementById('noModelMsg').classList.remove('hidden');
+    document.getElementById('noModelText').textContent=CUR.status==='no_gallons'?
+      `No gallon data file found for this store. Add ${CUR.store_num}_lastmonth_gallons.csv to the gallons directory and re-run the model.`:
+      CUR.message||'Model could not be built for this store.';
+    document.getElementById('rrIn').value=CUR.current?.rr_price?.toFixed(2)||'0.00';
+    document.getElementById('caIn').value=CUR.current?.comp_avg?.toFixed(2)||'0.00';
+  }
+  renderAll();
+}
+
+function renderAll(){
+  if(!CUR)return;
+  const hasM=CUR.has_model,m=hasM?CUR.dow_model:{},sl=m.price_slope||0;
+  const bs=m.dow_baselines||{Monday:0,Tuesday:0,Wednesday:0,Thursday:0,Friday:0,Saturday:0,Sunday:0};
+  const rr=parseFloat(document.getElementById('rrIn').value)||(CUR.current?.rr_price||0);
+  const ca=parseFloat(document.getElementById('caIn').value)||(CUR.current?.comp_avg||0);
+  const dc=Math.round((rr-ca)*1000)/10;
+  const dw=parseInt(document.getElementById('dowSel').value),dn=DOW[dw],base=bs[dn]||0;
+  const pred=Math.round(base+sl*dc),delta=pred-Math.round(base),pct=base>0?(delta/base*100).toFixed(1):'0.0';
+
+  const $d=document.getElementById('diffD');
+  $d.textContent=`${dc>0?'+':''}${dc.toFixed(1)}¢`;
+  $d.style.color=dc<0?'var(--gn)':dc>0?'var(--rd)':'var(--tm)';
+
+  document.getElementById('statsGrid').innerHTML=[
+    {l:"RR Price",v:`$${rr.toFixed(2)}`,c:"var(--ac)"},{l:"Comp Avg",v:`$${ca.toFixed(2)}`,c:"var(--tm)"},
+    {l:"Diff",v:`${dc>0?'+':''}${dc.toFixed(1)}¢`,c:dc<0?"var(--gn)":"var(--rd)"},
+    {l:"Day",v:dn,c:"var(--pu)"},{l:"Slope",v:hasM?`${sl} gal/¢`:'—',c:"var(--ac)"},
+    {l:"Avg Gal/Day",v:CUR.gallons_stats?Math.round(CUR.gallons_stats.avg).toLocaleString():'—',c:"var(--am)"},
+  ].map(s=>`<div class="st"><div class="sl">${s.l}</div><div class="sv" style="color:${s.c}">${s.v}</div></div>`).join('');
+
+  if(!hasM){['dowGrid','ptB','cmpT','simRes','qBtns'].forEach(x=>document.getElementById(x).innerHTML='');
+    drawScatter(dc,0,dn,[],bs,sl);return;}
+
+  document.getElementById('simRes').innerHTML=`
+    <div class="sx"><div class="xl">Predicted Gallons</div><div class="xv">${pred.toLocaleString()}</div><div class="xs">${dn} at $${rr.toFixed(2)}</div></div>`;
+
+  document.getElementById('qBtns').innerHTML='<span>Quick:</span>'+
+    [{l:"Match",d:0},{l:"1¢ under",d:-1},{l:"3¢ under",d:-3},{l:"5¢ under",d:-5},{l:"10¢ under",d:-10},{l:"1¢ over",d:1},{l:"5¢ over",d:5},{l:"10¢ over",d:10}]
+    .map(s=>{const p=(ca+s.d/100).toFixed(2);const a=Math.abs(parseFloat(p)-rr)<.005;
+      return `<button class="qb ${a?'on':''}" onclick="document.getElementById('rrIn').value='${p}';renderAll()">${s.l} ($${p})</button>`;}).join('');
+
+  document.getElementById('dowGrid').innerHTML=DOW.map((d,i)=>{const b=bs[d]||0;const p=Math.round(b+sl*dc);
+    return `<div class="di ${i===dw?'on':''}" onclick="document.getElementById('dowSel').value=${i};renderAll()">
+      <div class="dn">${d.slice(0,3)}</div><div class="dval">${Math.round(b).toLocaleString()}</div>
+      <div class="dsub">→ ${p.toLocaleString()}</div></div>`;}).join('');
+
+  document.getElementById('ptT').textContent=`Prediction Table — ${CUR.store_id} — ${dn} (base: ${Math.round(base).toLocaleString()})`;
+  document.getElementById('ptB').innerHTML=DIFFS.map(d=>{
+    const g=Math.round(base+sl*d),dt=Math.round(sl*d),p = base !== 0 ? (dt / Math.abs(base) * 100).toFixed(1) : '0.0';
+    const cur=Math.abs(d-dc)<1,cls=cur?'rY':d===0?'rM':'';
+    const sc=d<0?`RR ${Math.abs(d)}¢ cheaper`:d>0?`RR ${d}¢ higher`:'○ Price Match';
+    return `<tr class="${cls}"><td class="${d<0?'cG fw':d>0?'cR fw':'fw'}">${d>0?'+':''}${d}</td>
+      <td style="color:var(--tm)">${sc}${cur?' <span class="cB fw">← You</span>':''}</td>
+      <td class="fw">${g.toLocaleString()}</td>
+      <td class="${dt>0?'cG fw':dt<0?'cR fw':'cD'}">${dt>0?'+':''}${dt.toLocaleString()}</td>
+      <td class="${Number(p)>0?'cG':Number(p)<0?'cR':'cD'}">${Number(p)>0?'+':''}${p}%</td></tr>`;}).join('');
+
+  const comps=CUR.current?.competitors||[];
+  document.getElementById('cmpT').innerHTML=[...comps].sort((a,b)=>a.price-b.price).map(c=>{
+    const d=Math.round((rr-c.price)*100);return `<tr><td style="text-align:left">${c.name}</td>
+      <td class="fw">$${c.price.toFixed(2)}</td><td class="fw ${d<0?'cG':d>0?'cR':'cD'}">${d>0?'+':''}${d}¢</td></tr>`;}).join('')+
+    `<tr style="border-top:2px solid var(--bd);font-weight:600"><td style="text-align:left;color:var(--tl)">AVERAGE</td>
+      <td class="cAm">$${ca.toFixed(2)}</td><td style="color:${dc<0?'var(--gn)':'var(--rd)'}">${dc>0?'+':''}${dc.toFixed(1)}¢</td></tr>`;
+
+  drawScatter(dc,pred,dn,CUR.daily_data||[],bs,sl);
+}
+
+function drawScatter(cD,cP,dn,daily,bs,sl){
+  const cv=document.getElementById('scC'),cx=cv.getContext('2d');
+  const W=cv.parentElement.clientWidth-28;cv.width=W;cv.height=240;const H=240;
+  const pd={t:14,r:14,b:30,l:48};cx.clearRect(0,0,W,H);
+  if(!daily.length){cx.fillStyle='#8a847d';cx.font='12px DM Sans';cx.textAlign='center';cx.fillText('No data for this store',W/2,H/2);
+    document.getElementById('scN').textContent='';return;}
+  let aX=[cD,-10,10],aY=[cP];
+  DOW.forEach(d=>{aY.push((bs[d]||0)+sl*-10);aY.push((bs[d]||0)+sl*10)});
+  daily.forEach(d=>{aX.push(d.diff_cents);aY.push(d.gallons)});
+  const xn=Math.min(...aX)-2,xx=Math.max(...aX)+2,yn=Math.min(...aY)*.85,yx=Math.max(...aY)*1.1;
+  const sx=v=>pd.l+((v-xn)/(xx-xn))*(W-pd.l-pd.r),sy=v=>H-pd.b-((v-yn)/(yx-yn))*(H-pd.t-pd.b);
+  cx.strokeStyle='#d4cec7';cx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pd.t+i*(H-pd.t-pd.b)/4;cx.beginPath();cx.moveTo(pd.l,y);cx.lineTo(W-pd.r,y);cx.stroke();
+    cx.fillStyle='#8a847d';cx.font='9px IBM Plex Mono';cx.textAlign='right';cx.fillText(Math.round(yx-i*(yx-yn)/4).toLocaleString(),pd.l-5,y+3)}
+  if(xn<0&&xx>0){const z=sx(0);cx.strokeStyle='#c4bbaf';cx.setLineDash([3,3]);cx.beginPath();cx.moveTo(z,pd.t);cx.lineTo(z,H-pd.b);cx.stroke();cx.setLineDash([])}
+  cx.fillStyle='#8a847d';cx.textAlign='center';cx.font='9px IBM Plex Mono';
+  for(let x=Math.ceil(xn/5)*5;x<=xx;x+=5)cx.fillText(`${x>0?'+':''}${x}¢`,sx(x),H-pd.b+13);
+  const base=bs[dn]||0;
+  cx.strokeStyle='#1b6b8a';cx.lineWidth=2;cx.globalAlpha=.3;
+  cx.beginPath();cx.moveTo(sx(xn),sy(base+sl*xn));cx.lineTo(sx(xx),sy(base+sl*xx));cx.stroke();cx.globalAlpha=1;
+  const dC={Monday:'#b03328',Tuesday:'#c4774a',Wednesday:'#9e6515',Thursday:'#177a4a',Friday:'#1b6b8a',Saturday:'#6650a0',Sunday:'#b84a78'};
+  daily.forEach(d=>{const ex=d.excluded;cx.beginPath();cx.arc(sx(d.diff_cents),sy(d.gallons),ex?3:4,0,Math.PI*2);
+    if(ex){cx.strokeStyle='#b03328';cx.lineWidth=1.5;cx.globalAlpha=.25;cx.stroke();
+      const px=sx(d.diff_cents),py=sy(d.gallons);cx.beginPath();cx.moveTo(px-3,py-3);cx.lineTo(px+3,py+3);cx.moveTo(px+3,py-3);cx.lineTo(px-3,py+3);cx.stroke();
+    }else{cx.fillStyle=dC[d.day]||'#1b6b8a';cx.globalAlpha=d.day===dn?.85:.15;cx.fill()}
+    cx.globalAlpha=1;cx.lineWidth=1});
+  cx.beginPath();cx.arc(sx(cD),sy(cP),7,0,Math.PI*2);cx.fillStyle='#c4774a';cx.fill();cx.strokeStyle='#a85e35';cx.lineWidth=2;cx.stroke();
+  cx.fillStyle='#8a5020';cx.font='600 9px IBM Plex Mono';cx.textAlign='left';cx.fillText(`${cP.toLocaleString()} gal`,sx(cD)+10,sy(cP)+3);
+  document.getElementById('scN').textContent=`${daily.filter(d=>!d.excluded).length} clean + ${daily.filter(d=>d.excluded).length} excluded · Bright = ${dn}`;
+}
+
+document.getElementById('storeSel').addEventListener('change',e=>switchStore(e.target.value));
+document.getElementById('rrIn').addEventListener('input',renderAll);
+document.getElementById('caIn').addEventListener('input',renderAll);
+document.getElementById('dowSel').addEventListener('change',renderAll);
+window.addEventListener('resize',renderAll);
+load();
+</script>
+</body>
+</html>
