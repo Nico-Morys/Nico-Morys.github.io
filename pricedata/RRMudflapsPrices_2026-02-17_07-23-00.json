@@ -1,0 +1,4718 @@
+[
+  {
+    "rr_store": "Road Ranger 118",
+    "rr_store_data": {
+      "name": "Road Ranger #118 - Springfield, IL",
+      "exit": null,
+      "prices": [
+        "$3.41",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.8304811,
+      "longitude": -89.5842419
+    },
+    "competitors": [
+      {
+        "name": "TA Express Riverton #433",
+        "data": {
+          "name": "TA Express Riverton #433",
+          "exit": null,
+          "prices": [
+            "$3.38",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.842185044068344,
+          "longitude": -89.52178746391611
+        }
+      },
+      {
+        "name": "Haymakers 707",
+        "data": {
+          "name": "Haymakers #707 - Springfield, IL",
+          "exit": null,
+          "prices": [
+            "$3.35",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.8073350715131,
+          "longitude": -89.68168854840206
+        }
+      },
+      {
+        "name": "Speedway #43525",
+        "data": {
+          "name": "Speedway #43525 - Williamsville IL",
+          "exit": null,
+          "prices": [
+            "$3.65",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.96228780513789,
+          "longitude": -89.56203914685308
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 132",
+    "rr_store_data": {
+      "name": "Road Ranger #132 - Champaign, IL",
+      "exit": null,
+      "prices": [
+        "$3.35",
+        "$3.75"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 40.17769,
+      "longitude": -88.240499
+    },
+    "competitors": [
+      {
+        "name": "K&H Truck Plaza #669",
+        "data": {
+          "name": "K&H Truck Plaza #669 - Gilman, IL",
+          "exit": null,
+          "prices": [
+            "$3.43",
+            "$3.54"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.75258691776687,
+          "longitude": -87.99485940986777
+        }
+      },
+      {
+        "name": "Haymakers 786",
+        "data": {
+          "name": "Haymakers #786 - Mahomet, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.18411828869421,
+          "longitude": -88.3661180059159
+        }
+      },
+      {
+        "name": "Circle K #4701438",
+        "data": {
+          "name": "Circle K #4701438 - Champaign, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.158709852838875,
+          "longitude": -88.275865237152
+        }
+      },
+      {
+        "name": "Circle K #4701443",
+        "data": {
+          "name": "Circle K #4701443 - Champaign, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.11377631008591,
+          "longitude": -88.31537397624383
+        }
+      },
+      {
+        "name": "Circle K #4701445",
+        "data": {
+          "name": "Circle K #4701445 - Rantoul, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.30905983799016,
+          "longitude": -88.17584828322795
+        }
+      },
+      {
+        "name": "Circle K #4701432",
+        "data": {
+          "name": "Circle K #4701432 - Mahomet, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.191836887682,
+          "longitude": -88.36469251828774
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 136",
+    "rr_store_data": {
+      "name": "Road Ranger #136 - Cottage Grove, WI",
+      "exit": null,
+      "prices": [
+        "$3.17",
+        "$3.59"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.9985528,
+      "longitude": -89.1996224
+    },
+    "competitors": [
+      {
+        "name": "Speedway #46078",
+        "data": {
+          "name": "Speedway #46078 - Monona WI",
+          "exit": null,
+          "prices": [
+            "$3.19",
+            "$3.45"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.042734250493474,
+          "longitude": -89.35349118427783
+        }
+      },
+      {
+        "name": "Pleasant Springs Travel Plaza",
+        "data": {
+          "name": "Pleasant Springs Travel Plaza",
+          "exit": null,
+          "prices": [
+            "$3.13",
+            "$3.21"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.99763694663311,
+          "longitude": -89.20113081778571
+        }
+      },
+      {
+        "name": "TA Madison #50",
+        "data": {
+          "name": "TA Madison #50",
+          "exit": null,
+          "prices": [
+            "$3.15",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.174398984010594,
+          "longitude": -89.32524428729413
+        }
+      },
+      {
+        "name": "Kwik Trip #673",
+        "data": {
+          "name": "Kwik Trip #673 - Windsor, WI",
+          "exit": null,
+          "prices": [
+            "$3.15",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.19400249252214,
+          "longitude": -89.3371069338372
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 139",
+    "rr_store_data": {
+      "name": "Road Ranger #139 - Tuscola, IL",
+      "exit": null,
+      "prices": [
+        "$3.44",
+        "$3.94"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.7919732,
+      "longitude": -88.2683213
+    },
+    "competitors": [
+      {
+        "name": "Lambo's #5",
+        "data": {
+          "name": "Lambo's #5 - Tuscola, IL",
+          "exit": null,
+          "prices": [
+            "$3.43",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.79228108546588,
+          "longitude": -88.27253388946963
+        }
+      },
+      {
+        "name": "Lambo's #3",
+        "data": {
+          "name": "Lambo's #3 - Mattoon, IL",
+          "exit": null,
+          "prices": [
+            "$3.43",
+            "$3.49"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.48342988446031,
+          "longitude": -88.30322440210519
+        }
+      },
+      {
+        "name": "Fuel Mart 787",
+        "data": {
+          "name": "Fuel Mart 787 - Tuscola, IL",
+          "exit": null,
+          "prices": [
+            "$3.51",
+            "$3.56"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.79116831190812,
+          "longitude": -88.2596177139198
+        }
+      },
+      {
+        "name": "Neoga BP",
+        "data": {
+          "name": "Neoga BP - Neoga, IL",
+          "exit": null,
+          "prices": [
+            "$3.44",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.33040658493764,
+          "longitude": -88.42989010863994
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 140",
+    "rr_store_data": {
+      "name": "Road Ranger #140 - Mendota, IL",
+      "exit": null,
+      "prices": [
+        "$3.41",
+        "$3.80"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.5538796,
+      "longitude": -89.066747
+    },
+    "competitors": [
+      {
+        "name": "Beck's #27",
+        "data": {
+          "name": "Beck's #27 - Mendota IL",
+          "exit": null,
+          "prices": [
+            "$3.51",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.555061494621214,
+          "longitude": -89.06723410814713
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 141",
+    "rr_store_data": {
+      "name": "Road Ranger #141 - Brazil, IN",
+      "exit": null,
+      "prices": [
+        "$3.54",
+        "$3.60"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.44641098151438,
+      "longitude": -87.12568084676755
+    },
+    "competitors": [
+      {
+        "name": "Petro Brazil #376",
+        "data": {
+          "name": "Petro Brazil #376",
+          "exit": null,
+          "prices": [
+            "$3.59",
+            "$4.03"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.44503226488918,
+          "longitude": -87.12697228348705
+        }
+      },
+      {
+        "name": "Speedway #43943",
+        "data": {
+          "name": "Speedway #43943 - Brazil IN",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.45215600630141,
+          "longitude": -87.12731515615448
+        }
+      },
+      {
+        "name": "Cloverdale Travel Plaza",
+        "data": {
+          "name": "Cloverdale Travel Plaza - Cloverdale, IN",
+          "exit": null,
+          "prices": [
+            "$3.57",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.53074969730457,
+          "longitude": -86.8033460408162
+        }
+      },
+      {
+        "name": "Little Point Auto & Truck Stop",
+        "data": {
+          "name": "Little Point Auto & Truck Stop - Stilesville, IN",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$4.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.567204653124406,
+          "longitude": -86.63250876477372
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 144",
+    "rr_store_data": {
+      "name": "Road Ranger #144 - Elk Run Heights, IA",
+      "exit": null,
+      "prices": [
+        "$3.03",
+        "$3.84"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.4612404,
+      "longitude": -92.2473477
+    },
+    "competitors": [
+      {
+        "name": "Casey's General Store #3292",
+        "data": {
+          "name": "Casey's General Store #3292 - Independence, IA",
+          "exit": null,
+          "prices": [
+            "$3.08",
+            "$3.55"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.4515951405165,
+          "longitude": -91.88923380029705
+        }
+      },
+      {
+        "name": "Kwik Star #569",
+        "data": {
+          "name": "Kwik Star #569 - Waterloo, IA",
+          "exit": null,
+          "prices": [
+            "$2.97",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.45574732022548,
+          "longitude": -92.37568792964915
+        }
+      },
+      {
+        "name": "Casey's General Store #2867",
+        "data": {
+          "name": "Casey's General Store #2867 - Waterloo, IA",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.34"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.45451617587915,
+          "longitude": -92.40725395554063
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 145",
+    "rr_store_data": {
+      "name": "Road Ranger #145 - Fenton, MO",
+      "exit": null,
+      "prices": [
+        "$3.04",
+        "$3.66"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 38.543606,
+      "longitude": -90.4399195
+    },
+    "competitors": [
+      {
+        "name": "Express Mart Union",
+        "data": {
+          "name": "Express Mart Union - Union, MO",
+          "exit": null,
+          "prices": [
+            "$3.21",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.43249625943209,
+          "longitude": -90.96468341121884
+        }
+      },
+      {
+        "name": "Express Mart - Pevely, MO",
+        "data": {
+          "name": "Express Mart - Pevely, MO",
+          "exit": null,
+          "prices": [
+            "$3.24",
+            "$3.36"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.287014007277776,
+          "longitude": -90.40548479605822
+        }
+      },
+      {
+        "name": "Energy Express Travel Center - St. Louis, MO",
+        "data": {
+          "name": "Energy Express Travel Center - St. Louis, MO",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.672887707995265,
+          "longitude": -90.20259137854039
+        }
+      },
+      {
+        "name": "Phillips 66 Alta #6515 - St Louis, MO",
+        "data": {
+          "name": "Phillips 66 Alta #6515 - St Louis, MO",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.76577343918822,
+          "longitude": -90.20214321737473
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 157",
+    "rr_store_data": {
+      "name": "Road Ranger #157 - Okawville, IL",
+      "exit": null,
+      "prices": [
+        "$3.42",
+        "$3.94"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 38.4364187,
+      "longitude": -89.5347246
+    },
+    "competitors": [
+      {
+        "name": "Knapp Truckstop - Nashville, IL",
+        "data": {
+          "name": "Knapp Truckstop - Nashville, IL",
+          "exit": null,
+          "prices": [
+            "$3.51",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.37512195537608,
+          "longitude": -89.37183467456961
+        }
+      },
+      {
+        "name": "Little Nashville - Nashville, IL",
+        "data": {
+          "name": "Little Nashville - Nashville, IL",
+          "exit": null,
+          "prices": [
+            "$3.50",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.38418625063383,
+          "longitude": -89.37039857095498
+        }
+      },
+      {
+        "name": "Huck's Food & Fuel #371",
+        "data": {
+          "name": "Huck's Food & Fuel #371 - Mount Vernon, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.29927059453035,
+          "longitude": -88.90359354753546
+        }
+      },
+      {
+        "name": "TA Mt Vernon #43",
+        "data": {
+          "name": "TA Mt Vernon #43",
+          "exit": null,
+          "prices": [
+            "$3.73",
+            "$3.87"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.31336584514391,
+          "longitude": -88.95937649156953
+        }
+      },
+      {
+        "name": "Mach 1 #14",
+        "data": {
+          "name": "Mach 1 #14 - Mt. Vernon, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.300834310603655,
+          "longitude": -88.9431719118757
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 181",
+    "rr_store_data": {
+      "name": "Road Ranger #181 - Springfield, IL",
+      "exit": null,
+      "prices": [
+        "$3.35",
+        "$3.80"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.7128674,
+      "longitude": -89.648992
+    },
+    "competitors": [
+      {
+        "name": "TA Express Riverton #433",
+        "data": {
+          "name": "TA Express Riverton #433",
+          "exit": null,
+          "prices": [
+            "$3.38",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.842185044068344,
+          "longitude": -89.52178746391611
+        }
+      },
+      {
+        "name": "Haymakers 707",
+        "data": {
+          "name": "Haymakers #707 - Springfield, IL",
+          "exit": null,
+          "prices": [
+            "$3.35",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.8073350715131,
+          "longitude": -89.68168854840206
+        }
+      },
+      {
+        "name": "Speedway #43525",
+        "data": {
+          "name": "Speedway #43525 - Williamsville IL",
+          "exit": null,
+          "prices": [
+            "$3.65",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.96228780513789,
+          "longitude": -89.56203914685308
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 185",
+    "rr_store_data": {
+      "name": "Road Ranger #185 - McLean, IL",
+      "exit": null,
+      "prices": [
+        "$3.42",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 40.3179987,
+      "longitude": -89.1690822
+    },
+    "competitors": [
+      {
+        "name": "Atlanta Truck Stop - Atlanta, IL",
+        "data": {
+          "name": "Atlanta Truck Stop - Atlanta, IL",
+          "exit": null,
+          "prices": [
+            "$3.52",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.257646676211614,
+          "longitude": -89.22571725214313
+        }
+      },
+      {
+        "name": "Huck's Food & Fuel #186",
+        "data": {
+          "name": "Huck's Food & Fuel #186 - Heyworth, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.312435404659276,
+          "longitude": -88.98532687634317
+        }
+      },
+      {
+        "name": "Beck's Express Mart #22",
+        "data": {
+          "name": "Beck's Express Mart #22 - Lincoln, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.15882147917149,
+          "longitude": -89.4124042976049
+        }
+      },
+      {
+        "name": "TA Bloomington #92",
+        "data": {
+          "name": "TA Bloomington #92",
+          "exit": null,
+          "prices": [
+            "$3.77",
+            "$3.85"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.48791015670922,
+          "longitude": -89.02634999610198
+        }
+      },
+      {
+        "name": "Circle K #4701251",
+        "data": {
+          "name": "Circle K #4701251 - Bloomington, IL",
+          "exit": null,
+          "prices": [
+            "$3.25",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.48678392892084,
+          "longitude": -89.04560626691418
+        }
+      },
+      {
+        "name": "Huck's Food & Fuel #355",
+        "data": {
+          "name": "Huck's Food & Fuel #355 - Bloomington, IL",
+          "exit": null,
+          "prices": [
+            "$3.62",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.44958561762735,
+          "longitude": -88.99265628053655
+        }
+      },
+      {
+        "name": "Huck's Food & Fuel #54",
+        "data": {
+          "name": "Huck's Food & Fuel #54 - Farmer City, IL",
+          "exit": null,
+          "prices": [
+            "$3.36",
+            "$3.45"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.243655777469534,
+          "longitude": -88.63198676040318
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 186",
+    "rr_store_data": {
+      "name": "Road Ranger #186 - Minonk, IL",
+      "exit": null,
+      "prices": [
+        "$3.37",
+        "$3.54"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 40.9134707,
+      "longitude": -89.0534671
+    },
+    "competitors": [
+      {
+        "name": "Casey's General Store #3856",
+        "data": {
+          "name": "Casey's General Store #3856 - Tonica, IL",
+          "exit": null,
+          "prices": [
+            "$3.31",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.2218862934362,
+          "longitude": -89.06871961531148
+        }
+      },
+      {
+        "name": "Casey's General Store #3686",
+        "data": {
+          "name": "Casey's General Store #3686 - North Utica, IL",
+          "exit": null,
+          "prices": [
+            "$3.31",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.36038851344168,
+          "longitude": -89.01073858413889
+        }
+      },
+      {
+        "name": "Sapp bros Peru",
+        "data": {
+          "name": "Sapp Bros Peru",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$3.91"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.36664878506331,
+          "longitude": -89.15211731967128
+        }
+      },
+      {
+        "name": "Speedway #43628",
+        "data": {
+          "name": "Speedway #43628 - Peru IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.367536543329265,
+          "longitude": -89.1537882209605
+        }
+      },
+      {
+        "name": "TA Bloomington #92",
+        "data": {
+          "name": "TA Bloomington #92",
+          "exit": null,
+          "prices": [
+            "$3.77",
+            "$3.85"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.48791015670922,
+          "longitude": -89.02634999610198
+        }
+      },
+      {
+        "name": "Circle K #4701251",
+        "data": {
+          "name": "Circle K #4701251 - Bloomington, IL",
+          "exit": null,
+          "prices": [
+            "$3.25",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 40.48678392892084,
+          "longitude": -89.04560626691418
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 187",
+    "rr_store_data": {
+      "name": "Road Ranger #187 - Chicago, IL",
+      "exit": null,
+      "prices": [
+        "$3.40",
+        "$3.45"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.831278,
+      "longitude": -87.6946279
+    },
+    "competitors": [
+      {
+        "name": "TA Cicero #490",
+        "data": {
+          "name": "TA Cicero #490",
+          "exit": null,
+          "prices": [
+            "$3.32",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.82755073890824,
+          "longitude": -87.74275510013015
+        }
+      },
+      {
+        "name": "Speedway #46161",
+        "data": {
+          "name": "Speedway #46161 - Cicero IL",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.834010338830595,
+          "longitude": -87.74461901644385
+        }
+      },
+      {
+        "name": "Gas N Wash Cicero & Pershing - Stickney, IL",
+        "data": {
+          "name": "Gas N Wash Cicero & Pershing - Stickney, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.822688272826795,
+          "longitude": -87.74436210375217
+        }
+      },
+      {
+        "name": "Gas N Wash 50th & Central - Chicago, IL",
+        "data": {
+          "name": "Gas N Wash 50th & Central - Chicago, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.80215341161251,
+          "longitude": -87.76225633566766
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 203",
+    "rr_store_data": {
+      "name": "Road Ranger #203 - Rockford, IL",
+      "exit": null,
+      "prices": [
+        "$3.35",
+        "$3.60"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.2085811,
+      "longitude": -89.1076044
+    },
+    "competitors": [
+      {
+        "name": "Monroe Center Oasis - Monroe Center, IL",
+        "data": {
+          "name": "Monroe Center Oasis - Monroe Center, IL",
+          "exit": null,
+          "prices": [
+            "$3.71",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.10136447531634,
+          "longitude": -89.01857436471872
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 205",
+    "rr_store_data": {
+      "name": "Road Ranger #205 - South Beloit, IL",
+      "exit": null,
+      "prices": [
+        "$3.32",
+        "$3.95"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.4909647,
+      "longitude": -88.9992534
+    },
+    "competitors": [
+      {
+        "name": "Kwik Star #1276",
+        "data": {
+          "name": "Kwik Star #1276 - South Beloit, IL",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.491603838395186,
+          "longitude": -88.98882026716768
+        }
+      },
+      {
+        "name": "Speedway #43526",
+        "data": {
+          "name": "Speedway #43526 - Roscoe IL",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.456193392385934,
+          "longitude": -89.00086697090748
+        }
+      },
+      {
+        "name": "Speedway #46066",
+        "data": {
+          "name": "Speedway #46066 - Beloit WI",
+          "exit": null,
+          "prices": [
+            "$3.22",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.52426394212413,
+          "longitude": -88.98522226533714
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 206",
+    "rr_store_data": {
+      "name": "Road Ranger #206 - Winnebago, IL",
+      "exit": null,
+      "prices": [
+        "$3.35",
+        "$3.60"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.2802763,
+      "longitude": -89.2422629
+    },
+    "competitors": [
+      {
+        "name": "Stockton Travel Center - Stockton, IL",
+        "data": {
+          "name": "Stockton Travel Center - Stockton, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.56"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.357645870846774,
+          "longitude": -89.99933952354394
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 209",
+    "rr_store_data": {
+      "name": "Road Ranger #209 - Oakdale, WI",
+      "exit": null,
+      "prices": [
+        "$3.27",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 43.9636232,
+      "longitude": -90.3757182
+    },
+    "competitors": [
+      {
+        "name": "Kwik Trip #796",
+        "data": {
+          "name": "Kwik Trip #796 - Tomah, WI",
+          "exit": null,
+          "prices": [
+            "$3.23",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 44.019084945386936,
+          "longitude": -90.50289492928833
+        }
+      },
+      {
+        "name": "TA Express New Lisbon #982",
+        "data": {
+          "name": "TA Express New Lisbon #982",
+          "exit": null,
+          "prices": [
+            "$3.17",
+            "$3.59"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.88566983391629,
+          "longitude": -90.14663673465826
+        }
+      },
+      {
+        "name": "Mauston Interstate BP",
+        "data": {
+          "name": "Mauston Interstate BP ",
+          "exit": null,
+          "prices": [
+            "$3.14",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.797070481713114,
+          "longitude": -90.05229108832603
+        }
+      },
+      {
+        "name": "Kwik Trip #775",
+        "data": {
+          "name": "Kwik Trip #775 - Mauston, WI",
+          "exit": null,
+          "prices": [
+            "$3.13",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 43.79734823807041,
+          "longitude": -90.06112996975432
+        }
+      },
+      {
+        "name": "Black River Oasis Travel",
+        "data": {
+          "name": "Black River Oasis Travel ",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 44.29612564788811,
+          "longitude": -90.8201077759293
+        }
+      },
+      {
+        "name": "Kwik Trip #648",
+        "data": {
+          "name": "Kwik Trip #648 - Black River Falls, WI",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 44.29370322781522,
+          "longitude": -90.83043925596067
+        }
+      },
+      {
+        "name": "Kwik Trip #240",
+        "data": {
+          "name": "Kwik Trip #240 - Black River Falls, WI",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 44.30550099366185,
+          "longitude": -90.84487001768345
+        }
+      },
+      {
+        "name": "TA Express Osseo #431",
+        "data": {
+          "name": "TA Express Osseo #431 ",
+          "exit": null,
+          "prices": [
+            "$3.11",
+            "$3.76"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 44.57778057329513,
+          "longitude": -91.1996864461816
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 210",
+    "rr_store_data": {
+      "name": "Road Ranger #210 - Rochelle, IL",
+      "exit": null,
+      "prices": [
+        "$3.33",
+        "$3.91"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.9338987,
+      "longitude": -89.0349575
+    },
+    "competitors": [
+      {
+        "name": "Kwik Star #1530",
+        "data": {
+          "name": "Kwik Star #1530 - Rochelle, IL",
+          "exit": null,
+          "prices": [
+            "$3.32",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.910095110896414,
+          "longitude": -89.06947556449107
+        }
+      },
+      {
+        "name": "Petro Rochelle #359",
+        "data": {
+          "name": "Petro Rochelle #359",
+          "exit": null,
+          "prices": [
+            "$3.64",
+            "$3.96"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.93565609319556,
+          "longitude": -89.03370800869477
+        }
+      },
+      {
+        "name": "Monroe Center Oasis",
+        "data": {
+          "name": "Monroe Center Oasis - Monroe Center, IL",
+          "exit": null,
+          "prices": [
+            "$3.71",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.10138027699496,
+          "longitude": -89.01850266829392
+        }
+      },
+      {
+        "name": "Circle K #4701408",
+        "data": {
+          "name": "Circle K #4701408 - Rochelle, IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.93561186518447,
+          "longitude": -89.03515800591724
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 211",
+    "rr_store_data": {
+      "name": "Road Ranger #211 - Loves Park, IL",
+      "exit": null,
+      "prices": [
+        "$3.34",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.3195639,
+      "longitude": -88.9693605
+    },
+    "competitors": [
+      {
+        "name": "Speedway #43528",
+        "data": {
+          "name": "Speedway #43528 - Belvidere IL",
+          "exit": null,
+          "prices": [
+            "$3.65",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.23968312110735,
+          "longitude": -88.83258367015512
+        }
+      },
+      {
+        "name": "Speedway #43526",
+        "data": {
+          "name": "Speedway #43526 - Roscoe IL",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.456193392385934,
+          "longitude": -89.00086697090748
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 225",
+    "rr_store_data": {
+      "name": "Road Ranger #225 - Princeton, IL",
+      "exit": null,
+      "prices": [
+        "$3.35",
+        "$3.85"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.4031053,
+      "longitude": -89.4689005
+    },
+    "competitors": [
+      {
+        "name": "Beck's #14",
+        "data": {
+          "name": "Beck's #14 - Princeton, IL",
+          "exit": null,
+          "prices": [
+            "$3.47",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.392990302244655,
+          "longitude": -89.4676714912272
+        }
+      },
+      {
+        "name": "Beck's Express Mart #26",
+        "data": {
+          "name": "Beck's Express Mart #26 - Geneseo, IL",
+          "exit": null,
+          "prices": [
+            "$3.46",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.43262290956302,
+          "longitude": -90.15870067022077
+        }
+      },
+      {
+        "name": "Sapp Bros Peru",
+        "data": {
+          "name": "Sapp Bros Peru",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$3.91"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.36664878506331,
+          "longitude": -89.15211731967128
+        }
+      },
+      {
+        "name": "Speedway #43628",
+        "data": {
+          "name": "Speedway #43628 - Peru IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.367536543329265,
+          "longitude": -89.1537882209605
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 226",
+    "rr_store_data": {
+      "name": "Road Ranger #226 - Greenwood, IN ",
+      "exit": null,
+      "prices": [
+        "$3.58",
+        "$3.87"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.6136413,
+      "longitude": -86.0711201
+    },
+    "competitors": [
+      {
+        "name": "Speedway #43968",
+        "data": {
+          "name": "Speedway #43968 - Greenwood IN",
+          "exit": null,
+          "prices": [
+            "$3.57",
+            "$3.86"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.61400209291108,
+          "longitude": -86.06443525244634
+        }
+      },
+      {
+        "name": "Speedway #43773",
+        "data": {
+          "name": "Speedway #43773 - Indianapolis IN",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.734415126113625,
+          "longitude": -86.06439999551247
+        }
+      },
+      {
+        "name": "Speedway #43681",
+        "data": {
+          "name": "Speedway #43681 - Indianapolis IN",
+          "exit": null,
+          "prices": [
+            "$3.52",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.75075323809462,
+          "longitude": -86.02694186377565
+        }
+      },
+      {
+        "name": "Speedway #43679",
+        "data": {
+          "name": "Speedway #43679 - Indianapolis IN",
+          "exit": null,
+          "prices": [
+            "$3.39",
+            "$3.44"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.75062930897078,
+          "longitude": -86.22439449643534
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 235",
+    "rr_store_data": {
+      "name": "Road Ranger #235 - Hampshire, IL",
+      "exit": null,
+      "prices": [
+        "$3.54",
+        "$3.94"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.149425,
+      "longitude": -88.5115959
+    },
+    "competitors": [
+      {
+        "name": "Speedway #43539",
+        "data": {
+          "name": "Speedway #43539 - Hampshire IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.14782452379277,
+          "longitude": -88.50997393543186
+        }
+      },
+      {
+        "name": "TA Elgin #44",
+        "data": {
+          "name": "TA Elgin #44",
+          "exit": null,
+          "prices": [
+            "$3.81",
+            "$3.89"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.14512835528678,
+          "longitude": -88.50952580171615
+        }
+      },
+      {
+        "name": "Speedway #43528",
+        "data": {
+          "name": "Speedway #43528 - Belvidere IL",
+          "exit": null,
+          "prices": [
+            "$3.65",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.23968312110735,
+          "longitude": -88.83258367015512
+        }
+      },
+      {
+        "name": "Gilberts Shell - Gilberts, IL",
+        "data": {
+          "name": "Gilberts Shell - Gilberts, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.10287691295133,
+          "longitude": -88.3626967053537
+        }
+      },
+      {
+        "name": "Elgin Shell - Elgin, IL",
+        "data": {
+          "name": "Elgin Shell - Elgin, IL",
+          "exit": null,
+          "prices": [
+            "$3.39",
+            "$3.49"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.09112233201638,
+          "longitude": -88.33628901971248
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 236",
+    "rr_store_data": {
+      "name": "Road Ranger #236 - East Troy, WI",
+      "exit": null,
+      "prices": [
+        "$3.25",
+        "$3.30"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 42.7906328,
+      "longitude": -88.3891736
+    },
+    "competitors": [
+      {
+        "name": "Kwik Trip #1029",
+        "data": {
+          "name": "Kwik Trip #1029 - East Troy, WI",
+          "exit": null,
+          "prices": [
+            "$3.21",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.793034178739994,
+          "longitude": -88.38758483941568
+        }
+      },
+      {
+        "name": "Casey's General Store #3705",
+        "data": {
+          "name": "Casey's General Store #3705 - Waterford, WI",
+          "exit": null,
+          "prices": [
+            "$3.07",
+            "$3.22"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.76947760516216,
+          "longitude": -88.22811437676926
+        }
+      },
+      {
+        "name": "Kwik Trip #282",
+        "data": {
+          "name": "Kwik Trip #282 - Mukwonago, WI",
+          "exit": null,
+          "prices": [
+            "$3.22",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.88103332653935,
+          "longitude": -88.34076411510534
+        }
+      },
+      {
+        "name": "Kwik Trip #239",
+        "data": {
+          "name": "Kwik Trip #239 - Big Bend, WI",
+          "exit": null,
+          "prices": [
+            "$3.32",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 42.915221668051935,
+          "longitude": -88.21976567182759
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 240",
+    "rr_store_data": {
+      "name": "Road Ranger #240 - Lake Station, IN",
+      "exit": null,
+      "prices": [
+        "$3.51",
+        "$3.60"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.5785273,
+      "longitude": -87.2396748
+    },
+    "competitors": [
+      {
+        "name": "TA Lake Station #543",
+        "data": {
+          "name": "TA Lake Station #543",
+          "exit": null,
+          "prices": [
+            "$3.58",
+            "$3.93"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.59058073436564,
+          "longitude": -87.23938116875817
+        }
+      },
+      {
+        "name": "7-Eleven #40513 (Westbound)",
+        "data": {
+          "name": "7-Eleven #40513 (WESTBOUND) - Portage, IN",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$4.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.58894060826293,
+          "longitude": -87.21729450522737
+        }
+      },
+      {
+        "name": "7-Eleven #40514 (Eastbound)",
+        "data": {
+          "name": "7-Eleven #40514 (EASTBOUND) - Portage, IN",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$4.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.58692368464473,
+          "longitude": -87.21744704730752
+        }
+      },
+      {
+        "name": "TA Porter 220",
+        "data": {
+          "name": "TA Porter #220",
+          "exit": null,
+          "prices": [
+            "$3.58",
+            "$3.90"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.6128455666299,
+          "longitude": -87.09863508394507
+        }
+      },
+      {
+        "name": "Casey's General Store #3988",
+        "data": {
+          "name": "Casey's General Store #3988 - Valparaiso, IN",
+          "exit": null,
+          "prices": [
+            "$3.56",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.55082454469514,
+          "longitude": -87.12535525053812
+        }
+      },
+      {
+        "name": "Speedway #43849",
+        "data": {
+          "name": "Speedway #43849 - Hobart IN",
+          "exit": null,
+          "prices": [
+            "$3.41",
+            "$3.46"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.507708691060294,
+          "longitude": -87.31622985421184
+        }
+      },
+      {
+        "name": "Speedway #43682",
+        "data": {
+          "name": "Speedway #43682 - Gary IN",
+          "exit": null,
+          "prices": [
+            "$3.52",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.56000068602138,
+          "longitude": -87.35517313248351
+        }
+      },
+      {
+        "name": "Speedway #43671",
+        "data": {
+          "name": "Speedway #43671 - Hobart IN",
+          "exit": null,
+          "prices": [
+            "$3.41",
+            "$3.46"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.47160464468059,
+          "longitude": -87.29647132150964
+        }
+      },
+      {
+        "name": "Petro Gary #369",
+        "data": {
+          "name": "Petro Gary #369",
+          "exit": null,
+          "prices": [
+            "$3.58",
+            "$3.86"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.56390499804018,
+          "longitude": -87.35506686403916
+        }
+      },
+      {
+        "name": "TA Gary #10",
+        "data": {
+          "name": "TA Gary #10",
+          "exit": null,
+          "prices": [
+            "$3.58",
+            "$3.86"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.57283401645929,
+          "longitude": -87.40477519196808
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 242",
+    "rr_store_data": {
+      "name": "Road Ranger #242 - Saint Robert, MO",
+      "exit": null,
+      "prices": [
+        "$3.12",
+        "$3.50"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 37.8362414,
+      "longitude": -92.0993155
+    },
+    "competitors": [
+      {
+        "name": "Maverik/Kum & Go #5323",
+        "data": {
+          "name": "Maverik/Kum & Go #5323 - Waynesville, MO",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.19"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.807244234552,
+          "longitude": -92.22216910812742
+        }
+      },
+      {
+        "name": "Stuckey's - Newburg, MO",
+        "data": {
+          "name": "Stuckey's - Newburg, MO",
+          "exit": null,
+          "prices": [
+            "$3.21",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.94397217008226,
+          "longitude": -91.88236061898176
+        }
+      },
+      {
+        "name": "Maverik/Kum & Go #5302",
+        "data": {
+          "name": "Maverik/Kum & Go #5302 - Lebanon, MO",
+          "exit": null,
+          "prices": [
+            "$3.08",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.681856978031945,
+          "longitude": -92.63799947391361
+        }
+      },
+      {
+        "name": "TA Cuba #461",
+        "data": {
+          "name": "TA Cuba #461",
+          "exit": null,
+          "prices": [
+            "$3.23",
+            "$3.66"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.07473397081995,
+          "longitude": -91.4086854297138
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 263",
+    "rr_store_data": {
+      "name": "Road Ranger #263 - Ottawa, IL",
+      "exit": null,
+      "prices": [
+        "$3.31",
+        "$3.80"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.3789124,
+      "longitude": -88.7772025
+    },
+    "competitors": [
+      {
+        "name": "Casey's General Store #3686",
+        "data": {
+          "name": "Casey's General Store #3686 - North Utica, IL",
+          "exit": null,
+          "prices": [
+            "$3.31",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.36038851344168,
+          "longitude": -89.01073858413889
+        }
+      },
+      {
+        "name": "TA Morris #236",
+        "data": {
+          "name": "TA Morris #236",
+          "exit": null,
+          "prices": [
+            "$3.71",
+            "$3.90"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.39177439548244,
+          "longitude": -88.4203624297365
+        }
+      },
+      {
+        "name": "Speedway #43628",
+        "data": {
+          "name": "Speedway #43628 - Peru IL",
+          "exit": null,
+          "prices": [
+            "$3.55",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.367536543329265,
+          "longitude": -89.1537882209605
+        }
+      },
+      {
+        "name": "Sapp Bros Peru",
+        "data": {
+          "name": "Sapp Bros Peru",
+          "exit": null,
+          "prices": [
+            "$3.61",
+            "$3.91"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.36664878506331,
+          "longitude": -89.15211731967128
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 265",
+    "rr_store_data": {
+      "name": "Road Ranger #265 - Dixon, IL",
+      "exit": null,
+      "prices": [
+        "$3.47",
+        "$3.56"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.8225492,
+      "longitude": -89.4751038
+    },
+    "competitors": [
+      {
+        "name": "Casey's General Store #4384",
+        "data": {
+          "name": "Casey's General Store #4384 - Dixon, IL",
+          "exit": null,
+          "prices": [
+            "$3.47",
+            "$3.56"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.823989472732215,
+          "longitude": -89.47537065420597
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 266",
+    "rr_store_data": {
+      "name": "Road Ranger #266 - New Berlin, IL",
+      "exit": null,
+      "prices": [
+        "$3.31",
+        "$3.80"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.7325419,
+      "longitude": -89.9245933
+    },
+    "competitors": [
+      {
+        "name": "Casey's General Store #3472",
+        "data": {
+          "name": "Casey's General Store #3472 - Virginia, IL",
+          "exit": null,
+          "prices": [
+            "$3.59",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.95379318360879,
+          "longitude": -90.20912019843826
+        }
+      },
+      {
+        "name": "Casey's General Store #3088",
+        "data": {
+          "name": "Casey's General Store #3088 - Meredosia, IL",
+          "exit": null,
+          "prices": [
+            "$3.50",
+            "$3.58"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.83100771419773,
+          "longitude": -90.5551405162462
+        }
+      },
+      {
+        "name": "Haymakers 798",
+        "data": {
+          "name": "Haymakers #798 - Pittsfield, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.607312065740395,
+          "longitude": -90.81984337436606
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 268",
+    "rr_store_data": {
+      "name": "Road Ranger #268 - Grayville, IL",
+      "exit": null,
+      "prices": [
+        "$3.45",
+        "$3.84"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 38.2401076,
+      "longitude": -87.9991526
+    },
+    "competitors": [
+      {
+        "name": "Mach 1 #18",
+        "data": {
+          "name": "Mach 1 #18 - Fairfield, IL",
+          "exit": null,
+          "prices": [
+            "$3.59",
+            "$3.67"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.379178945307,
+          "longitude": -88.37071998914479
+        }
+      },
+      {
+        "name": "Mach 1 #14",
+        "data": {
+          "name": "Mach 1 #14 - Mt. Vernon, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.300834310603655,
+          "longitude": -88.9431719118757
+        }
+      },
+      {
+        "name": "TA Mt Vernon #43",
+        "data": {
+          "name": "TA Mt Vernon #43",
+          "exit": null,
+          "prices": [
+            "$3.73",
+            "$3.87"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 38.31336584514391,
+          "longitude": -88.95937649156953
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 269",
+    "rr_store_data": {
+      "name": "Road Ranger #269 - Marshall, IL",
+      "exit": null,
+      "prices": [
+        "$3.44",
+        "$3.95"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 39.4244757,
+      "longitude": -87.6917016
+    },
+    "competitors": [
+      {
+        "name": "1803 North Food Mart (Shell)",
+        "data": {
+          "name": "1803 North Food Mart (Shell) - Marshall, IL ",
+          "exit": null,
+          "prices": [
+            "$3.72",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.417334233721895,
+          "longitude": -87.69282480054166
+        }
+      },
+      {
+        "name": "Mach 1 #10",
+        "data": {
+          "name": "Mach 1 #10 - Casey, IL",
+          "exit": null,
+          "prices": [
+            "$3.53",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 39.316566269769744,
+          "longitude": -87.98521718758117
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 270",
+    "rr_store_data": {
+      "name": "Road Ranger #270 - Moore, TX",
+      "exit": null,
+      "prices": [
+        "$3.00",
+        "$3.54"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 29.0290735,
+      "longitude": -99.0507167
+    },
+    "competitors": [
+      {
+        "name": "Big's 304",
+        "data": {
+          "name": "Big's 304 - Moore, TX",
+          "exit": null,
+          "prices": [
+            "$3.39",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.061033385372582,
+          "longitude": -99.00338635915345
+        }
+      },
+      {
+        "name": "Chubby's Travel Center - Natalia, TX",
+        "data": {
+          "name": "Chubby's Travel Center - Natalia, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.08"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.185638764137877,
+          "longitude": -98.84483677682105
+        }
+      },
+      {
+        "name": "Stripes/7Fleet #42132",
+        "data": {
+          "name": "Stripes/7Fleet #42132 - Lytle TX",
+          "exit": null,
+          "prices": [
+            "$3.02",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.230620305969204,
+          "longitude": -98.7877350037335
+        }
+      },
+      {
+        "name": "Petro Pearsall #538",
+        "data": {
+          "name": "Petro Pearsall #538",
+          "exit": null,
+          "prices": [
+            "$2.99",
+            "$3.55"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.899555933374515,
+          "longitude": -99.11587704522996
+        }
+      },
+      {
+        "name": "Refuel #1350",
+        "data": {
+          "name": "Refuel #1350 - Pearsall, TX",
+          "exit": null,
+          "prices": [
+            "$3.09",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.882008343504598,
+          "longitude": -99.11481822430416
+        }
+      },
+      {
+        "name": "Lonestar Market Truckstop - Dilley TX",
+        "data": {
+          "name": "Lonestar Market Truckstop - Dilley, TX",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT"
+        }
+      },
+      {
+        "name": "Tex Best Travel Center #506",
+        "data": {
+          "name": "Tex Best Travel Center #527 - Jourdanton, TX",
+          "exit": null,
+          "prices": [
+            "$3.07",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.668105423458194,
+          "longitude": -99.18162917749888
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 271",
+    "rr_store_data": {
+      "name": "Road Ranger #271 - Odessa, TX",
+      "exit": null,
+      "prices": [
+        "$3.00",
+        "$3.65"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 31.7638389,
+      "longitude": -102.3653369
+    },
+    "competitors": [
+      {
+        "name": "PWI #110",
+        "data": {
+          "name": "PWI #110 - Odessa, TX",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.05"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.81182113657091,
+          "longitude": -102.43311281509206
+        }
+      },
+      {
+        "name": "Allsup's #2504",
+        "data": {
+          "name": "Allsup's #2504 - West Odessa, TX",
+          "exit": null,
+          "prices": [
+            "$3.20",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.763690113051286,
+          "longitude": -102.54178707466366
+        }
+      },
+      {
+        "name": "Allsup's #2506",
+        "data": {
+          "name": "Allsup's #2506 - Odessa, TX",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.15"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.763727765083487,
+          "longitude": -102.54178606234306
+        }
+      },
+      {
+        "name": "PWI #109",
+        "data": {
+          "name": "PWI #109 - Midland, TX",
+          "exit": null,
+          "prices": [
+            "$2.93",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.913858889066034,
+          "longitude": -102.21674728313556
+        }
+      },
+      {
+        "name": "Stripes/7FLEET #42428",
+        "data": {
+          "name": "Stripes/7Fleet #42428 - Odessa TX",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.830287641709443,
+          "longitude": -102.35738059484677
+        }
+      },
+      {
+        "name": "Stripes/7FLEET #42514",
+        "data": {
+          "name": "Stripes/7FLEET #42514 - Midland, TX",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.56"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.981250902216704,
+          "longitude": -102.03578163048185
+        }
+      },
+      {
+        "name": "Allsup's #2283",
+        "data": {
+          "name": "Allsup's #2283 - Wickett, TX",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.5616930939059,
+          "longitude": -102.99792799057532
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 272",
+    "rr_store_data": {
+      "name": "Road Ranger #272 - Encinal, TX",
+      "exit": null,
+      "prices": [
+        "$3.31",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 28.0469596,
+      "longitude": -99.3485642
+    },
+    "competitors": [
+      {
+        "name": "Fuel America Travel Center #2",
+        "data": {
+          "name": "Fuel America Travel Center #2 - Encinal, TX",
+          "exit": null,
+          "prices": [
+            "$3.27",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.95289749731631,
+          "longitude": -99.37935981104096
+        }
+      },
+      {
+        "name": "Big's 301",
+        "data": {
+          "name": "Big's 301 - Cotulla, TX",
+          "exit": null,
+          "prices": [
+            "$3.59",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.443754811377868,
+          "longitude": -99.24790013321551
+        }
+      },
+      {
+        "name": "B&B Country Store",
+        "data": {
+          "name": "B&B Country Store - Cotulla, TX",
+          "exit": null,
+          "prices": [
+            "$3.26",
+            "$3.75"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.44418547906026,
+          "longitude": -99.25042705352631
+        }
+      },
+      {
+        "name": "Catarina One Stop",
+        "data": {
+          "name": "Catarina One Stop - Catarina, TX",
+          "exit": null,
+          "prices": [
+            "$3.31",
+            "$3.36"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.34636701840997,
+          "longitude": -99.6147910776756
+        }
+      },
+      {
+        "name": "Tex Best Travel Center #506",
+        "data": {
+          "name": "Tex Best Travel Center #527 - Jourdanton, TX",
+          "exit": null,
+          "prices": [
+            "$3.07",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 28.668105423458194,
+          "longitude": -99.18162917749888
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 273",
+    "rr_store_data": {
+      "name": "Road Ranger #273 - Combes, TX",
+      "exit": null,
+      "prices": [
+        "$3.08",
+        "$3.64"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 26.248973,
+      "longitude": -97.7290958
+    },
+    "competitors": [
+      {
+        "name": "Xoom - Harlingen, TX",
+        "data": {
+          "name": "Xoom - Harlingen, TX",
+          "exit": null,
+          "prices": [
+            "$3.08",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 26.159494139251183,
+          "longitude": -97.68182088505914
+        }
+      },
+      {
+        "name": "7-Eleven #40736",
+        "data": {
+          "name": "7-Eleven #40736 - Olmito, TX",
+          "exit": null,
+          "prices": [
+            "$3.08",
+            "$3.28"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 26.027752996692076,
+          "longitude": -97.53149104745006
+        }
+      },
+      {
+        "name": "Stripes #42387",
+        "data": {
+          "name": "Stripes #42387 - Weslaco TX",
+          "exit": null,
+          "prices": [
+            "$2.91",
+            "$2.96"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 26.171606862198292,
+          "longitude": -97.97525305309084
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 275",
+    "rr_store_data": {
+      "name": "Road Ranger #275 - Sonora, TX",
+      "exit": null,
+      "prices": [
+        "$3.08",
+        "$3.75"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 30.580391,
+      "longitude": -100.646245
+    },
+    "competitors": [
+      {
+        "name": "Junction Travel Center - Junction, TX",
+        "data": {
+          "name": "Junction Travel Center - Junction, TX",
+          "exit": null,
+          "prices": [
+            "$3.07",
+            "$3.13"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.507324047799326,
+          "longitude": -99.776494005771
+        }
+      },
+      {
+        "name": "Gordo's Travel Center - Junction, TX",
+        "data": {
+          "name": "Gordo's Travel Center - Junction, TX",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.18"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.510639411524686,
+          "longitude": -99.77256007842533
+        }
+      },
+      {
+        "name": "Allsup's #2401",
+        "data": {
+          "name": "Allsup's #2401 - San Angelo, TX",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.420743139913967,
+          "longitude": -100.44027872147001
+        }
+      },
+      {
+        "name": "7-Eleven #40530 - Del Rio, TX",
+        "data": {
+          "name": "7-Eleven #40530 - Del Rio, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.355004707774476,
+          "longitude": -100.90569086452382
+        }
+      },
+      {
+        "name": "Stripes #42435",
+        "data": {
+          "name": "Stripes #42435 - San Angelo, TX",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT"
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 276",
+    "rr_store_data": {
+      "name": "Road Ranger #276 - Waco, TX",
+      "exit": null,
+      "prices": [
+        "$2.89",
+        "$3.55"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 31.6506875,
+      "longitude": -97.0989245
+    },
+    "competitors": [
+      {
+        "name": "7-Eleven #42340",
+        "data": {
+          "name": "7-Eleven #42340 - Woodway TX",
+          "exit": null,
+          "prices": [
+            "$2.97",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.494521242528048,
+          "longitude": -97.16552718199404
+        }
+      },
+      {
+        "name": "PWI #164",
+        "data": {
+          "name": "PWI #164 - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.07"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.89873171433665,
+          "longitude": -97.08829457744946
+        }
+      },
+      {
+        "name": "Abbott's Travel Center",
+        "data": {
+          "name": "Abbott's Travel Center - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.21"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.898707742649826,
+          "longitude": -97.09146775003244
+        }
+      },
+      {
+        "name": "PWI #169",
+        "data": {
+          "name": "PWI #169 - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.07"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.90171678333575,
+          "longitude": -97.09245800554618
+        }
+      },
+      {
+        "name": "PWI #113",
+        "data": {
+          "name": "PWI #113 - Prairie Hill, TX",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.27"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.64891577640149,
+          "longitude": -96.79971690845103
+        }
+      },
+      {
+        "name": "7-Eleven #40558",
+        "data": {
+          "name": "7-Eleven #40558 - Waco, TX",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.58141019292863,
+          "longitude": -97.3036886385381
+        }
+      },
+      {
+        "name": "7-Eleven #40547",
+        "data": {
+          "name": "7-Eleven #40547 - Burnet, TX",
+          "exit": null,
+          "prices": [
+            "$3.02",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.73848688490274,
+          "longitude": -98.23491900155162
+        }
+      },
+      {
+        "name": "Waco Truck Stop",
+        "data": {
+          "name": "Waco Truck Stop - Hewitt, TX",
+          "exit": null,
+          "prices": [
+            "$3.22",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.424441006449307,
+          "longitude": -97.19394617501965
+        }
+      },
+      {
+        "name": "Texstar Travel Center",
+        "data": {
+          "name": "Texstar Travel Center - Temple, TX",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.27"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.11483875304303,
+          "longitude": -97.35594472334715
+        }
+      },
+      {
+        "name": "Texas Travel Center - Jarrell, TX",
+        "data": {
+          "name": "Texas Travel Center - Jarrell, TX",
+          "exit": null,
+          "prices": [
+            "$3.11",
+            "$3.16"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.86594470537462,
+          "longitude": -97.58632168739823
+        }
+      },
+      {
+        "name": "Walburg Travel Center",
+        "data": {
+          "name": "Walburg Travel Center - Georgetown, TX",
+          "exit": null,
+          "prices": [
+            "$3.13",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.71054378435169,
+          "longitude": -97.6473474792536
+        }
+      },
+      {
+        "name": "PWI #168",
+        "data": {
+          "name": "PWI #168 - Georgetown, TX",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.699067803876215,
+          "longitude": -97.65089644222168
+        }
+      },
+      {
+        "name": "Circle K #2741564",
+        "data": {
+          "name": "Circle K #2741564 - Lacy Lakeview, TX",
+          "exit": null,
+          "prices": [
+            "$2.85",
+            "$3.08"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.60674295698739,
+          "longitude": -97.11132015633278
+        }
+      },
+      {
+        "name": "Circle K #2741328",
+        "data": {
+          "name": "Circle K #2741328 - Hewitt, TX",
+          "exit": null,
+          "prices": [
+            "$2.85",
+            "$3.03"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.458145360814232,
+          "longitude": -97.17476809243368
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 277",
+    "rr_store_data": {
+      "name": "Road Ranger #277 - New Boston, TX",
+      "exit": null,
+      "prices": [
+        "$3.04",
+        "$3.60"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 33.4772576,
+      "longitude": -94.4104669
+    },
+    "competitors": [
+      {
+        "name": "Charge Up 96",
+        "data": {
+          "name": "Charge Up 96 - Hooks, TX",
+          "exit": null,
+          "prices": [
+            "$2.92",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.47580176685829,
+          "longitude": -94.28870088305828
+        }
+      },
+      {
+        "name": "PWI #105",
+        "data": {
+          "name": "PWI #105 - Hooks, TX",
+          "exit": null,
+          "prices": [
+            "$2.91",
+            "$2.96"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.473284132577795,
+          "longitude": -94.28968320352381
+        }
+      },
+      {
+        "name": "Cubbies Travel Center - Mt Pleasant, TX",
+        "data": {
+          "name": "Cubbies Travel Center - Mt Pleasant, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.05"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.19585473573783,
+          "longitude": -94.92104570072286
+        }
+      },
+      {
+        "name": "Allsup's #2481",
+        "data": {
+          "name": "Allsup's #2481 - Mt. Vernon, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.161112018666515,
+          "longitude": -95.17695921832933
+        }
+      },
+      {
+        "name": "TA Express Mount Vernon #286",
+        "data": {
+          "name": "TA Express Mount Vernon #286",
+          "exit": null,
+          "prices": [
+            "$3.06",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.16104684959395,
+          "longitude": -95.21639484290705
+        }
+      },
+      {
+        "name": "Circle K #2744522 - New Boston, TX",
+        "data": {
+          "name": "Circle K #2744522 - New Boston, TX",
+          "exit": null,
+          "prices": [
+            "$2.80",
+            "$2.95"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.47615123133782,
+          "longitude": -94.40965897315992
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 278",
+    "rr_store_data": {
+      "name": "Road Ranger #278 - Brinkley, AR",
+      "exit": null,
+      "prices": [
+        "$3.10",
+        "$3.30"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 34.912517,
+      "longitude": -91.193759
+    },
+    "competitors": [
+      {
+        "name": "Chubbys At Forrest City - Forrest City, AR",
+        "data": {
+          "name": "Chubbys At Forrest City - Forrest City, AR",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.16"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.0299391550339,
+          "longitude": -90.81599057313142
+        }
+      },
+      {
+        "name": "Speedway #47321",
+        "data": {
+          "name": "Speedway #47321 - Forrest City AR",
+          "exit": null,
+          "prices": [
+            "$3.11",
+            "$3.36"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.03959916443799,
+          "longitude": -90.78942470164918
+        }
+      },
+      {
+        "name": "Double Quick #0093",
+        "data": {
+          "name": "Double Quick #0093 - Lexa, AR",
+          "exit": null,
+          "prices": [
+            "$3.19",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.55542619868991,
+          "longitude": -90.7687596720471
+        }
+      },
+      {
+        "name": "Casey's General Store #4554",
+        "data": {
+          "name": "Casey's General Store #4554 - Stuttgart, AR",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.536890510954336,
+          "longitude": -91.55601408850558
+        }
+      },
+      {
+        "name": "TA Earle #33",
+        "data": {
+          "name": "TA Earle #33",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.136522008546365,
+          "longitude": -90.48807947400348
+        }
+      },
+      {
+        "name": "Petro N. Little Rock #326",
+        "data": {
+          "name": "Petro N. Little Rock #326",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.75"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.78084052952474,
+          "longitude": -92.12970722812653
+        }
+      },
+      {
+        "name": "Truckomat of North Little Rock - North Little Rock, AR",
+        "data": {
+          "name": "Truckomat of North Little Rock - North Little Rock, AR",
+          "exit": null,
+          "prices": [
+            "$3.09",
+            "$3.41"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.77990703503184,
+          "longitude": -92.13236038360056
+        }
+      },
+      {
+        "name": "Petro W. Memphis #311",
+        "data": {
+          "name": "Petro W. Memphis #311",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.15437876005615,
+          "longitude": -90.13595928786687
+        }
+      },
+      {
+        "name": "Circle K #2741791",
+        "data": {
+          "name": "Circle K #2741791 - Lonoke, AR",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.55"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.80659780868086,
+          "longitude": -91.88573088169396
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 279",
+    "rr_store_data": {
+      "name": "Road Ranger #279 - Marion, IL",
+      "exit": null,
+      "prices": [
+        "$3.42",
+        "$4.06"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 37.6197159,
+      "longitude": -88.9859542
+    },
+    "competitors": [
+      {
+        "name": "Huck's Food & Fuel #379",
+        "data": {
+          "name": "Huck's Food & Fuel #379 - Marion, IL",
+          "exit": null,
+          "prices": [
+            "$3.42",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.730244928297445,
+          "longitude": -88.96579547003122
+        }
+      },
+      {
+        "name": "Mach 1 #13",
+        "data": {
+          "name": "Mach 1 #13 - Marion, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.7296935292715,
+          "longitude": -88.95173914594523
+        }
+      },
+      {
+        "name": "Huck's Food & Fuel #367",
+        "data": {
+          "name": "Huck's Food & Fuel #367 - Carterville, IL",
+          "exit": null,
+          "prices": [
+            "$3.62",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.746119698362705,
+          "longitude": -89.09666291815674
+        }
+      },
+      {
+        "name": "Mach 1 #12",
+        "data": {
+          "name": "Mach 1 #12 - West Frankfort, IL",
+          "exit": null,
+          "prices": [
+            "$3.45",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.897866975628325,
+          "longitude": -88.95134292802541
+        }
+      },
+      {
+        "name": "Mach 1 #21",
+        "data": {
+          "name": "Mach 1 #21 - Harrisburg, IL",
+          "exit": null,
+          "prices": [
+            "$3.64",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.738636253728714,
+          "longitude": -88.53158477653227
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 280",
+    "rr_store_data": {
+      "name": "Road Ranger #280 - Monahans, TX",
+      "exit": null,
+      "prices": [
+        "$3.05",
+        "$3.70"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 31.5694524,
+      "longitude": -102.9074723
+    },
+    "competitors": [
+      {
+        "name": "Allsup's #2283",
+        "data": {
+          "name": "Allsup's #2283 - Wickett, TX",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.5616930939059,
+          "longitude": -102.99792799057532
+        }
+      },
+      {
+        "name": "PWI #112",
+        "data": {
+          "name": "PWI #112 - Wickett, TX",
+          "exit": null,
+          "prices": [
+            "$2.95",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.559937067815863,
+          "longitude": -102.99639470808486
+        }
+      },
+      {
+        "name": "Allsup's #2506",
+        "data": {
+          "name": "Allsup's #2506 - Odessa, TX",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.15"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.763727765083487,
+          "longitude": -102.54178606234306
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 281",
+    "rr_store_data": {
+      "name": "Road Ranger #281 - Cisco, TX",
+      "exit": null,
+      "prices": [
+        "$3.09",
+        "$3.64"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 32.3732195,
+      "longitude": -98.9691457
+    },
+    "competitors": [
+      {
+        "name": "Stripes/7FLEET #42524",
+        "data": {
+          "name": "Stripes/7FLEET #42524 - Cisco, TX",
+          "exit": null,
+          "prices": [
+            "$3.15",
+            "$3.54"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.37633940559405,
+          "longitude": -99.00280531225121
+        }
+      },
+      {
+        "name": "Eastland Truck Stop",
+        "data": {
+          "name": "Eastland Truck Stop - Eastland, TX",
+          "exit": null,
+          "prices": [
+            "$3.09",
+            "$3.14"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.37762623978675,
+          "longitude": -98.83016643837706
+        }
+      },
+      {
+        "name": "Bar-B Travel Plaza - Gordon, TX",
+        "data": {
+          "name": "Bar-B Travel Plaza - Gordon, TX",
+          "exit": null,
+          "prices": [
+            "$3.09",
+            "$3.16"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.51557401411168,
+          "longitude": -98.36897100271833
+        }
+      },
+      {
+        "name": "Allsup's #2428",
+        "data": {
+          "name": "Allsup's #2428 - Abilene, TX",
+          "exit": null,
+          "prices": [
+            "$3.08",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.32181897280047,
+          "longitude": -99.7502604197582
+        }
+      },
+      {
+        "name": "Allsup's #2390",
+        "data": {
+          "name": "Allsup's #2390 - Merkel, TX",
+          "exit": null,
+          "prices": [
+            "$3.13",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.46808647580628,
+          "longitude": -99.98451972823028
+        }
+      },
+      {
+        "name": "Iron Horse Travel Center",
+        "data": {
+          "name": "Iron Horse Travel Center - Merkel, TX",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.46793736387741,
+          "longitude": -99.98951785819777
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 282",
+    "rr_store_data": {
+      "name": "Road Ranger #282 - Gainesville, TX",
+      "exit": null,
+      "prices": [
+        "$2.85",
+        "$3.20"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 33.6698776,
+      "longitude": -97.1523269
+    },
+    "competitors": [
+      {
+        "name": "Allsup's #2468",
+        "data": {
+          "name": "Allsup's #2468 - Thackerville, OK",
+          "exit": null,
+          "prices": [
+            "$2.88",
+            "$2.98"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.79486158502583,
+          "longitude": -97.13840386024788
+        }
+      },
+      {
+        "name": "Marietta Petroleum",
+        "data": {
+          "name": "Marietta Petroleum",
+          "exit": null,
+          "prices": [
+            "$2.93",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.94105002639945,
+          "longitude": -97.12706987129579
+        }
+      },
+      {
+        "name": "TA Denton #266",
+        "data": {
+          "name": "TA Denton #266",
+          "exit": null,
+          "prices": [
+            "$3.06",
+            "$3.55"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.26215806111456,
+          "longitude": -97.17663751440426
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 283",
+    "rr_store_data": {
+      "name": "Road Ranger #283 - Sealy, TX",
+      "exit": null,
+      "prices": [
+        "$3.01",
+        "$3.65"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 29.7512182,
+      "longitude": -96.2665791
+    },
+    "competitors": [
+      {
+        "name": "PWI #123",
+        "data": {
+          "name": "PWI #123 - Sealy, TX",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.762157513177932,
+          "longitude": -96.15221752634181
+        }
+      },
+      {
+        "name": "TA Bernardo #270",
+        "data": {
+          "name": "TA Bernardo #270",
+          "exit": null,
+          "prices": [
+            "$2.99",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.742773727802007,
+          "longitude": -96.32995737571623
+        }
+      },
+      {
+        "name": "Elan #03",
+        "data": {
+          "name": "Elan #03 - Wallis, TX",
+          "exit": null,
+          "prices": [
+            "$3.02",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.631566526178982,
+          "longitude": -96.06663271866856
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 284",
+    "rr_store_data": {
+      "name": "Road Ranger #284 - New Deal, TX",
+      "exit": null,
+      "prices": [
+        "$3.13",
+        "$3.55"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 33.7366181,
+      "longitude": -101.8434558
+    },
+    "competitors": [
+      {
+        "name": "Toot'n Totum #127",
+        "data": {
+          "name": "Toot'n Totum #127 - Plainview, TX",
+          "exit": null,
+          "prices": [
+            "$2.95",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 34.188402427747285,
+          "longitude": -101.74860863732901
+        }
+      },
+      {
+        "name": "New Deal Travel Center Hop In #469",
+        "data": {
+          "name": "New Deal Travel Center Hop In #469",
+          "exit": null,
+          "prices": [
+            "$3.03",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.73793774242955,
+          "longitude": -101.83981956483537
+        }
+      },
+      {
+        "name": "Circle K #2709057",
+        "data": {
+          "name": "Circle K #2709057 - Lubbock, TX",
+          "exit": null,
+          "prices": [
+            "$2.84",
+            "$2.99"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.61640436615377,
+          "longitude": -101.84240290275996
+        }
+      },
+      {
+        "name": "Stripes/7FLEET #42564",
+        "data": {
+          "name": "Stripes/7FLEET #42564 - Lubbock, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.549284317636896,
+          "longitude": -101.83632875279868
+        }
+      },
+      {
+        "name": "Stripes #42503",
+        "data": {
+          "name": "Stripes #42503 - Lubbock, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.520388039979274,
+          "longitude": -101.8452414696685
+        }
+      },
+      {
+        "name": "Allsup's #2480",
+        "data": {
+          "name": "Allsup's #2480 - Lubbock, TX",
+          "exit": null,
+          "prices": [
+            "$3.20",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 33.50587853075701,
+          "longitude": -101.84598397238027
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 285",
+    "rr_store_data": {
+      "name": "Road Ranger #285 - Seguin, TX",
+      "exit": null,
+      "prices": [
+        "$3.05",
+        "$3.59"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 29.5713702,
+      "longitude": -98.0119416
+    },
+    "competitors": [
+      {
+        "name": "PWI #167",
+        "data": {
+          "name": "PWI #167 - Seguin, TX",
+          "exit": null,
+          "prices": [
+            "$2.99",
+            "$3.17"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.54120752561135,
+          "longitude": -98.07386780165785
+        }
+      },
+      {
+        "name": "Refuel #1326",
+        "data": {
+          "name": "Refuel #1326 - Seguin, TX",
+          "exit": null,
+          "prices": [
+            "$2.99",
+            "$3.36"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.536977436915773,
+          "longitude": -97.9876797046402
+        }
+      },
+      {
+        "name": "PWI #120",
+        "data": {
+          "name": "PWI #120 - Schertz, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.19"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.497873830657284,
+          "longitude": -98.19754381678844
+        }
+      },
+      {
+        "name": "Trainer Mart - Marion, TX",
+        "data": {
+          "name": "Trainer Mart - Marion, TX",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.19"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.496618393137023,
+          "longitude": -98.19554786124495
+        }
+      },
+      {
+        "name": "Tex Best #530",
+        "data": {
+          "name": "Tex Best #530 - Luling, TX",
+          "exit": null,
+          "prices": [
+            "$3.09",
+            "$3.44"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.652668558993252,
+          "longitude": -97.65860487124081
+        }
+      },
+      {
+        "name": "Circle K #2741096 - Converse, TX",
+        "data": {
+          "name": "Circle K #2741096 - Converse, TX",
+          "exit": null,
+          "prices": [
+            "$2.88",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.48720933333974,
+          "longitude": -98.22254734004221
+        }
+      },
+      {
+        "name": "Circle K #2741094 - Seguin, TX",
+        "data": {
+          "name": "Circle K #2741094 - Seguin, TX",
+          "exit": null,
+          "prices": [
+            "$2.90",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 29.60649060883672,
+          "longitude": -98.01275252754836
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 286",
+    "rr_store_data": {
+      "name": "Road Ranger #286 - Amarillo, TX",
+      "exit": null,
+      "prices": [
+        "$2.95",
+        "$3.55"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 35.1934938,
+      "longitude": -101.7077997
+    },
+    "competitors": [
+      {
+        "name": "Petro Amarillo #307",
+        "data": {
+          "name": "Petro Amarillo #307",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.1917503015637,
+          "longitude": -101.74365724791869
+        }
+      },
+      {
+        "name": "TA Amarillo #55",
+        "data": {
+          "name": "TA Amarillo #55",
+          "exit": null,
+          "prices": [
+            "$2.98",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.19150031184135,
+          "longitude": -101.75880644357795
+        }
+      },
+      {
+        "name": "Circle K #2709231",
+        "data": {
+          "name": "Circle K #2709231 - Amarillo, TX",
+          "exit": null,
+          "prices": [
+            "$2.75",
+            "$2.90"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.11753483388075,
+          "longitude": -101.91088129418259
+        }
+      },
+      {
+        "name": "Toot'n Totum #128",
+        "data": {
+          "name": "Toot’n Totum #128 - Amarillo, TX",
+          "exit": null,
+          "prices": [
+            "$2.95",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.197743196825606,
+          "longitude": -102.0644329899918
+        }
+      },
+      {
+        "name": "Allsup's #2304",
+        "data": {
+          "name": "Allsup's #2304 - Vega, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.23815951129167,
+          "longitude": -102.4292032018024
+        }
+      },
+      {
+        "name": "Garrison's Convenience Store",
+        "data": {
+          "name": "Garrison's Convenience Store, Groom, TX",
+          "exit": null,
+          "prices": [
+            "$2.84",
+            "$2.90"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.2109758267523,
+          "longitude": -101.10043298762972
+        }
+      },
+      {
+        "name": "Garrison's Crossroads",
+        "data": {
+          "name": "Garrison's Crossroads - Shamrock, TX",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.03"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.22916072814821,
+          "longitude": -100.24879316012007
+        }
+      },
+      {
+        "name": "Allsup's #2399",
+        "data": {
+          "name": "Allsup's #2399 - Claude, TX",
+          "exit": null,
+          "prices": [
+            "$3.06",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 35.11105785677056,
+          "longitude": -101.36050561142298
+        }
+      },
+      {
+        "name": "Toot’n Totum #99",
+        "data": {
+          "name": "Toot’n Totum #99 - Amarillo, TX",
+          "exit": null,
+          "prices": [
+            "$2.95",
+            "$3.00"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT"
+        }
+      },
+      {
+        "name": "Circle K #2709243",
+        "data": {
+          "name": "Circle K #2709243 - Amarillo, TX",
+          "exit": null,
+          "prices": [
+            "$2.82",
+            "$2.90"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT"
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 287",
+    "rr_store_data": {
+      "name": "Road Ranger #287 - Bourbonnais, IL",
+      "exit": null,
+      "prices": [
+        "$3.63",
+        "$3.91"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 41.2053346,
+      "longitude": -87.8705719
+    },
+    "competitors": [
+      {
+        "name": "Peotone Travel Center - Peotone, IL",
+        "data": {
+          "name": "Peotone Travel Center - Peotone, IL",
+          "exit": null,
+          "prices": [
+            "$3.62",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.32518858073451,
+          "longitude": -87.8227260713436
+        }
+      },
+      {
+        "name": "Gas N Wash - Bourbonnais, IL",
+        "data": {
+          "name": " Gas N Wash - Bourbonnais, IL",
+          "exit": null,
+          "prices": [
+            "$3.65",
+            "$3.76"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.2060544624899,
+          "longitude": -87.8779217946415
+        }
+      },
+      {
+        "name": "Gas N Wash - Kankakee, IL",
+        "data": {
+          "name": "Gas N Wash - Kankakee, IL",
+          "exit": null,
+          "prices": [
+            "$3.67",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.120378080974156,
+          "longitude": -87.8671704363525
+        }
+      },
+      {
+        "name": "Speedway #43507",
+        "data": {
+          "name": "Speedway #43507 - Kankakee IL",
+          "exit": null,
+          "prices": [
+            "$3.60",
+            "$3.65"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 41.07861196840908,
+          "longitude": -87.8683617048865
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 289",
+    "rr_store_data": {
+      "name": "Road Ranger #289 - Teague, TX",
+      "exit": null,
+      "prices": [
+        "$3.01",
+        "$3.48"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 31.5964732,
+      "longitude": -96.1467748
+    },
+    "competitors": [
+      {
+        "name": "TA Express Fairfield #290",
+        "data": {
+          "name": "TA Express Fairfield #290",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.54"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.725520738061537,
+          "longitude": -96.17758505518175
+        }
+      },
+      {
+        "name": "PWI #115 - Buffalo, TX",
+        "data": {
+          "name": "PWI #115 - Buffalo, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.449386802173972,
+          "longitude": -96.07807637204186
+        }
+      },
+      {
+        "name": "Woody's Diesel Express - Centerville, TX",
+        "data": {
+          "name": "Woody's Diesel Express - Centerville, TX",
+          "exit": null,
+          "prices": [
+            "$3.03",
+            "$3.09"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.25848651486395,
+          "longitude": -95.99026832181981
+        }
+      },
+      {
+        "name": "A One Stop - Ennis, TX",
+        "data": {
+          "name": "A One Stop - Ennis, TX",
+          "exit": null,
+          "prices": [
+            "$3.10",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.286114912443054,
+          "longitude": -96.54552841706226
+        }
+      },
+      {
+        "name": "Woody's Diesel Express - Centerville, TX",
+        "data": {
+          "name": "Woody's Diesel Express - Centerville, TX",
+          "exit": null,
+          "prices": [
+            "$3.03",
+            "$3.09"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.25848651486395,
+          "longitude": -95.99026832181981
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 290",
+    "rr_store_data": {
+      "name": "Road Ranger #290 - Joplin, MO",
+      "exit": null,
+      "prices": [
+        "$3.18",
+        "$3.30"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 37.0674002,
+      "longitude": -94.4032877
+    },
+    "competitors": [
+      {
+        "name": "Big Apple Travel Center - Joplin, MO",
+        "data": {
+          "name": "Big Apple Travel Center - Joplin, MO",
+          "exit": null,
+          "prices": [
+            "$3.16",
+            "$3.25"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.067194246334125,
+          "longitude": -94.4058868601641
+        }
+      },
+      {
+        "name": "Maverik/Kum & Go #5314",
+        "data": {
+          "name": "Maverik/Kum & Go #5314 - Joplin, MO",
+          "exit": null,
+          "prices": [
+            "$3.03",
+            "$3.30"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.033162186433096,
+          "longitude": -94.51600570216621
+        }
+      },
+      {
+        "name": "Joplin 44 Petro #354",
+        "data": {
+          "name": "Joplin 44 Petro #354",
+          "exit": null,
+          "prices": [
+            "$3.13",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.00729170783241,
+          "longitude": -94.55238122002015
+        }
+      },
+      {
+        "name": "Casey's General Store #4256",
+        "data": {
+          "name": "Casey's General Store #4256 - Joplin, MO",
+          "exit": null,
+          "prices": [
+            "$3.15",
+            "$3.25"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 36.96898314094897,
+          "longitude": -94.43156664669145
+        }
+      },
+      {
+        "name": "46 Travel Center - Mount Vernon, MO",
+        "data": {
+          "name": "46 Travel Center - Mount Vernon, MO",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.09476678377055,
+          "longitude": -93.80748602442355
+        }
+      },
+      {
+        "name": "Ozark Travel Center / TA Mount Vernon #924",
+        "data": {
+          "name": "Ozark Travel Center / TA Mount Vernon #924",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.53"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 37.08998533258768,
+          "longitude": -93.80060300930423
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 312",
+    "rr_store_data": {
+      "name": "Road Ranger #312 - Vidor, TX",
+      "exit": null,
+      "prices": [
+        "$2.90",
+        "$3.61"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 30.131185,
+      "longitude": -93.959974
+    },
+    "competitors": [
+      {
+        "name": "Stuckey's Travel Center - Orange, TX",
+        "data": {
+          "name": "Stuckey's Travel Center - Orange, TX",
+          "exit": null,
+          "prices": [
+            "$2.90",
+            "$2.95"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.130970867795007,
+          "longitude": -93.88190350096312
+        }
+      },
+      {
+        "name": "Gateway Travel Plaza - Vidor, TX",
+        "data": {
+          "name": "Gateway Travel Plaza - Vidor, TX",
+          "exit": null,
+          "prices": [
+            "$2.90",
+            "$2.95"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.112375925622388,
+          "longitude": -94.04343325371995
+        }
+      },
+      {
+        "name": "Petro Beaumont #304",
+        "data": {
+          "name": "Petro Beaumont #304",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.70"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.037087121621024,
+          "longitude": -94.15610102508501
+        }
+      },
+      {
+        "name": "PWI #363",
+        "data": {
+          "name": "PWI #363 - Orange, TX",
+          "exit": null,
+          "prices": [
+            "$2.75",
+            "$2.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.119437808632284,
+          "longitude": -93.73165454910816
+        }
+      },
+      {
+        "name": "Flash Fuel Express #4 - Vinton, LA",
+        "data": {
+          "name": "Flash Fuel Express #4 - Vinton, LA",
+          "exit": null,
+          "prices": [
+            "$2.94",
+            "$3.06"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 30.151118860507772,
+          "longitude": -93.63738295489465
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 315",
+    "rr_store_data": {
+      "name": "Road Ranger #315 - Laredo, TX",
+      "exit": null,
+      "prices": [
+        "$3.27",
+        "$3.69"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 27.6536303,
+      "longitude": -99.5632614
+    },
+    "competitors": [
+      {
+        "name": "TA Laredo #153",
+        "data": {
+          "name": "TA Laredo #153",
+          "exit": null,
+          "prices": [
+            "$3.24",
+            "$3.80"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.687381384291264,
+          "longitude": -99.46341877353072
+        }
+      },
+      {
+        "name": "Yumm! - Laredo, TX",
+        "data": {
+          "name": "Yumm! - Laredo, TX",
+          "exit": null,
+          "prices": [
+            "$3.30",
+            "$3.50"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.605303670197085,
+          "longitude": -99.51732857204847
+        }
+      },
+      {
+        "name": "Fuel America Travel Center - Laredo, TX",
+        "data": {
+          "name": "Fuel America Travel Center - Laredo, TX",
+          "exit": null,
+          "prices": [
+            "$3.29",
+            "$3.40"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.613516106037245,
+          "longitude": -99.52351303910093
+        }
+      },
+      {
+        "name": "Fuel America Travel Center #2",
+        "data": {
+          "name": "Fuel America Travel Center #2 - Encinal, TX",
+          "exit": null,
+          "prices": [
+            "$3.27",
+            "$3.35"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.95289749731631,
+          "longitude": -99.37935981104096
+        }
+      },
+      {
+        "name": "Circle K #2741831",
+        "data": {
+          "name": "Circle K #2741831 - Laredo, TX",
+          "exit": null,
+          "prices": [
+            "$2.80",
+            "$2.95"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 27.61020610021275,
+          "longitude": -99.47814746265773
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 319",
+    "rr_store_data": {
+      "name": "Road Ranger #319 - Milford, TX",
+      "exit": null,
+      "prices": [
+        "$3.07",
+        "$3.55"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 32.1336355,
+      "longitude": -96.952332
+    },
+    "competitors": [
+      {
+        "name": "Petro Carl's Corner #533",
+        "data": {
+          "name": "Petro Carl's Corner #533",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.56"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.07938261956281,
+          "longitude": -97.0552368508532
+        }
+      },
+      {
+        "name": "TA Hillsboro #333",
+        "data": {
+          "name": "TA Hillsboro #333",
+          "exit": null,
+          "prices": [
+            "$3.05",
+            "$3.64"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.04548399855844,
+          "longitude": -97.09083150282643
+        }
+      },
+      {
+        "name": "PWI #169",
+        "data": {
+          "name": "PWI #169 - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.07"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.90171678333575,
+          "longitude": -97.09245800554618
+        }
+      },
+      {
+        "name": "Abbott's Travel Center - Abbott, TX",
+        "data": {
+          "name": "Abbott's Travel Center - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.00",
+            "$3.21"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.898726843656913,
+          "longitude": -97.0914227608122
+        }
+      },
+      {
+        "name": "PWI #164",
+        "data": {
+          "name": "PWI #164 - Abbott, TX",
+          "exit": null,
+          "prices": [
+            "$3.01",
+            "$3.07"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 31.89873171433665,
+          "longitude": -97.08829457744946
+        }
+      },
+      {
+        "name": "Truck and Travel - Weatherford, TX",
+        "data": {
+          "name": "Truck and Travel - Weatherford, TX",
+          "exit": null,
+          "prices": [
+            "$3.07",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.729794966683926,
+          "longitude": -97.8222046809265
+        }
+      },
+      {
+        "name": "Petro Weatherford #302",
+        "data": {
+          "name": "Petro Weatherford #302",
+          "exit": null,
+          "prices": [
+            "$3.02",
+            "$3.60"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.73885116362983,
+          "longitude": -97.76533352252477
+        }
+      }
+    ]
+  },
+  {
+    "rr_store": "Road Ranger 323",
+    "rr_store_data": {
+      "name": "Road Ranger #323 - Canton, TX",
+      "exit": null,
+      "prices": [
+        "$3.03",
+        "$3.40"
+      ],
+      "status": "FOUND",
+      "reason": "MUDFLAP_DISCOUNT",
+      "latitude": 32.5820887,
+      "longitude": -95.8741616
+    },
+    "competitors": [
+      {
+        "name": "Circle K #2706340",
+        "data": {
+          "name": "Circle K #2706340 - Canton, TX",
+          "exit": null,
+          "prices": [
+            "$2.90",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.576739307624386,
+          "longitude": -95.85455052765516
+        }
+      },
+      {
+        "name": "McDonald's Fuel Stop - Terrell, TX",
+        "data": {
+          "name": "McDonald's Fuel Stop - Terrell, TX",
+          "exit": null,
+          "prices": [
+            "$3.03",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.66854201587615,
+          "longitude": -96.14968429192737
+        }
+      },
+      {
+        "name": "TA Terrell #233",
+        "data": {
+          "name": "TA Terrell #233",
+          "exit": null,
+          "prices": [
+            "$3.02",
+            "$3.59"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.690720397526384,
+          "longitude": -96.24416134487797
+        }
+      },
+      {
+        "name": "Midway #34 - Tyler, TX",
+        "data": {
+          "name": "Midway #34 - Tyler, TX",
+          "exit": null,
+          "prices": [
+            "$3.04",
+            "$3.16"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.451069989495366,
+          "longitude": -95.18621558682608
+        }
+      },
+      {
+        "name": "TA Express Kilgore #281",
+        "data": {
+          "name": "TA Express Kilgore #281",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.49"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.43134401812251,
+          "longitude": -94.86379662140273
+        }
+      },
+      {
+        "name": "Zippy J's #6 - Longview, TX",
+        "data": {
+          "name": "Zippy J's #6 - Longview, TX",
+          "exit": null,
+          "prices": [
+            "$3.12",
+            "$3.20"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT",
+          "latitude": 32.42318554042544,
+          "longitude": -94.71642469471423
+        }
+      },
+      {
+        "name": "Circle K #2744532",
+        "data": {
+          "name": "Circle K #2744532 - Terrell, TX",
+          "exit": null,
+          "prices": [
+            "$2.95",
+            "$3.10"
+          ],
+          "status": "FOUND",
+          "reason": "MUDFLAP_DISCOUNT"
+        }
+      }
+    ]
+  }
+]
