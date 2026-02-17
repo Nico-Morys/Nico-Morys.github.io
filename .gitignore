@@ -12,6 +12,7 @@
 !pricedata/
 !pricedata/*.json
 
+
 # Allow manifest.json (tracks historical files for price-index.html)
 !manifest.json
 
