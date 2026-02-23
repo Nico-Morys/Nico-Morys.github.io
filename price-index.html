@@ -4353,12 +4353,17 @@
                             const timeStr = timestampMatch[2];
                             // Format: YYYYMMDD_HHMMSS
                             fileTimestamp = new Date(
-                                `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}T${timeStr.slice(0,2)}:${timeStr.slice(2,4)}:${timeStr.slice(4,6)}`
+                                `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}T${timeStr.slice(0,2)}:${timeStr.slice(2,4)}:${timeStr.slice(4,6)}Z`
                             );
                         } else {
                             fileTimestamp = new Date(); // Use current time for master file
                         }
                         
+                        if (isNaN(fileTimestamp.getTime())) {
+                            console.warn(`Invalid timestamp parsed for ${filename}, skipping`);
+                            return [];
+                        }
+
                         const fileData = [];
                         
                         // Parse CSV data (only necessary columns for performance)
