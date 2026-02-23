@@ -12,6 +12,8 @@
 !pricedata/
 !pricedata/*.json
 
+#Allow price-index.html (if you want it on GitHub Pages)
+!price-index.html
 
 # Allow manifest.json (tracks historical files for price-index.html)
 !manifest.json
