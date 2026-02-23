@@ -1,10 +1,11 @@
 {
   "historical_files": [
     "historical/20260223_033129_master_price_data.csv",
-    "historical/20260223_041307_master_price_data.csv"
+    "historical/20260223_041307_master_price_data.csv",
+    "historical/20260223_045440_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260223_041307_master_price_data.csv",
-  "last_updated": "2026-02-23T04:13:07.495908+00:00",
-  "timestamp": "20260223_041307"
+  "latest_historical_csv": "historical/20260223_045440_master_price_data.csv",
+  "last_updated": "2026-02-23T04:54:40.282269+00:00",
+  "timestamp": "20260223_045440"
 }
