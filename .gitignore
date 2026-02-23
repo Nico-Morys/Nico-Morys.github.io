@@ -12,7 +12,7 @@
 !pricedata/
 !pricedata/*.json
 
-#Allow price-index.html (if you want it on GitHub Pages)
+#Allow price-index.html
 !price-index.html
 
 # Allow manifest.json (tracks historical files for price-index.html)
@@ -21,6 +21,3 @@
 # Allow .gitignore itself
 !.gitignore
 
-# Optionally allow price-index.html if you want it on GitHub Pages
-# Uncomment the line below if you want to include it:
-# !price-index.html
