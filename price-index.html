@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Road Ranger Pricing Index</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -661,6 +662,128 @@
             height: 400px;
             color: #6c757d;
             font-size: 14px;
+        }
+
+        /* Live Volume Section */
+        .live-volume-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .volume-header {
+            background: #f8f9fa;
+            color: #333;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .volume-header:hover {
+            background: #f1f3f5;
+        }
+
+        .volume-toggle {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .volume-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .volume-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .volume-content.expanded {
+            max-height: 500px;
+        }
+
+        .volume-body {
+            padding: 20px 24px;
+        }
+
+        .volume-controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .volume-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .volume-control-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .volume-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .volume-btn {
+            padding: 8px 16px;
+            background: #e9ecef;
+            color: #333;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .volume-btn:hover {
+            background: #dee2e6;
+        }
+
+        .volume-btn.active {
+            background: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        .volume-chart-container {
+            position: relative;
+            height: 280px;
+            margin-top: 8px;
+        }
+
+        .volume-no-data {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 280px;
+            color: #6c757d;
+            font-size: 14px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .volume-no-data-icon {
+            font-size: 36px;
         }
 
         /* Pricing Tables */
@@ -2103,6 +2226,11 @@
         let trendsFuelType = 'Regular';
         let trendsTimeFrame = 'Live';
         let trendsChart = null;
+
+        // Live Volume state
+        let volumeFuelType = 'Unlead';
+        let volumeDays = 7;
+        let volumeChart = null;
         let historicalData = [];
         let historicalDataCache = null; // Cache all historical data
         let historicalDataLoading = false; // Prevent duplicate loads
@@ -3733,6 +3861,11 @@
                 trendsChart.destroy();
                 trendsChart = null;
             }
+            // Clean up volume chart
+            if (volumeChart) {
+                volumeChart.destroy();
+                volumeChart = null;
+            }
             
             // Store current selection
             currentStore = store;
@@ -3859,6 +3992,40 @@
                             <!-- Chart Container -->
                             <div class="trends-chart-container">
                                 <canvas id="price-trends-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add Live Volume section
+            html += `
+                <div class="live-volume-section">
+                    <div class="volume-header" onclick="toggleVolumeDropdown()">
+                        <span>Live Volume</span>
+                        <span class="volume-toggle collapsed" id="volume-toggle">&#8592</span>
+                    </div>
+                    <div class="volume-content collapsed" id="volume-content">
+                        <div class="volume-body">
+                            <div class="volume-controls">
+                                <div class="volume-control-group">
+                                    <label class="volume-control-label">Fuel Type</label>
+                                    <div class="volume-btn-group">
+                                        <button class="volume-btn active" id="vol-btn-Unlead" onclick="selectVolumeFuelType('Unlead')">Unleaded</button>
+                                        <button class="volume-btn" id="vol-btn-Diesel" onclick="selectVolumeFuelType('Diesel')">Diesel</button>
+                                    </div>
+                                </div>
+                                <div class="volume-control-group">
+                                    <label class="volume-control-label">Days to Show</label>
+                                    <div class="volume-btn-group">
+                                        <button class="volume-btn active" id="vol-days-7" onclick="selectVolumeDays(7)">7 Days</button>
+                                        <button class="volume-btn" id="vol-days-14" onclick="selectVolumeDays(14)">14 Days</button>
+                                        <button class="volume-btn" id="vol-days-30" onclick="selectVolumeDays(30)">30 Days</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="volume-chart-container">
+                                <canvas id="live-volume-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -4161,6 +4328,308 @@
                 updateTrendsChart();
             }
         }
+
+        // ── LIVE VOLUME ───────────────────────────────────────────────────
+
+        function toggleVolumeDropdown() {
+            const content = document.getElementById('volume-content');
+            const toggle = document.getElementById('volume-toggle');
+            if (!content || !toggle) return;
+            const wasCollapsed = content.classList.contains('collapsed');
+            content.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+            toggle.classList.toggle('collapsed');
+            if (wasCollapsed) {
+                // Small delay so canvas is visible before drawing
+                setTimeout(() => initOrUpdateVolumeChart(), 50);
+            }
+        }
+
+        function selectVolumeFuelType(fuelType) {
+            volumeFuelType = fuelType;
+            ['Unlead', 'Diesel'].forEach(ft => {
+                const btn = document.getElementById(`vol-btn-${ft}`);
+                if (btn) btn.classList.toggle('active', ft === fuelType);
+            });
+            initOrUpdateVolumeChart();
+        }
+
+        function selectVolumeDays(days) {
+            volumeDays = days;
+            [7, 14, 30].forEach(d => {
+                const btn = document.getElementById(`vol-days-${d}`);
+                if (btn) btn.classList.toggle('active', d === days);
+            });
+            initOrUpdateVolumeChart();
+        }
+
+        /**
+         * Aggregate consumption CSVs into daily totals for the selected store + fuel type.
+         * 
+         * File naming: consumption_summary_YYYY-MM-DD_HHmmss.csv
+         * The folder is ./consumption/ relative to the HTML file (configurable via VOLUME_DATA_PATH).
+         * 
+         * Each file has rows like:
+         *   timestamp, location, fuel_type, city, state, total_gallons_sold, delivery_count, delivery_volume, tank_count
+         * 
+         * Because total_gallons_sold is a running cumulative total for the day, we need the
+         * LAST snapshot per day for each location to get daily consumption, not sum all rows.
+         */
+        const VOLUME_DATA_PATH = './consumption/';
+
+        async function loadVolumeData(storeNumber) {
+            // Build file list by fetching directory listing or use a manifest
+            // Since we can't list directories in browser, we'll try to load a manifest file
+            // The manifest should be a JSON array of filenames: ["consumption_summary_2026-02-27_164429.csv", ...]
+            // If no manifest, gracefully show no-data message.
+            let filenames = [];
+            try {
+                const manifestResp = await fetch(VOLUME_DATA_PATH + 'manifest.json');
+                if (manifestResp.ok) {
+                    filenames = await manifestResp.json();
+                }
+            } catch(e) { /* no manifest */ }
+
+            if (filenames.length === 0) {
+                return null; // signal no data
+            }
+
+            // Filter filenames by date range (last volumeDays days)
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - volumeDays);
+            cutoff.setHours(0, 0, 0, 0);
+
+            const dateRegex = /consumption_summary_(\d{4}-\d{2}-\d{2})_\d+\.csv/;
+            const relevant = filenames.filter(fn => {
+                const m = fn.match(dateRegex);
+                if (!m) return false;
+                const d = new Date(m[1] + 'T00:00:00');
+                return d >= cutoff;
+            });
+
+            // Group filenames by date, keep the latest per date (last snapshot of the day)
+            const byDate = {};
+            relevant.forEach(fn => {
+                const m = fn.match(dateRegex);
+                if (!m) return;
+                const date = m[1];
+                if (!byDate[date] || fn > byDate[date]) byDate[date] = fn;
+            });
+
+            // Load each latest-per-day file and extract the gallons for this store + fuel type
+            // Match location by store number prefix e.g. "0118" in "0118 - Springfield, IL"
+            const storeNumPad = String(storeNumber).padStart(4, '0');
+            const dailyGallons = {};
+
+            console.log(`[Volume] Loading data for store ${storeNumPad}, fuel: ${volumeFuelType}, files:`, Object.values(byDate));
+
+            const promises = Object.entries(byDate).map(async ([date, fn]) => {
+                try {
+                    const resp = await fetch(VOLUME_DATA_PATH + fn);
+                    if (!resp.ok) { console.warn(`[Volume] 404 for ${fn}`); return; }
+                    const raw = await resp.text();
+                    // Normalize line endings (Windows \r\n -> \n)
+                    const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                    const lines = text.trim().split('\n');
+                    if (lines.length < 2) { console.warn(`[Volume] ${fn} has no data rows`); return; }
+
+                    // The location field is quoted in the CSV: "0118 - Springfield, IL"
+                    // Use a proper quoted-CSV parser instead of regex or naive split
+                    function parseCSVLine(line) {
+                        const result = [];
+                        let i = 0;
+                        while (i < line.length) {
+                            if (line[i] === '"') {
+                                // Quoted field - read until closing quote
+                                let val = '';
+                                i++; // skip opening quote
+                                while (i < line.length) {
+                                    if (line[i] === '"' && line[i+1] === '"') {
+                                        val += '"'; i += 2; // escaped quote
+                                    } else if (line[i] === '"') {
+                                        i++; break; // closing quote
+                                    } else {
+                                        val += line[i++];
+                                    }
+                                }
+                                result.push(val);
+                                if (line[i] === ',') i++; // skip comma
+                            } else {
+                                // Unquoted field
+                                let val = '';
+                                while (i < line.length && line[i] !== ',') val += line[i++];
+                                result.push(val);
+                                if (line[i] === ',') i++; // skip comma
+                            }
+                        }
+                        return result;
+                    }
+
+                    const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+                    const locIdx     = headerCols.indexOf('location');
+                    const fuelIdx    = headerCols.indexOf('fuel_type');
+                    const gallonsIdx = headerCols.indexOf('total_gallons_sold');
+                    console.log(`[Volume] Parsed headers:`, headerCols, `locIdx=${locIdx} fuelIdx=${fuelIdx} gallonsIdx=${gallonsIdx}`);
+
+                    if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) {
+                        console.warn(`[Volume] Missing required columns in ${fn}`);
+                        return;
+                    }
+
+                    let matchCount = 0;
+                    for (let i = 1; i < lines.length; i++) {
+                        if (!lines[i].trim()) continue;
+                        const cols = parseCSVLine(lines[i]);
+                        if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
+                        const loc     = cols[locIdx].trim();
+                        const ft      = cols[fuelIdx].trim();
+                        const gallons = parseFloat(cols[gallonsIdx]) || 0;
+                        if (i <= 3) console.log(`[Volume] Row ${i}: loc="${loc}" ft="${ft}" gallons=${gallons}`);
+                        if (loc.startsWith(storeNumPad) && ft === volumeFuelType) {
+                            dailyGallons[date] = (dailyGallons[date] || 0) + gallons;
+                            matchCount++;
+                        }
+                    }
+                    console.log(`[Volume] ${fn}: ${matchCount} matching rows, gallons[${date}]=${dailyGallons[date] || 0}`);
+                } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
+            });
+
+            await Promise.all(promises);
+            return dailyGallons;
+        }
+
+        async function initOrUpdateVolumeChart() {
+            const canvas = document.getElementById('live-volume-chart');
+            if (!canvas) return;
+
+            if (!currentStore) return;
+            const storeNumber = currentStore.rr_store.replace('Road Ranger #', '').split(' - ')[0];
+
+            // Show loading state
+            const container = canvas.parentElement;
+            if (!container) return;
+
+            const dailyGallons = await loadVolumeData(storeNumber);
+
+            // Build sorted date labels for last N days
+            const labels = [];
+            const today = new Date();
+            for (let i = volumeDays - 1; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                labels.push(d.toISOString().slice(0, 10));
+            }
+
+            let hasAnyData = false;
+            const dataValues = labels.map(date => {
+                const v = dailyGallons ? (dailyGallons[date] || 0) : 0;
+                if (v > 0) hasAnyData = true;
+                return v;
+            });
+
+            // If we have very few data days, trim labels to only days that have data
+            // (plus one padding day on each side so bars aren't squished to edges)
+            let trimmedLabels = labels;
+            let trimmedValues = dataValues;
+            if (dailyGallons) {
+                const dataDates = Object.keys(dailyGallons).sort();
+                if (dataDates.length > 0 && dataDates.length < volumeDays) {
+                    // Find first/last data date index in labels
+                    let firstIdx = labels.indexOf(dataDates[0]);
+                    let lastIdx = labels.indexOf(dataDates[dataDates.length - 1]);
+                    firstIdx = Math.max(0, firstIdx - 1);
+                    lastIdx = Math.min(labels.length - 1, lastIdx + 1);
+                    trimmedLabels = labels.slice(firstIdx, lastIdx + 1);
+                    trimmedValues = dataValues.slice(firstIdx, lastIdx + 1);
+                }
+            }
+
+            // Display friendly labels (e.g. "Feb 27")
+            const friendlyLabels = trimmedLabels.map(d => {
+                const dt = new Date(d + 'T12:00:00');
+                return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+
+            const fuelLabel = volumeFuelType === 'Unlead' ? 'Unleaded' : 'Diesel';
+            const barColor = volumeFuelType === 'Unlead' ? 'rgba(30, 58, 138, 0.8)' : 'rgba(220, 38, 38, 0.8)';
+            const borderColor = volumeFuelType === 'Unlead' ? 'rgb(30, 58, 138)' : 'rgb(220, 38, 38)';
+
+            if (volumeChart) {
+                volumeChart.destroy();
+                volumeChart = null;
+            }
+
+            if (!dailyGallons || !hasAnyData) {
+                // Show no-data message
+                container.innerHTML = `
+                    <div class="volume-no-data">
+                        <span class="volume-no-data-icon">📂</span>
+                        <span>No volume data found. Place consumption CSV files in <code>${VOLUME_DATA_PATH}</code> with a <code>manifest.json</code> listing them.</span>
+                    </div>`;
+                return;
+            }
+
+            // Re-create canvas if we replaced it with no-data div
+            let ctx;
+            const existingCanvas = container.querySelector('canvas#live-volume-chart');
+            if (!existingCanvas) {
+                container.innerHTML = '<canvas id="live-volume-chart"></canvas>';
+            }
+            ctx = document.getElementById('live-volume-chart').getContext('2d');
+
+            volumeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: friendlyLabels,
+                    datasets: [{
+                        label: `${fuelLabel} (gal)`,
+                        data: trimmedValues,
+                        backgroundColor: barColor,
+                        borderColor: borderColor,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    animation: false,
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: '#ffffff',
+                            font: { size: 15, weight: '700' },
+                            formatter: v => v > 0 ? v.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' gal' : ''
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 12 } }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: {
+                                callback: v => v.toLocaleString(),
+                                font: { size: 12 }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Gallons Sold',
+                                font: { size: 12, weight: '600' },
+                                color: '#6c757d'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ── END LIVE VOLUME ───────────────────────────────────────────────
 
         // Select fuel type for trends
         function selectTrendsFuelType(fuelType) {
@@ -5742,6 +6211,7 @@ function setupModalStoreSearch() {
         // ── END EXPORT MODAL ─────────────────────────────────────────────
 
         // Initialize when page loads
+        Chart.register(ChartDataLabels);
         window.addEventListener('DOMContentLoaded', loadData);
     </script>
 
