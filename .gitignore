@@ -18,6 +18,11 @@
 # Allow manifest.json (tracks historical files for price-index.html)
 !manifest.json
 
+# Allow consumption folder and its files
+!consumption/
+!consumption/*.csv
+!consumption/manifest.json
+
 # Allow .gitignore itself
 !.gitignore
 
