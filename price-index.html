@@ -4598,9 +4598,21 @@
                         legend: { display: false },
                         tooltip: { enabled: false },
                         datalabels: {
-                            anchor: 'center',
-                            align: 'center',
-                            color: '#ffffff',
+                            anchor: function(context) {
+                                const value = context.dataset.data[context.dataIndex];
+                                const max = Math.max(...context.dataset.data);
+                                return (max > 0 && value / max < 0.15) ? 'end' : 'center';
+                            },
+                            align: function(context) {
+                                const value = context.dataset.data[context.dataIndex];
+                                const max = Math.max(...context.dataset.data);
+                                return (max > 0 && value / max < 0.15) ? 'end' : 'center';
+                            },
+                            color: function(context) {
+                                const value = context.dataset.data[context.dataIndex];
+                                const max = Math.max(...context.dataset.data);
+                                return (max > 0 && value / max < 0.15) ? '#333' : '#ffffff';
+                            },
                             font: { size: 15, weight: '700' },
                             formatter: v => v > 0 ? v.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' gal' : ''
                         }
