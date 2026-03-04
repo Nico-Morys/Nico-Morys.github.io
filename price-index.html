@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Road Ranger Pricing Index</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -92,6 +91,225 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* ── MARKET KPI SIDEBAR ITEM ── */
+        .market-kpi-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            border-top: 2px solid #e0e0e0;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .market-kpi-item:hover { background: #eff6ff; }
+        .market-kpi-item.active {
+            background: #e3f2fd;
+            border-left: 4px solid #2563eb;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+        .market-kpi-item-label { font-size: 14px; font-weight: 700; color: #1e3a8a; }
+        .market-kpi-item-sub   { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .market-kpi-item.active .market-kpi-item-label { color: #14213d; }
+
+        /* ── KPI CONTENT VIEW ── */
+        .kpi-view { padding: 0; }
+
+        .kpi-view-header {
+            margin-bottom: 22px;
+        }
+        .kpi-view-title { font-size: 1.4rem; font-weight: 700; color: #14213d; margin-bottom: 4px; }
+        .kpi-view-sub   { font-size: 0.82rem; color: #64748b; }
+
+        .kpi-section-label {
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; padding-left: 2px;
+        }
+
+        .kpi-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            gap: 13px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            border-top: 3px solid #e2e8f0;
+            position: relative;
+            cursor: default;
+            transition: box-shadow 0.2s;
+        }
+        .kpi-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .kpi-card.blue   { border-top-color: #2563eb; }
+        .kpi-card.amber  { border-top-color: #d97706; }
+        .kpi-card.green  { border-top-color: #16a34a; }
+        .kpi-card.red    { border-top-color: #dc2626; }
+        .kpi-card.slate  { border-top-color: #64748b; }
+        .kpi-card.purple { border-top-color: #7c3aed; }
+
+        .kpi-card-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 6px; }
+        .kpi-card-value { font-size: 1.8rem; font-weight: 700; color: #1a1a2e; line-height: 1; margin-bottom: 4px; }
+        .kpi-card-value.pos { color: #16a34a; }
+        .kpi-card-value.neg { color: #dc2626; }
+        .kpi-card-sub   { font-size: 0.72rem; color: #94a3b8; line-height: 1.4; }
+
+        /* Hover tooltip store lists */
+        .kpi-card.has-tip { cursor: pointer; }
+        .kpi-tip-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            z-index: 999;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 220px;
+            max-width: 300px;
+            max-height: 220px;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        }
+        .kpi-tip-list::-webkit-scrollbar { width: 4px; }
+        .kpi-tip-list::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .kpi-card.has-tip.open .kpi-tip-list { display: block; }
+        .tip-header { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 6px; }
+        .tip-row { font-size: 0.8rem; color: #e2e8f0; padding: 3px 0; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; gap: 10px; }
+        .tip-row:last-child { border-bottom: none; }
+        .tip-row-diff { font-weight: 600; white-space: nowrap; }
+
+        /* ── KPI VIEW: date row ── */
+        .kpi-date-row {
+            background: #fff; border-radius: 10px; padding: 16px 20px;
+            margin-bottom: 16px; display: flex; align-items: flex-end; gap: 16px;
+            flex-wrap: wrap; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+        .kpi-date-group { display: flex; flex-direction: column; gap: 4px; }
+        .kpi-date-vs { color: #94a3b8; font-size: 1rem; padding-bottom: 8px; }
+        .kpi-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .kpi-quick-btn {
+            background: #f1f5f9; border: 1px solid #e2e8f0; color: #475569;
+            font-size: 0.78rem; font-weight: 600; padding: 6px 11px;
+            border-radius: 5px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .kpi-quick-btn:hover { background: #14213d; border-color: #14213d; color: #fff; }
+        .kpi-section-lbl {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; padding-left: 2px;
+        }
+        .kpi-box-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            gap: 13px; margin-bottom: 20px;
+        }
+        .kpi-box2 {
+            background: #fff; border-radius: 10px; padding: 17px 19px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid #e2e8f0;
+            transition: box-shadow 0.2s; position: relative;
+        }
+        .kpi-box2:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .kpi-box2-blue  { border-top-color: #2563eb; }
+        .kpi-box2-amber { border-top-color: #d97706; }
+        .kpi-box2-green { border-top-color: #16a34a; }
+        .kpi-box2-red   { border-top-color: #dc2626; }
+        .kpi-box2-slate { border-top-color: #64748b; }
+        .kpi-box2-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 7px; }
+        .kpi-box2-value { font-size: 1.85rem; font-weight: 700; color: #1a1a2e; line-height: 1; margin-bottom: 4px; }
+        .kpi-pos { color: #16a34a; }
+        .kpi-neg { color: #dc2626; }
+        .kpi-box2-sub { font-size: 0.74rem; color: #94a3b8; line-height: 1.4; }
+        .kpi-badge { display: inline-block; font-size: 0.73rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; margin-top: 5px; }
+        .kpi-badge-up   { background: #fee2e2; color: #dc2626; }
+        .kpi-badge-down { background: #dcfce7; color: #16a34a; }
+        .kpi-badge-flat { background: #f1f5f9; color: #64748b; }
+        .kpi-has-tip { cursor: default; }
+        .kpi-store-tooltip {
+            display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 999;
+            background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+            padding: 10px 14px; min-width: 240px; max-width: 320px; max-height: 260px;
+            overflow-y: auto; box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        }
+        .kpi-store-tooltip::-webkit-scrollbar { width: 5px; }
+        .kpi-store-tooltip::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .kpi-has-tip.open .kpi-store-tooltip { display: block; }
+        .kpi-tooltip-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 7px; }
+        .kpi-tooltip-item { font-size: 0.82rem; color: #e2e8f0; padding: 3px 0; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; gap: 12px; }
+        .kpi-tooltip-item:last-child { border-bottom: none; }
+        .kpi-tooltip-diff { font-weight: 600; white-space: nowrap; }
+
+        /* Chart section */
+        .kpi-chart-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            margin-top: 6px;
+        }
+        .kpi-chart-header {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px; margin-bottom: 18px;
+        }
+        .kpi-chart-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; padding-top: 6px; }
+        .kpi-chart-wrap  { position: relative; height: 300px; }
+
+        /* ── CUSTOM DROPDOWN (shared with kpi.html style) ── */
+        .cd-wrap { position: relative; min-width: 160px; user-select: none; }
+        .cd-trigger {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            border: 1px solid #e2e8f0; border-radius: 6px; padding: 7px 11px;
+            font-size: 0.9rem; color: #1a1a2e; background: #f8fafc;
+            cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
+        }
+        .cd-trigger:hover, .cd-wrap.open .cd-trigger { border-color: #2563eb; }
+        .cd-trigger .cd-arrow { color: #94a3b8; font-size: 0.7rem; transition: transform 0.2s; }
+        .cd-wrap.open .cd-trigger .cd-arrow { transform: rotate(180deg); }
+        .cd-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            z-index: 2000;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            max-height: 420px;
+            overflow-y: auto;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .cd-list::-webkit-scrollbar { width: 5px; }
+        .cd-list::-webkit-scrollbar-track { background: #f8fafc; }
+        .cd-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .cd-wrap.open .cd-list { display: block; }
+        .cd-option {
+            padding: 8px 14px; font-size: 0.88rem; color: #1a1a2e;
+            cursor: pointer; transition: background 0.12s; white-space: nowrap;
+        }
+        .cd-option:hover { background: #eff6ff; color: #1d4ed8; }
+        .cd-option.selected { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+
+        /* Chart dropdowns — custom styled to match kpi.html */
+        .kpi-chart-controls {
+            display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap;
+        }
+        .kpi-dd-group {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .kpi-dd-label {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #94a3b8;
+        }
+        /* cd-wrap already defined globally; these just scope sizing for chart controls */
+        .kpi-chart-controls .cd-wrap { min-width: 140px; }
+        .kpi-chart-controls .kpi-dd-group--store .cd-wrap { min-width: 160px; }
 
         /* Alert Section */
         .alert-section {
@@ -662,128 +880,6 @@
             height: 400px;
             color: #6c757d;
             font-size: 14px;
-        }
-
-        /* Live Volume Section */
-        .live-volume-section {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            margin-bottom: 24px;
-        }
-
-        .volume-header {
-            background: #f8f9fa;
-            color: #333;
-            padding: 14px 24px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .volume-header:hover {
-            background: #f1f3f5;
-        }
-
-        .volume-toggle {
-            font-size: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .volume-toggle.collapsed {
-            transform: rotate(-90deg);
-        }
-
-        .volume-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-
-        .volume-content.expanded {
-            max-height: 500px;
-        }
-
-        .volume-body {
-            padding: 20px 24px;
-        }
-
-        .volume-controls {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e9ecef;
-            flex-wrap: wrap;
-            align-items: flex-end;
-        }
-
-        .volume-control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .volume-control-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .volume-btn-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .volume-btn {
-            padding: 8px 16px;
-            background: #e9ecef;
-            color: #333;
-            border: 2px solid transparent;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .volume-btn:hover {
-            background: #dee2e6;
-        }
-
-        .volume-btn.active {
-            background: #1e3a8a;
-            color: white;
-            border-color: #1e3a8a;
-        }
-
-        .volume-chart-container {
-            position: relative;
-            height: 280px;
-            margin-top: 8px;
-        }
-
-        .volume-no-data {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 280px;
-            color: #6c757d;
-            font-size: 14px;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .volume-no-data-icon {
-            font-size: 36px;
         }
 
         /* Pricing Tables */
@@ -2170,6 +2266,14 @@
             <div class="store-list-section" id="store-list-items">
                 <!-- Store items will be populated by JavaScript -->
             </div>
+
+            <!-- Market KPIs item — pinned at bottom of sidebar -->
+            <div class="market-kpi-item" id="market-kpi-item" onclick="selectMarketKPIs()">
+                <div>
+                    <div class="market-kpi-item-label">📊 Market KPIs</div>
+                    <div class="market-kpi-item-sub">All stores overview</div>
+                </div>
+            </div>
         </div>
 
         <!-- Content Area -->
@@ -2226,11 +2330,6 @@
         let trendsFuelType = 'Regular';
         let trendsTimeFrame = 'Live';
         let trendsChart = null;
-
-        // Live Volume state
-        let volumeFuelType = 'Unlead';
-        let volumeDays = 7;
-        let volumeChart = null;
         let historicalData = [];
         let historicalDataCache = null; // Cache all historical data
         let historicalDataLoading = false; // Prevent duplicate loads
@@ -3861,11 +3960,6 @@
                 trendsChart.destroy();
                 trendsChart = null;
             }
-            // Clean up volume chart
-            if (volumeChart) {
-                volumeChart.destroy();
-                volumeChart = null;
-            }
             
             // Store current selection
             currentStore = store;
@@ -3992,40 +4086,6 @@
                             <!-- Chart Container -->
                             <div class="trends-chart-container">
                                 <canvas id="price-trends-chart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Add Live Volume section
-            html += `
-                <div class="live-volume-section">
-                    <div class="volume-header" onclick="toggleVolumeDropdown()">
-                        <span>Live Volume</span>
-                        <span class="volume-toggle collapsed" id="volume-toggle">&#8592</span>
-                    </div>
-                    <div class="volume-content collapsed" id="volume-content">
-                        <div class="volume-body">
-                            <div class="volume-controls">
-                                <div class="volume-control-group">
-                                    <label class="volume-control-label">Fuel Type</label>
-                                    <div class="volume-btn-group">
-                                        <button class="volume-btn active" id="vol-btn-Unlead" onclick="selectVolumeFuelType('Unlead')">Unleaded</button>
-                                        <button class="volume-btn" id="vol-btn-Diesel" onclick="selectVolumeFuelType('Diesel')">Diesel</button>
-                                    </div>
-                                </div>
-                                <div class="volume-control-group">
-                                    <label class="volume-control-label">Days to Show</label>
-                                    <div class="volume-btn-group">
-                                        <button class="volume-btn active" id="vol-days-7" onclick="selectVolumeDays(7)">7 Days</button>
-                                        <button class="volume-btn" id="vol-days-14" onclick="selectVolumeDays(14)">14 Days</button>
-                                        <button class="volume-btn" id="vol-days-30" onclick="selectVolumeDays(30)">30 Days</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="volume-chart-container">
-                                <canvas id="live-volume-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -4329,320 +4389,6 @@
             }
         }
 
-        // ── LIVE VOLUME ───────────────────────────────────────────────────
-
-        function toggleVolumeDropdown() {
-            const content = document.getElementById('volume-content');
-            const toggle = document.getElementById('volume-toggle');
-            if (!content || !toggle) return;
-            const wasCollapsed = content.classList.contains('collapsed');
-            content.classList.toggle('collapsed');
-            content.classList.toggle('expanded');
-            toggle.classList.toggle('collapsed');
-            if (wasCollapsed) {
-                // Small delay so canvas is visible before drawing
-                setTimeout(() => initOrUpdateVolumeChart(), 50);
-            }
-        }
-
-        function selectVolumeFuelType(fuelType) {
-            volumeFuelType = fuelType;
-            ['Unlead', 'Diesel'].forEach(ft => {
-                const btn = document.getElementById(`vol-btn-${ft}`);
-                if (btn) btn.classList.toggle('active', ft === fuelType);
-            });
-            initOrUpdateVolumeChart();
-        }
-
-        function selectVolumeDays(days) {
-            volumeDays = days;
-            [7, 14, 30].forEach(d => {
-                const btn = document.getElementById(`vol-days-${d}`);
-                if (btn) btn.classList.toggle('active', d === days);
-            });
-            initOrUpdateVolumeChart();
-        }
-
-        /**
-         * Aggregate consumption CSVs into daily totals for the selected store + fuel type.
-         * 
-         * File naming: consumption_summary_YYYY-MM-DD_HHmmss.csv
-         * The folder is ./consumption/ relative to the HTML file (configurable via VOLUME_DATA_PATH).
-         * 
-         * Each file has rows like:
-         *   timestamp, location, fuel_type, city, state, total_gallons_sold, delivery_count, delivery_volume, tank_count
-         * 
-         * Because total_gallons_sold is a running cumulative total for the day, we need the
-         * LAST snapshot per day for each location to get daily consumption, not sum all rows.
-         */
-        const VOLUME_DATA_PATH = './consumption/';
-
-        async function loadVolumeData(storeNumber) {
-            // Build file list by fetching directory listing or use a manifest
-            // Since we can't list directories in browser, we'll try to load a manifest file
-            // The manifest should be a JSON array of filenames: ["consumption_summary_2026-02-27_164429.csv", ...]
-            // If no manifest, gracefully show no-data message.
-            let filenames = [];
-            try {
-                const manifestResp = await fetch(VOLUME_DATA_PATH + 'manifest.json');
-                if (manifestResp.ok) {
-                    filenames = await manifestResp.json();
-                }
-            } catch(e) { /* no manifest */ }
-
-            if (filenames.length === 0) {
-                return null; // signal no data
-            }
-
-            // Filter filenames by date range (last volumeDays days)
-            const cutoff = new Date();
-            cutoff.setDate(cutoff.getDate() - volumeDays);
-            cutoff.setHours(0, 0, 0, 0);
-
-            const dateRegex = /consumption_summary_(\d{4}-\d{2}-\d{2})_\d+\.csv/;
-            const relevant = filenames.filter(fn => {
-                const m = fn.match(dateRegex);
-                if (!m) return false;
-                const d = new Date(m[1] + 'T00:00:00');
-                return d >= cutoff;
-            });
-
-            // Group filenames by date, keep the latest per date (last snapshot of the day)
-            const byDate = {};
-            relevant.forEach(fn => {
-                const m = fn.match(dateRegex);
-                if (!m) return;
-                const date = m[1];
-                if (!byDate[date] || fn > byDate[date]) byDate[date] = fn;
-            });
-
-            // Load each latest-per-day file and extract the gallons for this store + fuel type
-            // Match location by store number prefix e.g. "0118" in "0118 - Springfield, IL"
-            const storeNumPad = String(storeNumber).padStart(4, '0');
-            const dailyGallons = {};
-
-            console.log(`[Volume] Loading data for store ${storeNumPad}, fuel: ${volumeFuelType}, files:`, Object.values(byDate));
-
-            const promises = Object.entries(byDate).map(async ([date, fn]) => {
-                try {
-                    const resp = await fetch(VOLUME_DATA_PATH + fn);
-                    if (!resp.ok) { console.warn(`[Volume] 404 for ${fn}`); return; }
-                    const raw = await resp.text();
-                    // Normalize line endings (Windows \r\n -> \n)
-                    const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-                    const lines = text.trim().split('\n');
-                    if (lines.length < 2) { console.warn(`[Volume] ${fn} has no data rows`); return; }
-
-                    // The location field is quoted in the CSV: "0118 - Springfield, IL"
-                    // Use a proper quoted-CSV parser instead of regex or naive split
-                    function parseCSVLine(line) {
-                        const result = [];
-                        let i = 0;
-                        while (i < line.length) {
-                            if (line[i] === '"') {
-                                // Quoted field - read until closing quote
-                                let val = '';
-                                i++; // skip opening quote
-                                while (i < line.length) {
-                                    if (line[i] === '"' && line[i+1] === '"') {
-                                        val += '"'; i += 2; // escaped quote
-                                    } else if (line[i] === '"') {
-                                        i++; break; // closing quote
-                                    } else {
-                                        val += line[i++];
-                                    }
-                                }
-                                result.push(val);
-                                if (line[i] === ',') i++; // skip comma
-                            } else {
-                                // Unquoted field
-                                let val = '';
-                                while (i < line.length && line[i] !== ',') val += line[i++];
-                                result.push(val);
-                                if (line[i] === ',') i++; // skip comma
-                            }
-                        }
-                        return result;
-                    }
-
-                    const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-                    const locIdx     = headerCols.indexOf('location');
-                    const fuelIdx    = headerCols.indexOf('fuel_type');
-                    const gallonsIdx = headerCols.indexOf('total_gallons_sold');
-                    console.log(`[Volume] Parsed headers:`, headerCols, `locIdx=${locIdx} fuelIdx=${fuelIdx} gallonsIdx=${gallonsIdx}`);
-
-                    if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) {
-                        console.warn(`[Volume] Missing required columns in ${fn}`);
-                        return;
-                    }
-
-                    let matchCount = 0;
-                    for (let i = 1; i < lines.length; i++) {
-                        if (!lines[i].trim()) continue;
-                        const cols = parseCSVLine(lines[i]);
-                        if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
-                        const loc     = cols[locIdx].trim();
-                        const ft      = cols[fuelIdx].trim();
-                        const gallons = parseFloat(cols[gallonsIdx]) || 0;
-                        if (i <= 3) console.log(`[Volume] Row ${i}: loc="${loc}" ft="${ft}" gallons=${gallons}`);
-                        if (loc.startsWith(storeNumPad) && ft === volumeFuelType) {
-                            dailyGallons[date] = (dailyGallons[date] || 0) + gallons;
-                            matchCount++;
-                        }
-                    }
-                    console.log(`[Volume] ${fn}: ${matchCount} matching rows, gallons[${date}]=${dailyGallons[date] || 0}`);
-                } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
-            });
-
-            await Promise.all(promises);
-            return dailyGallons;
-        }
-
-        async function initOrUpdateVolumeChart() {
-            const canvas = document.getElementById('live-volume-chart');
-            if (!canvas) return;
-
-            if (!currentStore) return;
-            const storeNumber = currentStore.rr_store.replace('Road Ranger #', '').split(' - ')[0];
-
-            // Show loading state
-            const container = canvas.parentElement;
-            if (!container) return;
-
-            const dailyGallons = await loadVolumeData(storeNumber);
-
-            // Build sorted date labels for last N days
-            const labels = [];
-            const today = new Date();
-            for (let i = volumeDays - 1; i >= 0; i--) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                labels.push(d.toISOString().slice(0, 10));
-            }
-
-            let hasAnyData = false;
-            const dataValues = labels.map(date => {
-                const v = dailyGallons ? (dailyGallons[date] || 0) : 0;
-                if (v > 0) hasAnyData = true;
-                return v;
-            });
-
-            // If we have very few data days, trim labels to only days that have data
-            // (plus one padding day on each side so bars aren't squished to edges)
-            let trimmedLabels = labels;
-            let trimmedValues = dataValues;
-            if (dailyGallons) {
-                const dataDates = Object.keys(dailyGallons).sort();
-                if (dataDates.length > 0 && dataDates.length < volumeDays) {
-                    // Find first/last data date index in labels
-                    let firstIdx = labels.indexOf(dataDates[0]);
-                    let lastIdx = labels.indexOf(dataDates[dataDates.length - 1]);
-                    firstIdx = Math.max(0, firstIdx - 1);
-                    lastIdx = Math.min(labels.length - 1, lastIdx + 1);
-                    trimmedLabels = labels.slice(firstIdx, lastIdx + 1);
-                    trimmedValues = dataValues.slice(firstIdx, lastIdx + 1);
-                }
-            }
-
-            // Display friendly labels (e.g. "Feb 27")
-            const friendlyLabels = trimmedLabels.map(d => {
-                const dt = new Date(d + 'T12:00:00');
-                return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            });
-
-            const fuelLabel = volumeFuelType === 'Unlead' ? 'Unleaded' : 'Diesel';
-            const barColor = volumeFuelType === 'Unlead' ? 'rgba(30, 58, 138, 0.8)' : 'rgba(220, 38, 38, 0.8)';
-            const borderColor = volumeFuelType === 'Unlead' ? 'rgb(30, 58, 138)' : 'rgb(220, 38, 38)';
-
-            if (volumeChart) {
-                volumeChart.destroy();
-                volumeChart = null;
-            }
-
-            if (!dailyGallons || !hasAnyData) {
-                // Show no-data message
-                container.innerHTML = `
-                    <div class="volume-no-data">
-                        <span class="volume-no-data-icon">📂</span>
-                        <span>No volume data found. Place consumption CSV files in <code>${VOLUME_DATA_PATH}</code> with a <code>manifest.json</code> listing them.</span>
-                    </div>`;
-                return;
-            }
-
-            // Re-create canvas if we replaced it with no-data div
-            let ctx;
-            const existingCanvas = container.querySelector('canvas#live-volume-chart');
-            if (!existingCanvas) {
-                container.innerHTML = '<canvas id="live-volume-chart"></canvas>';
-            }
-            ctx = document.getElementById('live-volume-chart').getContext('2d');
-
-            volumeChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: friendlyLabels,
-                    datasets: [{
-                        label: `${fuelLabel} (gal)`,
-                        data: trimmedValues,
-                        backgroundColor: barColor,
-                        borderColor: borderColor,
-                        borderWidth: 1,
-                        borderRadius: 4,
-                    }]
-                },
-                options: {
-                    animation: false,
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false },
-                        datalabels: {
-                            anchor: function(context) {
-                                const value = context.dataset.data[context.dataIndex];
-                                const max = Math.max(...context.dataset.data);
-                                return (max > 0 && value / max < 0.15) ? 'end' : 'center';
-                            },
-                            align: function(context) {
-                                const value = context.dataset.data[context.dataIndex];
-                                const max = Math.max(...context.dataset.data);
-                                return (max > 0 && value / max < 0.15) ? 'end' : 'center';
-                            },
-                            color: function(context) {
-                                const value = context.dataset.data[context.dataIndex];
-                                const max = Math.max(...context.dataset.data);
-                                return (max > 0 && value / max < 0.15) ? '#333' : '#ffffff';
-                            },
-                            font: { size: 15, weight: '700' },
-                            formatter: v => v > 0 ? v.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' gal' : ''
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 12 } }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: 'rgba(0,0,0,0.05)' },
-                            ticks: {
-                                callback: v => v.toLocaleString(),
-                                font: { size: 12 }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Gallons Sold',
-                                font: { size: 12, weight: '600' },
-                                color: '#6c757d'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // ── END LIVE VOLUME ───────────────────────────────────────────────
-
         // Select fuel type for trends
         function selectTrendsFuelType(fuelType) {
             trendsFuelType = fuelType;
@@ -4733,8 +4479,7 @@
                                     return label;
                                 }
                             }
-                        },
-                        datalabels: { display: false }
+                        }
                     },
                     scales: {
                         x: {
@@ -4827,18 +4572,21 @@
                         const lines = csvText.split('\n');
                         const headers = parseCSVLine(lines[0]).map(h => h.replace(/"/g, '').trim());
                         
-                        // Extract timestamp from filename
+                        // Extract timestamp from filename (stored in UTC, convert to Central)
                         let fileTimestamp;
+                        let fileCTDate; // pre-computed Central date string YYYY-MM-DD
                         const timestampMatch = filename.match(/(\d{8})_(\d{6})/);
                         if (timestampMatch) {
                             const dateStr = timestampMatch[1];
                             const timeStr = timestampMatch[2];
-                            // Format: YYYYMMDD_HHMMSS
                             fileTimestamp = new Date(
-                                `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}T${timeStr.slice(0,2)}:${timeStr.slice(2,4)}:${timeStr.slice(4,6)}`
+                                `${dateStr.slice(0,4)}-${dateStr.slice(4,6)}-${dateStr.slice(6,8)}T${timeStr.slice(0,2)}:${timeStr.slice(2,4)}:${timeStr.slice(4,6)}Z`
                             );
+                            // Pre-compute Central date once per file — avoids calling toLocaleDateString on every row
+                            fileCTDate = fileTimestamp.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
                         } else {
-                            fileTimestamp = new Date(); // Use current time for master file
+                            fileTimestamp = new Date();
+                            fileCTDate = fileTimestamp.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
                         }
                         
                         const fileData = [];
@@ -4856,7 +4604,8 @@
                                 Unleaded_Plus_Price: values[headers.indexOf('Unleaded_Plus_Price')] || '',
                                 Unleaded_Premium_Price: values[headers.indexOf('Unleaded_Premium_Price')] || '',
                                 Diesel_Regular_Price: values[headers.indexOf('Diesel_Regular_Price')] || '',
-                                _fileTimestamp: fileTimestamp
+                                _fileTimestamp: fileTimestamp,
+                                _ctDate: fileCTDate  // Central date pre-computed once per file
                             };
                             
                             fileData.push(row);
@@ -6223,8 +5972,416 @@ function setupModalStoreSearch() {
 
         // ── END EXPORT MODAL ─────────────────────────────────────────────
 
+        // ── CUSTOM DROPDOWN (kpi-chart) ───────────────────────────────────
+        const kpiCdState = {};
+
+        function kpiBuildDropdown(containerId, options, selectedValue, onChange) {
+            const wrap = document.getElementById(containerId);
+            if (!wrap) return;
+            const selected = options.find(o => o.value === selectedValue) || options[0];
+            kpiCdState[containerId] = selected;
+            wrap.innerHTML = `
+                <div class="cd-trigger" onclick="kpiToggleDropdown('${containerId}')">
+                    <span class="cd-label">${selected.label}</span>
+                    <span class="cd-arrow">▼</span>
+                </div>
+                <div class="cd-list">
+                    ${options.map(o => `
+                        <div class="cd-option ${o.value === selected.value ? 'selected' : ''}"
+                             onclick="kpiSelectOption('${containerId}', '${o.value.replace(/'/g,"\\'")}', this)">
+                            ${o.label}
+                        </div>`).join('')}
+                </div>`;
+            wrap._onChange = onChange;
+        }
+
+        function kpiToggleDropdown(id) {
+            const wrap = document.getElementById(id);
+            const isOpen = wrap.classList.contains('open');
+            document.querySelectorAll('.cd-wrap.open').forEach(w => w.classList.remove('open'));
+            if (!isOpen) wrap.classList.add('open');
+        }
+
+        function kpiSelectOption(id, value, el) {
+            const wrap = document.getElementById(id);
+            kpiCdState[id] = { value, label: el.textContent.trim() };
+            wrap.querySelector('.cd-label').textContent = el.textContent.trim();
+            wrap.querySelectorAll('.cd-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            wrap.classList.remove('open');
+            if (wrap._onChange) wrap._onChange(value);
+        }
+
+        // Close kpi dropdowns on outside click
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.cd-wrap')) {
+                document.querySelectorAll('.cd-wrap.open').forEach(w => w.classList.remove('open'));
+            }
+        });
+
+        // ── MARKET KPI VIEW ───────────────────────────────────────────────
+
+        let kpiChartInst = null;
+        let kpiAllStoreStats = [];   // cached on first render
+        let kpiFuelSel    = 'Regular';
+        let kpiStoreSel   = 'All Stores';
+        let kpiDay1       = null;
+        let kpiDay2       = null;
+
+        function selectMarketKPIs() {
+            document.querySelectorAll('.store-item, .alert-store-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('market-kpi-item').classList.add('active');
+            renderMarketKPIView();
+        }
+
+        function renderMarketKPIView() {
+            const content = document.getElementById('content');
+
+            if (!masterData || masterData.length === 0) {
+                content.innerHTML = '<div class="welcome-message"><h2>No data loaded yet.</h2></div>';
+                return;
+            }
+
+            const storeOptions = ['All Stores', ...rrData.map(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0]).sort((a,b)=>parseInt(a)-parseInt(b)).map(n => `RR #${n}`)];
+
+            content.innerHTML = `
+            <div class="kpi-view">
+                <div class="kpi-chart-section" style="margin-top:0;">
+                    <div class="kpi-chart-header">
+                        <div class="kpi-chart-title">Daily Average Price History</div>
+                        <div class="kpi-chart-controls">
+                            <div class="kpi-dd-group">
+                                <label class="kpi-dd-label">Fuel Type</label>
+                                <div class="cd-wrap" id="kpiFuelDD"></div>
+                            </div>
+                            <div class="kpi-dd-group kpi-dd-group--store">
+                                <label class="kpi-dd-label">Store</label>
+                                <div class="cd-wrap" id="kpiStoreDD"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-chart-wrap" style="height:480px;">
+                        <canvas id="kpiMarketChart"></canvas>
+                    </div>
+                </div>
+            </div>`;
+
+            kpiBuildDropdown('kpiFuelDD',
+                [{value:'Regular',label:'Regular'},{value:'Diesel',label:'Diesel'}],
+                kpiFuelSel,
+                v => { kpiFuelSel = v; buildKpiChart(); }
+            );
+            kpiBuildDropdown('kpiStoreDD',
+                storeOptions.map(o => ({ value: o, label: o === 'All Stores' ? 'All RR Stores (Average)' : `Road Ranger ${o.replace('RR #','#')}` })),
+                kpiStoreSel,
+                v => { kpiStoreSel = v; buildKpiChart(); }
+            );
+
+            if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
+            buildKpiChart();
+        }
+
+        function getKpiAvailDates() {
+            const source = historicalDataCache && historicalDataCache.length > 0 ? historicalDataCache : masterData.map(r => ({ ...r, _ctDate: new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' }) }));
+            const dateSet = new Set();
+            source.forEach(row => { if (row._ctDate) dateSet.add(row._ctDate); });
+            return [...dateSet].sort();
+        }
+
+        function kpiQuickSelect(mode) {
+            const dates = getKpiAvailDates();
+            if (!dates.length) return;
+            const last = dates[dates.length - 1];
+            let from;
+            if (mode === 'today')          { from = last; }
+            else if (mode === 'yesterday') { from = dates[dates.length - 2] || last; }
+            else if (mode === 'oldest')    { from = dates[0]; }
+            else if (mode === 'week') {
+                const target = new Date(last + 'T12:00:00');
+                target.setDate(target.getDate() - 7);
+                from = dates.reduce((b, d) => Math.abs(new Date(d) - target) < Math.abs(new Date(b) - target) ? d : b);
+            }
+            kpiDay1 = from;
+            kpiDay2 = last;
+            // Update dropdown triggers
+            const fmtD = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+            const d1wrap = document.getElementById('kpiDay1DD');
+            const d2wrap = document.getElementById('kpiDay2DD');
+            if (d1wrap) { d1wrap.querySelector('.cd-label') && (d1wrap.querySelector('.cd-label').textContent = fmtD(kpiDay1)); d1wrap.querySelectorAll('.cd-option').forEach(o => { const m = o.getAttribute('onclick')?.match(/kpiSelectOption\('[^']+',\s*'([^']+)'/); if (m) { o.classList.toggle('selected', m[1] === kpiDay1); } }); }
+            if (d2wrap) { d2wrap.querySelector('.cd-label') && (d2wrap.querySelector('.cd-label').textContent = fmtD(kpiDay2)); d2wrap.querySelectorAll('.cd-option').forEach(o => { const m = o.getAttribute('onclick')?.match(/kpiSelectOption\('[^']+',\s*'([^']+)'/); if (m) { o.classList.toggle('selected', m[1] === kpiDay2); } }); }
+            renderKpiBoxes();
+        }
+
+        function renderKpiBoxes() {
+            const area = document.getElementById('kpiBoxArea');
+            if (!area) return;
+
+            function pv(str) {
+                if (!str || str.trim() === '' || str.trim() === 'None') return null;
+                const n = parseFloat(str.replace('$',''));
+                return isNaN(n) ? null : n;
+            }
+            const avg = arr => { const v = arr.filter(x => x !== null); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
+            const fmt = v => v !== null ? '$'+v.toFixed(3) : '—';
+            const fmtDate = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+            const source = historicalDataCache && historicalDataCache.length > 0
+                ? historicalDataCache
+                : masterData.map(r => ({ ...r, _ctDate: new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' }) }));
+
+            function toCtDate(row) { return row._ctDate || ''; }
+
+            function statsForDate(dateStr) {
+                const rr = [], comp = [];
+                source.forEach(row => {
+                    if (toCtDate(row) !== dateStr) return;
+                    const p = pv(row.Unleaded_Regular_Price);
+                    if (p === null || p <= 0) return;
+                    if (row.Station_Name.toUpperCase().includes('ROAD RANGER')) rr.push(p);
+                    else comp.push(p);
+                });
+                return { rrAvg: avg(rr), compAvg: avg(comp) };
+            }
+
+            function storePositioning(dateStr) {
+                const byStore = {};
+                source.forEach(row => {
+                    if (toCtDate(row) !== dateStr) return;
+                    const loc = row.RR_Location;
+                    if (!loc) return;
+                    if (!byStore[loc]) byStore[loc] = { rr: null, comp: [] };
+                    const p = pv(row.Unleaded_Regular_Price);
+                    if (p === null || p <= 0) return;
+                    if (row.Station_Name.toUpperCase().includes('ROAD RANGER')) byStore[loc].rr = p;
+                    else byStore[loc].comp.push(p);
+                });
+                const below = [], above = [], parity = [];
+                Object.entries(byStore).forEach(([loc, d]) => {
+                    if (d.rr === null || !d.comp.length) return;
+                    const ca = avg(d.comp);
+                    const diff = d.rr - ca;
+                    const name = loc.replace('Road Ranger #','RR#');
+                    if (diff < -0.001)      below.push({ name, rr: d.rr, ca, diff });
+                    else if (diff > 0.001)  above.push({ name, rr: d.rr, ca, diff });
+                    else                    parity.push({ name, rr: d.rr, ca, diff });
+                });
+                below.sort((a,b) => a.diff - b.diff);
+                above.sort((a,b) => b.diff - a.diff);
+                return { below, above, parity };
+            }
+
+            const d1 = kpiDay1, d2 = kpiDay2;
+            const isSameDay = d1 === d2;
+            const s1 = d1 ? statsForDate(d1) : { rrAvg: null, compAvg: null };
+            const s2 = d2 ? statsForDate(d2) : { rrAvg: null, compAvg: null };
+            const pos = d2 ? storePositioning(d2) : { below: [], above: [], parity: [] };
+
+            function badge(from, to) {
+                if (from===null || to===null || isSameDay) return '';
+                const d = to - from;
+                if (Math.abs(d) < 0.0005) return `<div class="kpi-badge kpi-badge-flat">No change vs ${fmtDate(d1)}</div>`;
+                return `<div class="kpi-badge ${d>0?'kpi-badge-up':'kpi-badge-down'}">${d>0?'▲':'▼'} $${Math.abs(d).toFixed(3)} vs ${fmtDate(d1)}</div>`;
+            }
+
+            function tooltip(stores, color) {
+                if (!stores.length) return '<div class="kpi-store-tooltip"><div class="kpi-tooltip-title">Stores</div><div class="kpi-tooltip-item">None</div></div>';
+                return `<div class="kpi-store-tooltip"><div class="kpi-tooltip-title">${stores.length} store${stores.length!==1?'s':''}</div>${stores.map(s=>`<div class="kpi-tooltip-item"><span>${s.name}</span><span class="kpi-tooltip-diff" style="color:${color}">${s.diff>=0?'+':''}$${s.diff.toFixed(3)}</span></div>`).join('')}</div>`;
+            }
+
+            const label = isSameDay ? fmtDate(d2||'') : `${fmtDate(d1||'')} vs ${fmtDate(d2||'')}`;
+
+            area.innerHTML = `
+            <div class="kpi-section-lbl">${label}</div>
+            <div class="kpi-box-grid">
+                <div class="kpi-box2 kpi-box2-blue">
+                    <div class="kpi-box2-label">RR Avg Price</div>
+                    <div class="kpi-box2-value">${fmt(s2.rrAvg)}</div>
+                    <div class="kpi-box2-sub">${isSameDay ? fmtDate(d2||'') : 'Day 2 · '+fmtDate(d2||'')}</div>
+                    ${badge(s1.rrAvg, s2.rrAvg)}
+                </div>
+                <div class="kpi-box2 kpi-box2-amber">
+                    <div class="kpi-box2-label">Competitor Avg Price</div>
+                    <div class="kpi-box2-value">${fmt(s2.compAvg)}</div>
+                    <div class="kpi-box2-sub">${isSameDay ? fmtDate(d2||'') : 'Day 2 · '+fmtDate(d2||'')}</div>
+                    ${badge(s1.compAvg, s2.compAvg)}
+                </div>
+                <div class="kpi-box2 kpi-box2-green kpi-has-tip">
+                    <div class="kpi-box2-label">Stores Below Market</div>
+                    <div class="kpi-box2-value kpi-pos">${pos.below.length}</div>
+                    <div class="kpi-box2-sub">RR priced lower than local competitor avg</div>
+                    ${tooltip(pos.below, '#4ade80')}
+                </div>
+                <div class="kpi-box2 kpi-box2-red kpi-has-tip">
+                    <div class="kpi-box2-label">Stores Above Market</div>
+                    <div class="kpi-box2-value kpi-neg">${pos.above.length}</div>
+                    <div class="kpi-box2-sub">RR priced higher than local competitor avg</div>
+                    ${tooltip(pos.above, '#f87171')}
+                </div>
+                <div class="kpi-box2 kpi-box2-slate kpi-has-tip">
+                    <div class="kpi-box2-label">At Parity</div>
+                    <div class="kpi-box2-value">${pos.parity.length}</div>
+                    <div class="kpi-box2-sub">matched with local competitor avg</div>
+                    ${tooltip(pos.parity, '#94a3b8')}
+                </div>
+            </div>`;
+
+            // Tooltip hover
+            area.querySelectorAll('.kpi-has-tip').forEach(box => {
+                let t;
+                box.addEventListener('mouseenter', () => { clearTimeout(t); box.classList.add('open'); });
+                box.addEventListener('mouseleave', () => { t = setTimeout(() => box.classList.remove('open'), 120); });
+                const tip = box.querySelector('.kpi-store-tooltip');
+                if (tip) {
+                    tip.addEventListener('mouseenter', () => clearTimeout(t));
+                    tip.addEventListener('mouseleave', () => { t = setTimeout(() => box.classList.remove('open'), 120); });
+                }
+            });
+        }
+
+        function buildKpiChart() {
+            const ctx = document.getElementById('kpiMarketChart');
+            if (!ctx) return;
+
+            const fuelKey = {
+                'Regular':  'Unleaded_Regular_Price',
+                'Diesel':   'Diesel_Regular_Price',
+                'Premium':  'Unleaded_Premium_Price'
+            }[kpiFuelSel] || 'Unleaded_Regular_Price';
+
+            function pv(str) {
+                if (!str || str.trim() === '' || str.trim() === 'None') return null;
+                const n = parseFloat(str.replace('$', ''));
+                return isNaN(n) ? null : n;
+            }
+
+            // If historical data is loaded, use it for time-series. Otherwise fall back to masterData snapshot.
+            const source = (historicalDataCache && historicalDataCache.length > 0)
+                ? historicalDataCache
+                : masterData.map(r => ({ ...r, _ctDate: new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' }) }));
+
+            // Filter to the selected store (or all stores)
+            const storeNum = kpiStoreSel === 'All Stores' ? null : kpiStoreSel.replace('RR #','');
+            let storeName = null;
+            if (storeNum) {
+                const loc = rrData.find(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0] === storeNum);
+                if (loc) storeName = loc.rr_store_data.name;
+            }
+
+            const filtered = storeName
+                ? source.filter(r => r.RR_Location.trim() === storeName.trim())
+                : source;
+
+            if (!filtered.length) {
+                if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
+                return;
+            }
+
+            // Group by pre-computed Central date
+            const byDate = {};
+            filtered.forEach(row => {
+                const dateKey = row._ctDate;
+                if (!dateKey) return;
+                if (!byDate[dateKey]) byDate[dateKey] = { rr: [], comp: [] };
+                const price = pv(row[fuelKey]);
+                if (price === null || price <= 0) return;
+                if (row.Station_Name.toUpperCase().includes('ROAD RANGER')) {
+                    byDate[dateKey].rr.push(price);
+                } else {
+                    byDate[dateKey].comp.push(price);
+                }
+            });
+
+            const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+            const dates = Object.keys(byDate).sort();
+
+            if (!dates.length) {
+                if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
+                return;
+            }
+
+            const labels   = dates.map(d => {
+                const dt = new Date(d + 'T12:00:00');
+                return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+            const rrLine   = dates.map(d => { const a = avg(byDate[d].rr);   return a !== null ? +a.toFixed(3) : null; });
+            const compLine = dates.map(d => { const a = avg(byDate[d].comp); return a !== null ? +a.toFixed(3) : null; });
+
+            const storeLabel = kpiStoreSel === 'All Stores' ? 'All RR Stores Avg' : `Road Ranger #${storeNum}`;
+
+            const datasets = [
+                {
+                    label: storeLabel,
+                    data: rrLine,
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220,38,38,0.06)',
+                    borderWidth: 2.5,
+                    pointRadius: 2,
+                    pointHoverRadius: 5,
+                    tension: 0.1,
+                    spanGaps: true,
+                    fill: false
+                },
+                {
+                    label: 'Competitor Avg',
+                    data: compLine,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37,99,235,0.06)',
+                    borderWidth: 2.5,
+                    pointRadius: 2,
+                    pointHoverRadius: 5,
+                    tension: 0.1,
+                    spanGaps: true,
+                    fill: false
+                }
+            ];
+
+            if (kpiChartInst) {
+                kpiChartInst.data.labels   = labels;
+                kpiChartInst.data.datasets = datasets;
+                kpiChartInst.update('none');
+            } else {
+                kpiChartInst = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { color: '#475569', font: { size: 11 }, boxWidth: 12, padding: 16 }
+                            },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                borderColor: '#334155',
+                                borderWidth: 1,
+                                titleColor: '#e2e8f0',
+                                bodyColor: '#94a3b8',
+                                padding: 10,
+                                callbacks: {
+                                    label: ctx => ctx.raw !== null ? ` ${ctx.dataset.label}: $${parseFloat(ctx.raw).toFixed(3)}` : ''
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 45, maxTicksLimit: 20 },
+                                grid: { color: '#f1f5f9' }
+                            },
+                            y: {
+                                ticks: { color: '#94a3b8', callback: v => '$' + parseFloat(v).toFixed(3) },
+                                grid: { color: '#f1f5f9' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ── END MARKET KPI VIEW ───────────────────────────────────────────
+
         // Initialize when page loads
-        Chart.register(ChartDataLabels);
         window.addEventListener('DOMContentLoaded', loadData);
     </script>
 
