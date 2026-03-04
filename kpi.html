@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Dashboard - Road Ranger Mudflaps</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; min-height: 100vh; }
+
+        header { background: #14213d; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 32px; }
+        header h1 { color: #fff; font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
+        header img { position: absolute; right: 32px; height: 62px; }
+        .back-btn { position: absolute; left: 32px; background: #1e3a8a; color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 8px 16px; border-radius: 6px; border: 1px solid #2563eb; transition: background 0.2s; }
+        .back-btn:hover { background: #2563eb; }
+
+        .page { max-width: 960px; margin: 0 auto; padding: 28px 24px; }
+
+        .status-bar { background: #fff; border-radius: 10px; padding: 12px 18px; margin-bottom: 18px; font-size: 0.86rem; color: #64748b; box-shadow: 0 1px 4px rgba(0,0,0,0.07); display: flex; align-items: center; gap: 10px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .dot-loading { background: #f59e0b; animation: pulse 1s infinite; }
+        .dot-ready   { background: #16a34a; }
+        .dot-error   { background: #dc2626; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .date-row { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 22px; display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+        .date-row label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 5px; }
+        .date-row .arrow { color: #94a3b8; font-size: 1.1rem; padding-bottom: 7px; }
+
+        /* ── CUSTOM DROPDOWN ── */
+        .cd-wrap { position: relative; min-width: 160px; user-select: none; }
+        .cd-trigger {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            border: 1px solid #e2e8f0; border-radius: 6px; padding: 7px 11px;
+            font-size: 0.9rem; color: #1a1a2e; background: #f8fafc;
+            cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
+        }
+        .cd-trigger:hover, .cd-wrap.open .cd-trigger { border-color: #2563eb; }
+        .cd-trigger .cd-arrow { color: #94a3b8; font-size: 0.7rem; transition: transform 0.2s; }
+        .cd-wrap.open .cd-trigger .cd-arrow { transform: rotate(180deg); }
+        .cd-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            z-index: 1000;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            max-height: 220px;
+            overflow-y: auto;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .cd-list::-webkit-scrollbar { width: 5px; }
+        .cd-list::-webkit-scrollbar-track { background: #f8fafc; }
+        .cd-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .cd-wrap.open .cd-list { display: block; }
+        .cd-option {
+            padding: 8px 14px; font-size: 0.88rem; color: #1a1a2e;
+            cursor: pointer; transition: background 0.12s; white-space: nowrap;
+        }
+        .cd-option:hover { background: #eff6ff; color: #1d4ed8; }
+        .cd-option.selected { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+
+        .quick-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .quick-btn { background: #f1f5f9; border: 1px solid #e2e8f0; color: #475569; font-size: 0.8rem; font-weight: 600; padding: 6px 11px; border-radius: 5px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+        .quick-btn:hover { background: #1e3a8a; border-color: #1e3a8a; color: #fff; }
+
+        .section-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; padding-left: 2px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 13px; margin-bottom: 22px; }
+
+        .kpi-box { background: #fff; border-radius: 10px; padding: 17px 19px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid #e2e8f0; transition: box-shadow 0.2s; }
+        .kpi-box:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .kpi-box.blue  { border-top-color: #2563eb; }
+        .kpi-box.amber { border-top-color: #d97706; }
+        .kpi-box.green { border-top-color: #16a34a; }
+        .kpi-box.red   { border-top-color: #dc2626; }
+        .kpi-box.slate { border-top-color: #64748b; }
+
+        .kpi-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 7px; }
+        .kpi-value { font-size: 1.85rem; font-weight: 700; color: #1a1a2e; line-height: 1; margin-bottom: 4px; }
+        .kpi-value.pos { color: #16a34a; }
+        .kpi-value.neg { color: #dc2626; }
+        .kpi-sub { font-size: 0.74rem; color: #94a3b8; line-height: 1.4; }
+        .badge { display: inline-block; font-size: 0.73rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; margin-top: 5px; }
+        .badge.up   { background: #fee2e2; color: #dc2626; }
+        .badge.down { background: #dcfce7; color: #16a34a; }
+        .badge.flat { background: #f1f5f9; color: #64748b; }
+
+        .skeleton-box { background: #fff; border-radius: 10px; padding: 17px 19px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid #e2e8f0; }
+        .skel { background: linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 5px; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        /* ── CHART SECTION ── */
+        .chart-section { background: #fff; border-radius: 10px; padding: 20px 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-top: 22px; }
+        .chart-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+        .chart-section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
+        .chart-wrap { position: relative; height: 300px; }
+
+        /* Hover tooltip for store lists */
+
+        /* Hover tooltip for store lists */
+        .kpi-box.has-tooltip { cursor: default; position: relative; }
+        .store-tooltip {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            z-index: 999;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 240px;
+            max-width: 320px;
+            max-height: 260px;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        }
+        .store-tooltip::-webkit-scrollbar { width: 5px; }
+        .store-tooltip::-webkit-scrollbar-track { background: #1e293b; border-radius: 3px; }
+        .store-tooltip::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        .kpi-box.has-tooltip.open .store-tooltip { display: block; }
+        .store-tooltip-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 7px; }
+        .store-tooltip-item { font-size: 0.82rem; color: #e2e8f0; padding: 3px 0; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; gap: 12px; }
+        .store-tooltip-item:last-child { border-bottom: none; }
+        .store-tooltip-item .diff { font-weight: 600; white-space: nowrap; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="map.html" class="back-btn">← Back to Map</a>
+    <h1>Road Ranger Mudflaps</h1>
+    <img src="images/logos/roadrangerlogo.png" alt="Road Ranger Logo" onerror="this.style.display='none'">
+</header>
+
+<div class="page">
+
+    <div class="status-bar">
+        <div class="dot dot-loading" id="sDot"></div>
+        <span id="sText">Loading pricedata/manifest.json…</span>
+    </div>
+
+    <div class="date-row" id="dateRow" style="display:none;">
+        <div>
+            <label>Compare Day 1</label>
+            <div class="cd-wrap" id="cdFrom"></div>
+        </div>
+        <div class="arrow">vs</div>
+        <div>
+            <label>Compare Day 2</label>
+            <div class="cd-wrap" id="cdTo"></div>
+        </div>
+        <div>
+            <label>Quick compare</label>
+            <div class="quick-btns">
+                <button class="quick-btn" onclick="quickSelect('today')">Today only</button>
+                <button class="quick-btn" onclick="quickSelect('yesterday')">Yesterday vs Today</button>
+                <button class="quick-btn" onclick="quickSelect('week')">7 Days Ago vs Today</button>
+                <button class="quick-btn" onclick="quickSelect('oldest')">Oldest vs Today</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="kpiArea"></div>
+
+    <!-- Chart section -->
+    <div class="chart-section" id="chartSection" style="display:none;">
+        <div class="chart-header">
+            <div class="chart-section-title">Daily Average Price History</div>
+            <div class="cd-wrap" id="cdStore" style="min-width:220px;"></div>
+        </div>
+        <div class="chart-wrap">
+            <canvas id="priceChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const PRICEDATA = 'pricedata/';
+let allFiles = [], availDates = [], cache = {};
+// Custom dropdown state
+const cdState = {}; // id -> { value, label }
+
+// ── CUSTOM DROPDOWN ───────────────────────────────────────────────────────────
+function buildDropdown(containerId, options, selectedValue, onChange) {
+    const wrap = document.getElementById(containerId);
+    const selected = options.find(o => o.value === selectedValue) || options[0];
+    cdState[containerId] = selected;
+
+    wrap.innerHTML = `
+        <div class="cd-trigger" onclick="toggleDropdown('${containerId}')">
+            <span class="cd-label">${selected.label}</span>
+            <span class="cd-arrow">▼</span>
+        </div>
+        <div class="cd-list">
+            ${options.map(o => `
+                <div class="cd-option ${o.value === selected.value ? 'selected' : ''}"
+                     onclick="selectOption('${containerId}', '${o.value.replace(/'/g,"\\'")}', this)">
+                    ${o.label}
+                </div>`).join('')}
+        </div>`;
+
+    wrap._onChange = onChange;
+}
+
+function toggleDropdown(id) {
+    const wrap = document.getElementById(id);
+    const isOpen = wrap.classList.contains('open');
+    // Close all others
+    document.querySelectorAll('.cd-wrap.open').forEach(w => w.classList.remove('open'));
+    if (!isOpen) wrap.classList.add('open');
+}
+
+function selectOption(id, value, el) {
+    const wrap = document.getElementById(id);
+    cdState[id] = { value, label: el.textContent.trim() };
+    wrap.querySelector('.cd-label').textContent = el.textContent.trim();
+    wrap.querySelectorAll('.cd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    wrap.classList.remove('open');
+    if (wrap._onChange) wrap._onChange(value);
+}
+
+function getDropdownValue(id) { return cdState[id]?.value || ''; }
+function setDropdownValue(id, value) {
+    const wrap = document.getElementById(id);
+    if (!wrap) return;
+    const opt = wrap.querySelector(`.cd-option[onclick*="${CSS.escape(value)}"]`) ||
+                [...wrap.querySelectorAll('.cd-option')].find(o => o.textContent.trim() && getAttrValue(o) === value);
+    if (opt) { selectOption(id, value, opt); }
+}
+// Helper to extract value from onclick attr
+function getAttrValue(el) {
+    const m = el.getAttribute('onclick')?.match(/selectOption\('[^']+',\s*'([^']+)'/);
+    return m ? m[1] : '';
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', e => {
+    if (!e.target.closest('.cd-wrap')) {
+        document.querySelectorAll('.cd-wrap.open').forEach(w => w.classList.remove('open'));
+    }
+});
+
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+(async function () {
+    try {
+        const res = await fetch(PRICEDATA + 'manifest.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const manifest = await res.json();
+
+        allFiles = (manifest.all || []).slice().sort();
+        availDates = [...new Set(allFiles.map(f => { const m = f.match(/(\d{4}-\d{2}-\d{2})/); return m ? m[1] : null; }).filter(Boolean))].sort();
+
+        setStatus('ready', allFiles.length + ' snapshots · ' + availDates.length + ' days available');
+        populateDateSelects();
+        document.getElementById('dateRow').style.display = 'flex';
+        quickSelect(7);
+    } catch (e) {
+        setStatus('error', 'Could not load pricedata/manifest.json — ' + e.message);
+    }
+})();
+
+function setStatus(type, msg) {
+    document.getElementById('sDot').className = 'dot dot-' + (type === 'ready' ? 'ready' : type === 'error' ? 'error' : 'loading');
+    document.getElementById('sText').textContent = msg;
+}
+
+// ── DATE SELECTS ──────────────────────────────────────────────────────────────
+function populateDateSelects() {
+    const opts = availDates.map(d => ({
+        value: d,
+        label: new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+    }));
+    buildDropdown('cdFrom', opts, availDates[0],        v => { onDateChange(); });
+    buildDropdown('cdTo',   opts, availDates[availDates.length - 1], v => { onDateChange(); });
+}
+
+function quickSelect(mode) {
+    const last = availDates[availDates.length - 1];
+    let from;
+    if (mode === 'today')          { from = last; }
+    else if (mode === 'yesterday') { from = availDates[availDates.length - 2] || last; }
+    else if (mode === 'oldest')    { from = availDates[0]; }
+    else if (mode === 'week') {
+        const target = new Date(last + 'T12:00:00');
+        target.setDate(target.getDate() - 7);
+        from = availDates.reduce((b, d) => Math.abs(new Date(d) - target) < Math.abs(new Date(b) - target) ? d : b);
+    }
+    setDropdownValue('cdFrom', from);
+    setDropdownValue('cdTo',   last);
+    onDateChange();
+}
+
+async function onDateChange() {
+    let from = getDropdownValue('cdFrom');
+    let to   = getDropdownValue('cdTo');
+    if (from > to) { setDropdownValue('cdTo', from); to = from; }
+    await loadAndRender(from, to);
+}
+
+// ── FETCH ─────────────────────────────────────────────────────────────────────
+async function loadAndRender(fromDate, toDate) {
+    const needed = allFiles.filter(f => { const m = f.match(/(\d{4}-\d{2}-\d{2})/); return m && m[1] >= fromDate && m[1] <= toDate; });
+    if (!needed.length) { document.getElementById('kpiArea').innerHTML = '<div style="text-align:center;padding:60px;color:#94a3b8;">No data in selected range</div>'; return; }
+
+    const missing = needed.filter(f => !cache[f]);
+    if (missing.length) {
+        showSkeletons();
+        setStatus('loading', 'Fetching ' + missing.length + ' files…');
+        const BATCH = 10;
+        for (let i = 0; i < missing.length; i += BATCH) {
+            await Promise.all(missing.slice(i, i + BATCH).map(async fname => {
+                try { const r = await fetch(PRICEDATA + fname); if (r.ok) cache[fname] = await r.json(); } catch(e) {}
+            }));
+            setStatus('loading', 'Loaded ' + Math.min(i + BATCH, missing.length) + ' / ' + missing.length + '…');
+        }
+    }
+
+    setStatus('ready', allFiles.length + ' snapshots · ' + availDates.length + ' days · showing ' + needed.length + ' snapshots');
+    renderKPIs(fromDate, toDate, needed);
+    // Init chart on first successful load
+    if (!priceChartInst) initChart(); else buildChart();
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderKPIs(fromDate, toDate, fileList) {
+    // Group by date
+    const byDate = {};
+    for (const f of fileList) {
+        const m = f.match(/(\d{4}-\d{2}-\d{2})/);
+        if (!m || !cache[f]) continue;
+        (byDate[m[1]] = byDate[m[1]] || []).push(cache[f]);
+    }
+    const dates = Object.keys(byDate).sort();
+    if (!dates.length) return;
+
+    const avg = arr => { const v = arr.filter(x=>x!==null); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
+
+    function stats(snaps) {
+        const rr = [], comp = [];
+        for (const stores of snaps) for (const store of stores) {
+            const p = parsePrice(store.rr_store_data?.prices);
+            if (p !== null) rr.push(p);
+            for (const c of store.competitors||[]) { const cp = parsePrice(c.data?.prices); if (cp!==null) comp.push(cp); }
+        }
+        return { rrAvg: avg(rr), compAvg: avg(comp) };
+    }
+
+    const fromStats  = stats(byDate[dates[0]]);
+    const toStats    = stats(byDate[dates[dates.length-1]]);
+    const allSnaps   = dates.flatMap(d => byDate[d]);
+    const isSameDay  = fromDate === toDate;
+
+    // Per-store on latest snapshot — collect names + diffs for tooltips
+    const latest = byDate[dates[dates.length-1]].slice(-1)[0] || [];
+    const belowStores = [], aboveStores = [], parityStores = [];
+    for (const store of latest) {
+        const rr = parsePrice(store.rr_store_data?.prices);
+        const comps = (store.competitors||[]).map(c=>parsePrice(c.data?.prices)).filter(p=>p!==null);
+        if (rr===null||!comps.length) continue;
+        const ca = avg(comps);
+        const diff = rr - ca;
+        const name = store.rr_store_data?.name || store.rr_store || 'Unknown';
+        const shortName = name.replace('Road Ranger #','RR#').replace('Road Ranger ','RR ');
+        if (diff < -0.001)      belowStores.push({ name: shortName, rr, ca, diff });
+        else if (diff > 0.001)  aboveStores.push({ name: shortName, rr, ca, diff });
+        else                    parityStores.push({ name: shortName, rr, ca, diff });
+    }
+    // Sort: below by biggest savings first, above by biggest overage first
+    belowStores.sort((a,b) => a.diff - b.diff);
+    aboveStores.sort((a,b) => b.diff - a.diff);
+
+    const fmt     = v => v!==null ? '$'+v.toFixed(3) : '—';
+    const fmtDate = d => new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+    function badge(from, to) {
+        if (from===null||to===null||isSameDay) return '';
+        const d = to-from;
+        if (Math.abs(d)<0.0005) return '<div class="badge flat">No change vs '+fmtDate(fromDate)+'</div>';
+        return '<div class="badge '+(d>0?'up':'down')+'">'+(d>0?'▲':'▼')+' $'+Math.abs(d).toFixed(3)+' vs '+fmtDate(fromDate)+'</div>';
+    }
+
+    function storeTooltip(stores, diffColor) {
+        if (!stores.length) return '<div class="store-tooltip"><div class="store-tooltip-title">Stores</div><div class="store-tooltip-item">None</div></div>';
+        const items = stores.map(s =>
+            `<div class="store-tooltip-item">
+                <span>${s.name}</span>
+                <span class="diff" style="color:${diffColor}">${s.diff>=0?'+':''}$${s.diff.toFixed(3)}</span>
+            </div>`
+        ).join('');
+        return `<div class="store-tooltip"><div class="store-tooltip-title">Hover — ${stores.length} store${stores.length!==1?'s':''}</div>${items}</div>`;
+    }
+
+    let html = `
+    <div class="section-label">${isSameDay ? fmtDate(toDate) : fmtDate(fromDate)+' vs '+fmtDate(toDate)} &nbsp;·&nbsp; ${allSnaps.length} snapshot${allSnaps.length!==1?'s':''} &nbsp;·&nbsp; ${dates.length} day${dates.length!==1?'s':''}</div>
+    <div class="kpi-grid">
+
+      <div class="kpi-box blue">
+        <div class="kpi-label">RR Avg Price</div>
+        <div class="kpi-value">${fmt(toStats.rrAvg)}</div>
+        <div class="kpi-sub">${isSameDay ? fmtDate(toDate) : 'Day 2 · '+fmtDate(toDate)}</div>
+        ${badge(fromStats.rrAvg, toStats.rrAvg)}
+      </div>
+
+      <div class="kpi-box amber">
+        <div class="kpi-label">Competitor Avg Price</div>
+        <div class="kpi-value">${fmt(toStats.compAvg)}</div>
+        <div class="kpi-sub">${isSameDay ? fmtDate(toDate) : 'Day 2 · '+fmtDate(toDate)}</div>
+        ${badge(fromStats.compAvg, toStats.compAvg)}
+      </div>
+
+      <div class="kpi-box green has-tooltip">
+        <div class="kpi-label">Stores Below Market</div>
+        <div class="kpi-value pos">${belowStores.length}</div>
+        <div class="kpi-sub">RR priced lower than local competitor avg</div>
+        ${storeTooltip(belowStores, '#4ade80')}
+      </div>
+
+      <div class="kpi-box red has-tooltip">
+        <div class="kpi-label">Stores Above Market</div>
+        <div class="kpi-value neg">${aboveStores.length}</div>
+        <div class="kpi-sub">RR priced higher than local competitor avg</div>
+        ${storeTooltip(aboveStores, '#f87171')}
+      </div>
+
+      <div class="kpi-box slate has-tooltip">
+        <div class="kpi-label">At Parity</div>
+        <div class="kpi-value">${parityStores.length}</div>
+        <div class="kpi-sub">matched with local competitor avg</div>
+        ${storeTooltip(parityStores, '#94a3b8')}
+      </div>
+
+    </div>`;
+
+    document.getElementById('kpiArea').innerHTML = html;
+
+    // Tooltip hover — use JS so moving mouse into tooltip keeps it open
+    document.querySelectorAll('.kpi-box.has-tooltip').forEach(box => {
+        let closeTimer;
+        box.addEventListener('mouseenter', () => {
+            clearTimeout(closeTimer);
+            box.classList.add('open');
+        });
+        box.addEventListener('mouseleave', () => {
+            closeTimer = setTimeout(() => box.classList.remove('open'), 120);
+        });
+        const tip = box.querySelector('.store-tooltip');
+        if (tip) {
+            tip.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+            tip.addEventListener('mouseleave', () => {
+                closeTimer = setTimeout(() => box.classList.remove('open'), 120);
+            });
+        }
+    });
+}
+
+function showSkeletons() {
+    document.getElementById('kpiArea').innerHTML = '<div class="kpi-grid">' +
+        Array(6).fill('<div class="skeleton-box"><div class="skel" style="height:10px;width:55%;margin-bottom:12px;"></div><div class="skel" style="height:30px;width:70%;margin-bottom:8px;"></div><div class="skel" style="height:9px;width:40%;"></div></div>').join('') +
+        '</div>';
+}
+
+// ── CHART ─────────────────────────────────────────────────────────────────────
+let priceChartInst = null;
+
+function initChart() {
+    const storeNames = new Set();
+    for (const data of Object.values(cache)) {
+        for (const store of data) storeNames.add(store.rr_store);
+    }
+    const opts = [
+        { value: '__all__', label: 'All RR Stores (Average)' },
+        ...[...storeNames].sort().map(s => ({ value: s, label: s }))
+    ];
+    buildDropdown('cdStore', opts, '__all__', () => buildChart());
+
+    document.getElementById('chartSection').style.display = 'block';
+    buildChart();
+}
+
+function buildChart() {
+    const selectedStore = getDropdownValue('cdStore') || '__all__';
+
+    // For each date, average all snapshots' RR price and all competitor prices
+    const byDate = {};
+    for (const [fname, data] of Object.entries(cache)) {
+        const m = fname.match(/(\d{4}-\d{2}-\d{2})/);
+        if (!m) continue;
+        const date = m[1];
+        if (!byDate[date]) byDate[date] = { rr: [], comp: [] };
+
+        for (const store of data) {
+            if (selectedStore !== '__all__' && store.rr_store !== selectedStore) continue;
+            const rr = parsePrice(store.rr_store_data?.prices);
+            if (rr !== null) byDate[date].rr.push(rr);
+            for (const c of store.competitors || []) {
+                const cp = parsePrice(c.data?.prices);
+                if (cp !== null) byDate[date].comp.push(cp);
+            }
+        }
+    }
+
+    const avg   = arr => arr.length ? arr.reduce((a,b) => a+b, 0) / arr.length : null;
+    const dates = Object.keys(byDate).sort();
+    const labels   = dates.map(d => new Date(d+'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+    const rrLine   = dates.map(d => { const a = avg(byDate[d].rr);   return a !== null ? +a.toFixed(4) : null; });
+    const compLine = dates.map(d => { const a = avg(byDate[d].comp); return a !== null ? +a.toFixed(4) : null; });
+
+    const storeLabel = selectedStore === '__all__' ? 'All RR Stores Avg' : selectedStore;
+
+    const datasets = [
+        {
+            label: storeLabel,
+            data: rrLine,
+            borderColor: '#dc2626',
+            backgroundColor: 'rgba(220,38,38,0.06)',
+            borderWidth: 2.5,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            tension: 0.1,
+            spanGaps: true,
+            fill: false
+        },
+        {
+            label: 'Competitor Avg',
+            data: compLine,
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37,99,235,0.06)',
+            borderWidth: 2.5,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            tension: 0.1,
+            spanGaps: true,
+            fill: false
+        }
+    ];
+
+    if (priceChartInst) {
+        priceChartInst.data.labels   = labels;
+        priceChartInst.data.datasets = datasets;
+        priceChartInst.update('none');
+    } else {
+        priceChartInst = new Chart(document.getElementById('priceChart'), {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#475569', font: { size: 11 }, boxWidth: 12, padding: 16 }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        titleColor: '#e2e8f0',
+                        bodyColor: '#94a3b8',
+                        padding: 10,
+                        callbacks: {
+                            label: ctx => ` ${ctx.dataset.label}: $${parseFloat(ctx.raw).toFixed(3)}`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 45, maxTicksLimit: 20 },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    y: {
+                        ticks: { color: '#94a3b8', callback: v => '$' + parseFloat(v).toFixed(3) },
+                        grid: { color: '#f1f5f9' }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// tiny helper used by chart (same logic as renderKPIs)
+function parsePrice(prices) {
+    if (!prices || !prices[0]) return null;
+    const p = parseFloat(prices[0].replace('$',''));
+    return isNaN(p) ? null : p;
+}
+</script>
+</body>
+</html>

@@ -15,6 +15,9 @@
 #Allow price-index.html
 !price-index.html
 
+#Allow price-index.html
+!kpi.html
+
 # Allow manifest.json (tracks historical files for price-index.html)
 !manifest.json
 
