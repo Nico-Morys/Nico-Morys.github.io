@@ -2217,6 +2217,128 @@
         }
         .kpi-chart-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; padding-top: 6px; }
         .kpi-chart-wrap  { position: relative; height: 480px; }
+
+        /* ── PRICE MOVEMENT TABLE ── */
+        .kpi-movement-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 24px 28px;
+            margin-top: 28px;
+        }
+        .kpi-movement-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .kpi-movement-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+        }
+        .kpi-movement-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .kpi-movement-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .kpi-movement-date-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+        }
+        .kpi-mv-fuel-toggle {
+            display: flex;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .kpi-mv-fuel-btn {
+            background: white;
+            border: none;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .kpi-mv-fuel-btn:first-child { border-right: 1.5px solid #e2e8f0; }
+        .kpi-mv-fuel-btn.active { background: #1e3a8a; color: white; }
+        .kpi-mv-fuel-btn:not(.active):hover { background: #f8fafc; }
+        .kpi-date-select {
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e3a8a;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .kpi-date-select:hover, .kpi-date-select:focus { border-color: #1e3a8a; }
+        .kpi-movement-table-wrap { overflow-x: auto; }
+        .kpi-movement-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .kpi-movement-table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 7px 10px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .kpi-movement-table thead th.col-price { text-align: center; color: #1e3a8a; background: #eff6ff; }
+        .kpi-movement-table thead th.col-move  { text-align: center; }
+        .kpi-movement-table tbody tr {
+            transition: background 0.12s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .kpi-movement-table tbody tr:last-child { border-bottom: none; }
+        .kpi-movement-table tbody tr:hover { background: #f8fafc; }
+        .kpi-movement-table td { padding: 6px 10px; vertical-align: middle; }
+        .kpi-movement-table td.col-price { text-align: center; background: #f8fbff; }
+        .kpi-movement-table td.col-move  { text-align: center; }
+        .kpi-mv-store { font-weight: 700; color: #1e3a8a; font-size: 12px; }
+        .kpi-mv-city  { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+        .kpi-mv-price { font-weight: 700; font-size: 15px; color: #14213d; }
+        .kpi-mv-price.na { color: #cbd5e1; font-weight: 400; font-size: 12px; }
+        .kpi-mv-pill {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            min-width: 48px;
+            text-align: center;
+        }
+        .kpi-mv-pill.up   { color: #16a34a; background: #f0fdf4; }
+        .kpi-mv-pill.down { color: #dc2626; background: #fef2f2; }
+        .kpi-mv-pill.flat { color: #64748b; background: #f1f5f9; }
+        .kpi-mv-pill.na   { color: #cbd5e1; background: transparent; font-weight: 400; font-size: 11px; }
+        .kpi-mv-col-date  { font-size: 10px; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 1px; }
+        .kpi-movement-empty { text-align: center; color: #94a3b8; padding: 32px 0; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -6403,6 +6525,27 @@ function setupModalStoreSearch() {
                         <canvas id="kpiMarketChart"></canvas>
                     </div>
                 </div>
+                <div class="kpi-movement-section">
+                    <div class="kpi-movement-header">
+                        <div class="kpi-movement-title">Price Movement by Store</div>
+                        <div class="kpi-movement-controls">
+                            <div class="kpi-movement-control-group">
+                                <span class="kpi-movement-date-label">Fuel Type</span>
+                                <div class="kpi-mv-fuel-toggle">
+                                    <button class="kpi-mv-fuel-btn active" id="kpiMvFuelRegBtn" onclick="setMvFuel('Regular')">Regular</button>
+                                    <button class="kpi-mv-fuel-btn" id="kpiMvFuelDieBtn" onclick="setMvFuel('Diesel')">Diesel</button>
+                                </div>
+                            </div>
+                            <div class="kpi-movement-control-group">
+                                <span class="kpi-movement-date-label">As Of Date</span>
+                                <select class="kpi-date-select" id="kpiMovementDateSel" onchange="buildMovementTable()"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-movement-table-wrap">
+                        <div id="kpiMovementTableContainer"><div class="kpi-movement-empty">Loading…</div></div>
+                    </div>
+                </div>
             </div>`;
 
             kpiBuildDropdown('kpiFuelDD',
@@ -6418,6 +6561,17 @@ function setupModalStoreSearch() {
 
             if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
             buildKpiChart();
+
+            // Populate date selector for movement table
+            const availDates = getKpiAvailDates();
+            const dateSel = document.getElementById('kpiMovementDateSel');
+            if (dateSel) {
+                dateSel.innerHTML = availDates.slice().reverse().map(d => {
+                    const label = new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    return `<option value="${d}">${label}</option>`;
+                }).join('');
+                buildMovementTable();
+            }
         }
 
         function getKpiAvailDates() {
@@ -6532,6 +6686,171 @@ function setupModalStoreSearch() {
                     }
                 });
             }
+        }
+
+        // Excluded stores from the movement table
+        const MOVEMENT_TABLE_EXCLUDED = ['324','325','326'];
+        let kpiMvFuel = 'Regular';
+
+        function setMvFuel(fuel) {
+            kpiMvFuel = fuel;
+            document.getElementById('kpiMvFuelRegBtn').classList.toggle('active', fuel === 'Regular');
+            document.getElementById('kpiMvFuelDieBtn').classList.toggle('active', fuel === 'Diesel');
+            buildMovementTable();
+        }
+
+        function buildMovementTable() {
+            const container = document.getElementById('kpiMovementTableContainer');
+            if (!container) return;
+
+            const dateSel = document.getElementById('kpiMovementDateSel');
+            const selectedDate = dateSel ? dateSel.value : null;
+            if (!selectedDate) { container.innerHTML = '<div class="kpi-movement-empty">No date selected.</div>'; return; }
+
+            const source = (historicalDataCache && historicalDataCache.length > 0)
+                ? historicalDataCache
+                : masterData.map(r => ({ ...r, _ctDate: new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' }), _fileTimestamp: new Date() }));
+
+            if (!source.length) { container.innerHTML = '<div class="kpi-movement-empty">No data available.</div>'; return; }
+
+            const fuelKey = kpiMvFuel === 'Diesel' ? 'Diesel_Regular_Price' : 'Unleaded_Regular_Price';
+
+            function pv(str) {
+                if (!str || str.trim() === '' || str.trim() === 'None') return null;
+                const n = parseFloat(str.replace('$',''));
+                return isNaN(n) ? null : n;
+            }
+
+            // Map store name → store number
+            function storeNumFromName(name) {
+                const loc = rrData.find(l => l.rr_store_data && l.rr_store_data.name && l.rr_store_data.name.trim() === name.trim());
+                if (!loc) return null;
+                return loc.rr_store.replace('Road Ranger #','').split(' - ')[0].trim();
+            }
+
+            // City label helper
+            function cityLabel(num) {
+                const loc = rrData.find(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0].trim() === num);
+                if (!loc) return '';
+                const addr = loc.rr_store_data && loc.rr_store_data.address ? loc.rr_store_data.address : '';
+                const parts = addr.split(',');
+                if (parts.length >= 2) return parts.slice(-2).map(s=>s.trim()).join(', ');
+                return addr;
+            }
+
+            // Only RR rows on the selected date
+            const rrRows = source.filter(r =>
+                r._ctDate === selectedDate &&
+                r.Station_Name && r.Station_Name.toUpperCase().includes('ROAD RANGER')
+            );
+
+            // Group by store, sorted by timestamp
+            // storeSnapshots: { storeNum: [ { ts: Date, price: number } ] } sorted asc
+            const storeSnapshots = {};
+            rrRows.forEach(r => {
+                const loc = r.RR_Location ? r.RR_Location.trim() : '';
+                if (!loc) return;
+                const num = storeNumFromName(loc);
+                if (!num || MOVEMENT_TABLE_EXCLUDED.includes(num)) return;
+                const price = pv(r[fuelKey]);
+                if (price === null || price <= 0) return;
+                const ts = r._fileTimestamp instanceof Date ? r._fileTimestamp : new Date(r._fileTimestamp);
+                if (!storeSnapshots[num]) storeSnapshots[num] = [];
+                storeSnapshots[num].push({ ts, price });
+            });
+
+            const storeNums = Object.keys(storeSnapshots).sort((a,b) => parseInt(a)-parseInt(b));
+
+            if (!storeNums.length) {
+                container.innerHTML = '<div class="kpi-movement-empty">No Road Ranger data for this date.</div>';
+                return;
+            }
+
+            // For each store, detect price changes throughout the day
+            // A "move" is any snapshot where price differs from the previous snapshot
+            // Result per store: [ { time, fromPrice, toPrice, diffCents } ]
+            const storeMoves = {};
+            let maxMoves = 0;
+
+            storeNums.forEach(num => {
+                const snaps = storeSnapshots[num].sort((a,b) => a.ts - b.ts);
+                const moves = [];
+                let lastPrice = snaps[0].price;
+                for (let i = 1; i < snaps.length; i++) {
+                    const cur = snaps[i];
+                    if (Math.round((cur.price - lastPrice) * 1000) !== 0) {
+                        moves.push({
+                            time: cur.ts,
+                            fromPrice: lastPrice,
+                            toPrice: cur.price,
+                            diffCents: Math.round((cur.price - lastPrice) * 100)
+                        });
+                        lastPrice = cur.price;
+                    }
+                }
+                storeMoves[num] = { moves, startPrice: snaps[0].price, currentPrice: snaps[snaps.length-1].price };
+                if (moves.length > maxMoves) maxMoves = moves.length;
+            });
+
+            function fmtTime(ts) {
+                return ts.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' });
+            }
+
+            function movePill(diffCents, toPrice, time) {
+                const sign = diffCents > 0 ? '+' : '';
+                const cls  = diffCents > 0 ? 'up' : 'down';
+                return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <span class="kpi-mv-pill ${cls}">${sign}${diffCents}¢</span>
+                    <span style="font-size:10px;color:#64748b;font-weight:600;">→ $${toPrice.toFixed(3)}</span>
+                    <span style="font-size:9px;color:#94a3b8;">${fmtTime(time)}</span>
+                </div>`;
+            }
+
+            // Build headers — move columns labeled Move 1, Move 2, etc.
+            let headerHtml = `<th>Store</th><th class="col-price">Current Price</th>`;
+            if (maxMoves === 0) {
+                headerHtml += `<th class="col-move">Moves</th>`;
+            } else {
+                for (let i = 0; i < maxMoves; i++) {
+                    headerHtml += `<th class="col-move">Move ${i+1}</th>`;
+                }
+            }
+
+            // Build rows
+            const rowsHtml = storeNums.map(num => {
+                const city = cityLabel(num);
+                const { moves, currentPrice } = storeMoves[num];
+
+                const priceCell = `<span class="kpi-mv-price">$${currentPrice.toFixed(3)}</span>`;
+
+                let moveCells = '';
+                if (maxMoves === 0) {
+                    moveCells = `<td class="col-move"><span class="kpi-mv-pill flat" style="font-size:11px;">No movement</span></td>`;
+                } else {
+                    for (let i = 0; i < maxMoves; i++) {
+                        if (i < moves.length) {
+                            moveCells += `<td class="col-move">${movePill(moves[i].diffCents, moves[i].toPrice, moves[i].time)}</td>`;
+                        } else {
+                            moveCells += `<td class="col-move"><span class="kpi-mv-pill na">—</span></td>`;
+                        }
+                    }
+                }
+
+                return `<tr>
+                    <td>
+                        <div class="kpi-mv-store">#${num}</div>
+                        ${city ? `<div class="kpi-mv-city">${city}</div>` : ''}
+                    </td>
+                    <td class="col-price">${priceCell}</td>
+                    ${moveCells}
+                </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <table class="kpi-movement-table">
+                    <thead><tr>${headerHtml}</tr></thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>`;
         }
 
         // ── END MARKET KPI VIEW ───────────────────────────────────────────
