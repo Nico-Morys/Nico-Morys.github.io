@@ -6488,7 +6488,14 @@ function setupModalStoreSearch() {
         // ── MARKET KPI VIEW ───────────────────────────────────────────────
         let kpiChartInst = null;
         let kpiFuelSel   = 'Regular';
+        let kpiRegionSel = 'All Regions';
         let kpiStoreSel  = 'All Stores';
+
+        const KPI_REGIONS = {
+            'Midwest': ['118','132','136','139','140','141','144','145','153','157','181','185','186','187','203','205','206','209','210','211','225','226','235','236','240','242','263','265','266','268','269'],
+            'NTI':     ['277','278','279','280','281','282','283','284','285','286','287','289','290','312','315','319','323'],
+            'Texas':   ['267','270','271','272','273','275','276']
+        };
 
         function selectMarketKPIs() {
             document.querySelectorAll('.store-item, .alert-store-item').forEach(el => el.classList.remove('active'));
@@ -6503,7 +6510,16 @@ function setupModalStoreSearch() {
                 return;
             }
 
-            const storeOptions = ['All Stores', ...rrData.map(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0]).sort((a,b)=>parseInt(a)-parseInt(b)).map(n => `RR #${n}`)];
+            const allStoreNums = rrData.map(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0]).sort((a,b)=>parseInt(a)-parseInt(b));
+            const regionFilteredNums = kpiRegionSel === 'All Regions'
+                ? allStoreNums
+                : allStoreNums.filter(n => KPI_REGIONS[kpiRegionSel] && KPI_REGIONS[kpiRegionSel].includes(n));
+            const storeOptions = ['All Stores', ...regionFilteredNums.map(n => `RR #${n}`)];
+
+            // If current store selection is not in the new region, reset to All Stores
+            if (kpiStoreSel !== 'All Stores' && !storeOptions.includes(kpiStoreSel)) {
+                kpiStoreSel = 'All Stores';
+            }
 
             content.innerHTML = `
             <div class="kpi-view">
@@ -6511,6 +6527,10 @@ function setupModalStoreSearch() {
                     <div class="kpi-chart-header">
                         <div class="kpi-chart-title">Daily Average Price History</div>
                         <div class="kpi-chart-controls">
+                            <div class="kpi-dd-group">
+                                <label class="kpi-dd-label">Region</label>
+                                <div class="cd-wrap" id="kpiRegionDD"></div>
+                            </div>
                             <div class="kpi-dd-group">
                                 <label class="kpi-dd-label">Fuel Type</label>
                                 <div class="cd-wrap" id="kpiFuelDD"></div>
@@ -6548,6 +6568,11 @@ function setupModalStoreSearch() {
                 </div>
             </div>`;
 
+            kpiBuildDropdown('kpiRegionDD',
+                ['All Regions', 'Midwest', 'NTI', 'Texas'].map(r => ({ value: r, label: r })),
+                kpiRegionSel,
+                v => { kpiRegionSel = v; kpiStoreSel = 'All Stores'; renderMarketKPIView(); }
+            );
             kpiBuildDropdown('kpiFuelDD',
                 [{value:'Regular',label:'Regular'},{value:'Diesel',label:'Diesel'}],
                 kpiFuelSel,
@@ -6610,9 +6635,25 @@ function setupModalStoreSearch() {
                 if (loc) storeName = loc.rr_store_data.name;
             }
 
+            // Build set of store names for region filtering
+            let regionStoreNames = null;
+            if (kpiRegionSel !== 'All Regions' && !storeNum) {
+                const regionNums = KPI_REGIONS[kpiRegionSel] || [];
+                regionStoreNames = new Set();
+                regionNums.forEach(n => {
+                    const loc = rrData.find(l => l.rr_store.replace('Road Ranger #','').split(' - ')[0].trim() === n);
+                    if (loc && loc.rr_store_data && loc.rr_store_data.name) regionStoreNames.add(loc.rr_store_data.name.trim());
+                });
+            }
+
             const filtered = storeName
                 ? source.filter(r => r.RR_Location.trim() === storeName.trim())
-                : source;
+                : regionStoreNames
+                    ? source.filter(r => {
+                        if (!r.Station_Name.toUpperCase().includes('ROAD RANGER')) return true; // keep competitors always
+                        return regionStoreNames.has(r.RR_Location ? r.RR_Location.trim() : '');
+                    })
+                    : source;
 
             if (!filtered.length) {
                 if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
@@ -6640,7 +6681,11 @@ function setupModalStoreSearch() {
             const rrLine   = dates.map(d => { const v = avg(byDate[d].rr);   return v !== null ? +v.toFixed(3) : null; });
             const compLine = dates.map(d => { const v = avg(byDate[d].comp); return v !== null ? +v.toFixed(3) : null; });
 
-            const storeLabel = kpiStoreSel === 'All Stores' ? 'All RR Stores Avg' : `Road Ranger #${storeNum}`;
+            const storeLabel = kpiStoreSel !== 'All Stores'
+                ? `Road Ranger #${storeNum}`
+                : kpiRegionSel !== 'All Regions'
+                    ? `${kpiRegionSel} RR Stores Avg`
+                    : 'All RR Stores Avg';
 
             const datasets = [
                 {
