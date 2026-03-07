@@ -49,7 +49,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            max-height: 320px;
+            max-height: 220px;
             overflow-y: auto;
             min-width: 100%;
             padding: 4px 0;
@@ -134,7 +134,7 @@
 
 <header>
     <a href="map.html" class="back-btn">← Back to Map</a>
-    <h1>Road Ranger Mudflaps</h1>
+    <h1>Road Ranger Mudflap</h1>
     <img src="images/logos/roadrangerlogo.png" alt="Road Ranger Logo" onerror="this.style.display='none'">
 </header>
 
@@ -172,7 +172,16 @@
     <div class="chart-section" id="chartSection" style="display:none;">
         <div class="chart-header">
             <div class="chart-section-title">Daily Average Price History</div>
-            <div class="cd-wrap" id="cdStore" style="min-width:220px;"></div>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <div>
+                    <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#94a3b8;margin-bottom:4px;">Region</div>
+                    <div class="cd-wrap" id="cdRegion" style="min-width:140px;"></div>
+                </div>
+                <div>
+                    <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#94a3b8;margin-bottom:4px;">Store</div>
+                    <div class="cd-wrap" id="cdStore" style="min-width:220px;"></div>
+                </div>
+            </div>
         </div>
         <div class="chart-wrap">
             <canvas id="priceChart"></canvas>
@@ -431,7 +440,7 @@ function renderKPIs(fromDate, toDate, fileList) {
       </div>
 
       <div class="kpi-box slate has-tooltip">
-        <div class="kpi-label">At Market</div>
+        <div class="kpi-label">At Parity</div>
         <div class="kpi-value">${parityStores.length}</div>
         <div class="kpi-sub">matched with local competitor avg</div>
         ${storeTooltip(parityStores, '#94a3b8')}
@@ -470,23 +479,60 @@ function showSkeletons() {
 // ── CHART ─────────────────────────────────────────────────────────────────────
 let priceChartInst = null;
 
-function initChart() {
-    const storeNames = new Set();
-    for (const data of Object.values(cache)) {
-        for (const store of data) storeNames.add(store.rr_store);
-    }
-    const opts = [
-        { value: '__all__', label: 'All RR Stores (Average)' },
-        ...[...storeNames].sort().map(s => ({ value: s, label: s }))
-    ];
-    buildDropdown('cdStore', opts, '__all__', () => buildChart());
+const CHART_REGIONS = {
+    'Midwest': ['118','132','136','139','140','141','144','145','153','157','181','185','186','187','203','205','206','209','210','211','225','226','235','236','240','242','263','265','266','268','269'],
+    'NTI':     ['277','278','279','280','281','282','283','284','285','286','287','289','290','312','315','319','323'],
+    'Texas':   ['267','270','271','272','273','275','276']
+};
 
+function getStoreNum(rrStore) {
+    // "Road Ranger 118" or "Road Ranger #118" -> "118"
+    return rrStore.replace(/Road Ranger #?/i,'').trim();
+}
+
+function initChart() {
+    // Build region dropdown
+    const regionOpts = [
+        { value: '__all__', label: 'All Regions' },
+        { value: 'Midwest', label: 'Midwest' },
+        { value: 'NTI',     label: 'NTI' },
+        { value: 'Texas',   label: 'Texas' }
+    ];
+    buildDropdown('cdRegion', regionOpts, '__all__', () => {
+        rebuildStoreDropdown();
+        buildChart();
+    });
+
+    rebuildStoreDropdown();
     document.getElementById('chartSection').style.display = 'block';
     buildChart();
 }
 
+function rebuildStoreDropdown() {
+    const region = getDropdownValue('cdRegion') || '__all__';
+    const storeNames = new Set();
+    for (const data of Object.values(cache)) {
+        for (const store of data) {
+            const num = getStoreNum(store.rr_store);
+            if (region === '__all__' || (CHART_REGIONS[region] && CHART_REGIONS[region].includes(num))) {
+                storeNames.add(store.rr_store);
+            }
+        }
+    }
+    const currentStore = getDropdownValue('cdStore') || '__all__';
+    const storeNums = [...storeNames].sort((a,b) => parseInt(getStoreNum(a)) - parseInt(getStoreNum(b)));
+    const opts = [
+        { value: '__all__', label: 'All RR Stores (Average)' },
+        ...storeNums.map(s => ({ value: s, label: s }))
+    ];
+    // If current store is still valid, keep it; otherwise reset
+    const keepVal = opts.find(o => o.value === currentStore) ? currentStore : '__all__';
+    buildDropdown('cdStore', opts, keepVal, () => buildChart());
+}
+
 function buildChart() {
     const selectedStore = getDropdownValue('cdStore') || '__all__';
+    const selectedRegion = getDropdownValue('cdRegion') || '__all__';
 
     // For each date, average all snapshots' RR price and all competitor prices
     const byDate = {};
@@ -497,6 +543,11 @@ function buildChart() {
         if (!byDate[date]) byDate[date] = { rr: [], comp: [] };
 
         for (const store of data) {
+            // Region filter
+            if (selectedRegion !== '__all__') {
+                const num = getStoreNum(store.rr_store);
+                if (!CHART_REGIONS[selectedRegion] || !CHART_REGIONS[selectedRegion].includes(num)) continue;
+            }
             if (selectedStore !== '__all__' && store.rr_store !== selectedStore) continue;
             const rr = parsePrice(store.rr_store_data?.prices);
             if (rr !== null) byDate[date].rr.push(rr);
@@ -513,7 +564,8 @@ function buildChart() {
     const rrLine   = dates.map(d => { const a = avg(byDate[d].rr);   return a !== null ? +a.toFixed(4) : null; });
     const compLine = dates.map(d => { const a = avg(byDate[d].comp); return a !== null ? +a.toFixed(4) : null; });
 
-    const storeLabel = selectedStore === '__all__' ? 'All RR Stores Avg' : selectedStore;
+    const regionLabel = selectedRegion !== '__all__' ? ` (${selectedRegion})` : '';
+    const storeLabel = selectedStore === '__all__' ? `All RR Stores Avg${regionLabel}` : selectedStore;
 
     const datasets = [
         {
