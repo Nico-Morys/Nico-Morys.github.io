@@ -242,6 +242,32 @@
             color: #1e3a8a;
         }
 
+        .store-item.pinned {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+        }
+
+        .store-item.pinned .store-number {
+            color: #c2410c;
+        }
+
+        .store-item.pinned .store-name {
+            color: #9a3412;
+        }
+
+        .store-item.pinned.active {
+            background: #ffedd5;
+            border-left: 4px solid #ea580c;
+        }
+
+        .pin-indicator {
+            font-size: 10px;
+            color: #f97316;
+            margin-left: 4px;
+            opacity: 0.85;
+        }
+
+
         .store-number {
             font-size: 15px;
             font-weight: 600;
@@ -2348,24 +2374,6 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             pointer-events: none;
         }
-        .lag-info-tooltip::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 16px;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid #334155;
-        }
-        .lag-info-tooltip::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 16px;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-bottom: 6px solid #1e293b;
-        }
         .lag-info-wrap:hover .lag-info-tooltip { display: block; }
         .lag-info-tooltip strong { color: #f1f5f9; display: block; margin-bottom: 4px; }
         .lag-info-tooltip .lag-tip-section { margin-bottom: 10px; }
@@ -2426,7 +2434,6 @@
         .lag-table tr:last-child td { border-bottom: none; }
         .lag-table tr.lag-rr-row td { background: #fafafa; font-weight: 600; }
         .lag-station-name { font-weight: 600; color: #1e293b; }
-        .lag-station-sub  { font-size: 11px; color: #94a3b8; margin-top: 2px; }
         .lag-delta { font-weight: 700; }
         .lag-delta.up   { color: #16a34a; }
         .lag-delta.down { color: #dc2626; }
@@ -2662,6 +2669,16 @@
         let currentStore = null;
         let visibleCompetitors = new Set();
         let alertStores = []; // Stores that need attention
+
+        // Pinned stores — persisted in localStorage
+        let pinnedStores = (() => {
+            try {
+                const saved = localStorage.getItem('rrPinnedStores');
+                return new Set(saved ? JSON.parse(saved) : []);
+            } catch (e) {
+                return new Set();
+            }
+        })();
         
         // Price Trends state
         let trendsFuelType = 'Regular';
@@ -4267,10 +4284,37 @@
                     </div>
                     <span class="store-alert-dot" id="alert-dot-${storeNumber}" style="display:none;" title="Needs attention"></span>
                 `;
-                item.onclick = () => selectStore(index);
+                item.onclick = (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        // Ctrl+Click = toggle pin
+                        e.preventDefault();
+                        const isPinned = pinnedStores.has(storeNumber);
+                        if (isPinned) {
+                            pinnedStores.delete(storeNumber);
+                        } else {
+                            pinnedStores.add(storeNumber);
+                        }
+                        try {
+                            localStorage.setItem('rrPinnedStores', JSON.stringify(Array.from(pinnedStores)));
+                        } catch (err) {}
+                        item.classList.toggle('pinned', !isPinned);
+                        const pinIcon = item.querySelector('.pin-icon');
+                        if (pinIcon) pinIcon.style.display = !isPinned ? 'inline' : 'none';
+                    } else {
+                        selectStore(index);
+                    }
+                };
+
+                // Apply pinned style if saved
+                if (pinnedStores.has(storeNumber)) {
+                    item.classList.add('pinned');
+                    const pinIcon = item.querySelector('.pin-icon');
+                    if (pinIcon) pinIcon.style.display = 'inline';
+                }
                 
                 container.appendChild(item);
             });
+
             
             // Update alerts after populating store list
             updateAlerts();
@@ -6791,6 +6835,8 @@ function setupModalStoreSearch() {
                         <div class="futures-control-group">
                             <span class="futures-control-label">Time Range</span>
                             <div class="trends-btn-group">
+                                <button class="trends-btn"        id="futuresBtn1"  onclick="setFuturesDays(1)">24 HR</button>
+                                <button class="trends-btn"        id="futuresBtn2"  onclick="setFuturesDays(2)">48 HR</button>
                                 <button class="trends-btn active" id="futuresBtn7"  onclick="setFuturesDays(7)">7 Days</button>
                                 <button class="trends-btn"        id="futuresBtn14" onclick="setFuturesDays(14)">14 Days</button>
                                 <button class="trends-btn"        id="futuresBtn30" onclick="setFuturesDays(30)">30 Days</button>
@@ -7376,7 +7422,6 @@ function setupModalStoreSearch() {
                     <tr class="${s.isRR ? 'lag-rr-row' : ''}">
                         <td>
                             <div class="lag-station-name">${s.label}</div>
-                            ${s.isRR ? '<div class="lag-station-sub">Road Ranger</div>' : ''}
                         </td>
                         <td>${fmtDelta(regDelta)}</td>
                         <td>${fmtFuturesDelta(rbobDelta)}</td>
@@ -7504,10 +7549,11 @@ function setupModalStoreSearch() {
 
         function setFuturesDays(days) {
             futuresDays = days;
-            [7, 14, 30].forEach(d => {
+            [1, 2, 7, 14, 30].forEach(d => {
                 const btn = document.getElementById('futuresBtn' + d);
                 if (btn) btn.classList.toggle('active', d === days);
             });
+            buildFuturesPills();
             buildFuturesChart(futuresActiveTicker);
         }
 
@@ -7555,7 +7601,24 @@ function setupModalStoreSearch() {
 
                 const decimals = f.unit && f.unit.includes('gal') ? 4 : 2;
                 const price    = f.price != null ? f.price.toFixed(decimals) : '—';
-                const chg      = f.change_pct;
+
+                // Dynamically calculate % change over the selected time window
+                let chg = null;
+                if (f.candles && f.candles.length >= 2) {
+                    const cutoff = new Date();
+                    cutoff.setDate(cutoff.getDate() - futuresDays);
+                    const windowCandles = f.candles.filter(c => new Date(c.dt) >= cutoff);
+                    if (windowCandles.length >= 2) {
+                        const startPrice = windowCandles[0].close;
+                        const endPrice   = windowCandles[windowCandles.length - 1].close;
+                        if (startPrice && startPrice !== 0) {
+                            chg = ((endPrice - startPrice) / startPrice) * 100;
+                        }
+                    }
+                }
+                // Fall back to stored change_pct if we can't calculate
+                if (chg === null) chg = f.change_pct;
+
                 const chgStr   = chg != null
                     ? (chg >= 0 ? `▲ ${chg.toFixed(2)}%` : `▼ ${Math.abs(chg).toFixed(2)}%`)
                     : '—';
