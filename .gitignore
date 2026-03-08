@@ -26,6 +26,13 @@
 !consumption/*.csv
 !consumption/manifest.json
 
+
+# Allow consumption folder and its files
+!commodities/
+!commodities/*.csv
+!commodities/manifest.json
+
+
 # Allow .gitignore itself
 !.gitignore
 
