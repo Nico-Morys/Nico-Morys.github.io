@@ -2218,6 +2218,235 @@
         .kpi-chart-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; padding-top: 6px; }
         .kpi-chart-wrap  { position: relative; height: 480px; }
 
+        /* ── FUTURES / COMMODITY MARKET SECTION ── */
+        .futures-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 24px 28px;
+            margin-top: 28px;
+        }
+        .futures-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
+        }
+        .futures-title {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #94a3b8;
+        }
+        .futures-updated { font-size: 11px; color: #94a3b8; }
+        .futures-controls {
+            display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+        }
+        .futures-control-group { display: flex; flex-direction: column; gap: 4px; }
+        .futures-control-label {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #94a3b8;
+        }
+        .futures-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .futures-pill {
+            background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px;
+            padding: 10px 16px; min-width: 160px; cursor: pointer;
+            transition: all 0.15s; flex: 1 1 160px;
+        }
+        .futures-pill:hover  { border-color: #94a3b8; background: #f1f5f9; }
+        .futures-pill.active { border-color: #2563eb; background: #eff6ff; }
+        .futures-pill-label {
+            font-size: 11px; font-weight: 700; color: #64748b;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+        }
+        .futures-pill-price { font-size: 1.15rem; font-weight: 700; color: #1e293b; }
+        .futures-pill-chg   { font-size: 12px; font-weight: 600; margin-top: 2px; }
+        .futures-pill-chg.up   { color: #16a34a; }
+        .futures-pill-chg.down { color: #dc2626; }
+        .futures-pill-chg.flat { color: #64748b; }
+        .futures-pill-signal {
+            font-size: 10px; font-weight: 700; border-radius: 4px;
+            padding: 2px 6px; margin-top: 5px; display: inline-block;
+        }
+        .futures-pill-signal.bullish { background: #f0fdf4; color: #15803d; }
+        .futures-pill-signal.bearish { background: #fef2f2; color: #b91c1c; }
+        .futures-pill-signal.neutral { background: #f1f5f9; color: #64748b; }
+        .futures-chart-wrap { position: relative; height: 300px; }
+        .futures-outlook-note {
+            margin-top: 10px; font-size: 12px; color: #64748b;
+            background: #f8fafc; border-radius: 6px; padding: 8px 12px;
+        }
+        .futures-error   { text-align: center; padding: 32px; color: #94a3b8; font-size: 13px; }
+        .futures-loading { text-align: center; padding: 32px; color: #94a3b8; font-size: 13px; }
+
+        /* ── FUTURES LAG ANALYSIS TABLE ── */
+        .lag-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            margin-top: 24px;
+            overflow: hidden;
+        }
+        .lag-header {
+            background: #14213d;
+            color: white;
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .lag-header-title { letter-spacing: 0.5px; }
+        .lag-header-sub {
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+        .lag-info-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .lag-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.75);
+            font-size: 10px;
+            font-weight: 700;
+            font-style: italic;
+            font-family: Georgia, serif;
+            cursor: default;
+            line-height: 1;
+            transition: all 0.15s;
+            user-select: none;
+        }
+        .lag-info-icon:hover {
+            border-color: rgba(255,255,255,0.9);
+            color: white;
+            background: rgba(255,255,255,0.15);
+        }
+        .lag-info-tooltip {
+            display: none;
+            position: fixed;
+            width: 320px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 12px;
+            font-weight: 400;
+            font-style: normal;
+            color: #cbd5e1;
+            line-height: 1.6;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        .lag-info-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 16px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #334155;
+        }
+        .lag-info-tooltip::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 16px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #1e293b;
+        }
+        .lag-info-wrap:hover .lag-info-tooltip { display: block; }
+        .lag-info-tooltip strong { color: #f1f5f9; display: block; margin-bottom: 4px; }
+        .lag-info-tooltip .lag-tip-section { margin-bottom: 10px; }
+        .lag-info-tooltip .lag-tip-section:last-child { margin-bottom: 0; }
+        .lag-tip-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 3px;
+            padding: 1px 5px;
+            margin-right: 3px;
+            vertical-align: middle;
+        }
+        .lag-tip-moved   { background: #f0fdf4; color: #15803d; }
+        .lag-tip-lagging { background: #fff7ed; color: #c2410c; }
+        .lag-tip-holding { background: #fef2f2; color: #b91c1c; }
+        .lag-tip-cut     { background: #eff6ff; color: #1d4ed8; }
+        .lag-futures-row {
+            display: flex;
+            gap: 20px;
+            padding: 10px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .lag-futures-pill {
+            font-size: 12px;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .lag-futures-pill strong { color: #1e293b; }
+        .lag-futures-chg.up   { color: #16a34a; font-weight: 700; }
+        .lag-futures-chg.down { color: #dc2626; font-weight: 700; }
+        .lag-futures-chg.flat { color: #64748b; font-weight: 700; }
+        .lag-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .lag-table th {
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 9px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .lag-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        .lag-table tr:last-child td { border-bottom: none; }
+        .lag-table tr.lag-rr-row td { background: #fafafa; font-weight: 600; }
+        .lag-station-name { font-weight: 600; color: #1e293b; }
+        .lag-station-sub  { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .lag-delta { font-weight: 700; }
+        .lag-delta.up   { color: #16a34a; }
+        .lag-delta.down { color: #dc2626; }
+        .lag-delta.flat { color: #94a3b8; }
+        .lag-delta.na   { color: #cbd5e1; font-weight: 400; font-style: italic; }
+        .lag-status-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 5px;
+            padding: 3px 8px;
+            white-space: nowrap;
+        }
+        .lag-status-moved    { background: #f0fdf4; color: #15803d; }
+        .lag-status-lagging  { background: #fff7ed; color: #c2410c; }
+        .lag-status-holding  { background: #fef2f2; color: #b91c1c; }
+        .lag-status-cut      { background: #eff6ff; color: #1d4ed8; }
+        .lag-status-na       { background: #f8fafc; color: #94a3b8; }
+        .lag-no-data { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; }
+
         /* ── PRICE MOVEMENT TABLE ── */
         .kpi-movement-section {
             background: white;
@@ -4301,10 +4530,14 @@
             html += `
                     </div>
                 </div>
+                <div id="lag-analysis-container"></div>
             </div>
             `;
 
             document.getElementById('content').innerHTML = html;
+
+            // Render lag analysis (async — needs commodity data)
+            renderLagAnalysis(storeNumber, rrStation, competitors);
 
             // Set up competitor search
             if (competitors.length > 0) {
@@ -6545,6 +6778,29 @@ function setupModalStoreSearch() {
                         <canvas id="kpiMarketChart"></canvas>
                     </div>
                 </div>
+                <div class="futures-section" id="futuresSection">
+                    <div class="futures-header">
+                        <div class="futures-title">⛽ Commodity Futures &amp; Market Outlook</div>
+                        <span class="futures-updated" id="futuresUpdated">Loading…</span>
+                    </div>
+                    <div class="futures-pills" id="futuresPills">
+                        <div class="futures-loading">Loading commodity data…</div>
+                    </div>
+                    <div class="futures-controls" style="margin-bottom:16px;">
+                        <div class="futures-control-group">
+                            <span class="futures-control-label">Time Range</span>
+                            <div class="trends-btn-group">
+                                <button class="trends-btn active" id="futuresBtn7"  onclick="setFuturesDays(7)">7 Days</button>
+                                <button class="trends-btn"        id="futuresBtn14" onclick="setFuturesDays(14)">14 Days</button>
+                                <button class="trends-btn"        id="futuresBtn30" onclick="setFuturesDays(30)">30 Days</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="futures-chart-wrap">
+                        <canvas id="futuresChart"></canvas>
+                    </div>
+                    <div class="futures-outlook-note" id="futuresOutlookNote"></div>
+                </div>
                 <div class="kpi-movement-section">
                     <div class="kpi-movement-header">
                         <div class="kpi-movement-title">Price Movement by Store</div>
@@ -6899,6 +7155,581 @@ function setupModalStoreSearch() {
         }
 
         // ── END MARKET KPI VIEW ───────────────────────────────────────────
+
+        // ═════════════════════════════════════════════════════════════════════
+        // FUTURES LAG ANALYSIS — per-store table below Fuel Price Comparison
+        // Shows how each competitor's price moved vs RBOB/ULSD over 48 hours
+        // ═════════════════════════════════════════════════════════════════════
+
+        async function renderLagAnalysis(storeNumber, rrStation, competitors) {
+            const container = document.getElementById('lag-analysis-container');
+            if (!container) return;
+
+            // Ensure commodity data is loaded
+            if (!commodityData) {
+                await loadCommodityData();
+            }
+
+            // ── Futures 48H delta ─────────────────────────────────────────────
+            function getFutures48hDelta(ticker) {
+                if (!commodityData || !commodityData.tickers) return null;
+                const f = commodityData.tickers[ticker];
+                if (!f || !f.candles || f.candles.length < 2) return null;
+                const cutoff = new Date();
+                cutoff.setHours(cutoff.getHours() - 48);
+                const recent = f.candles.filter(c => new Date(c.dt) >= cutoff);
+                if (recent.length < 2) return null;
+                const oldest = recent[0].close;
+                const newest = recent[recent.length - 1].close;
+                return round2(newest - oldest);
+            }
+
+            const rbobDelta = getFutures48hDelta('RB=F');   // cents/gal wholesale
+            const ulsdDelta = getFutures48hDelta('HO=F');
+
+            // ── Station 48H price delta from historicalDataCache ──────────────
+            // Uses Station_ID (unique per station) to avoid cross-store name collisions.
+            // Also requires a valid current price — if the station has no price today
+            // for that fuel type, we return null rather than showing stale history.
+            function getStation48hDelta(stationId, rrLoc, currentPrice, fuelKey) {
+                // If station has no current price for this fuel, don't show a delta
+                if (currentPrice === null) return null;
+                if (!historicalDataCache || !historicalDataCache.length) return null;
+
+                const cutoff = new Date();
+                cutoff.setHours(cutoff.getHours() - 48);
+
+                const rows = historicalDataCache
+                    .filter(r => r.Station_ID && r.Station_ID.trim() === stationId.trim())
+                    .filter(r => rrLoc ? r.RR_Location && r.RR_Location.trim() === rrLoc.trim() : true)
+                    .filter(r => r._fileTimestamp)
+                    .sort((a, b) => a._fileTimestamp - b._fileTimestamp);
+
+                if (rows.length < 2) return null;
+
+                const validRows = rows.filter(r => parsePrice(r[fuelKey]) !== null);
+                if (validRows.length < 2) return null;
+
+                const beforeCutoff = validRows.filter(r => r._fileTimestamp <= cutoff);
+                const firstRow = beforeCutoff.length
+                    ? beforeCutoff[beforeCutoff.length - 1]
+                    : validRows[0];
+
+                const lastRow = validRows[validRows.length - 1];
+                if (firstRow === lastRow) return 0;
+
+                const first = parsePrice(firstRow[fuelKey]);
+                const last  = parsePrice(lastRow[fuelKey]);
+                if (first === null || last === null) return null;
+                return round2(last - first);
+            }
+
+            function parsePrice(str) {
+                if (!str || str.trim() === '' || str.trim() === 'None') return null;
+                const n = parseFloat(str.replace('$', ''));
+                return isNaN(n) ? null : n;
+            }
+
+            function round2(n) { return Math.round(n * 100) / 100; }
+
+            // ── Status logic ──────────────────────────────────────────────────
+            // futuresDelta and stationDelta both in dollars
+            // We expect retail to move ~80-120% of futures move
+            function getStatus(futuresDelta, stationDelta) {
+                if (futuresDelta === null || stationDelta === null) return 'na';
+                const threshold = 0.005; // $0.005 = half a cent — ignore tiny moves
+                if (Math.abs(futuresDelta) < threshold) return 'moved'; // futures flat
+                const ratio = stationDelta / futuresDelta;
+                if (futuresDelta > threshold) {
+                    // Futures went UP
+                    if (stationDelta < -threshold)       return 'cut';      // cut despite rise
+                    if (ratio >= 0.7)                    return 'moved';    // tracked it
+                    return 'lagging';                                        // hasn't moved up yet
+                } else {
+                    // Futures went DOWN
+                    if (stationDelta > threshold)        return 'cut';      // raised despite drop — unusual
+                    if (ratio >= 0.7)                    return 'moved';    // tracked it
+                    return 'holding';                                        // hasn't dropped yet
+                }
+            }
+
+            function statusBadge(status) {
+                const map = {
+                    moved:   ['Moved',        'lag-status-moved'],
+                    lagging: ['Lagging',       'lag-status-lagging'],
+                    holding: ['Holding High',  'lag-status-holding'],
+                    cut:     ['Cut',            'lag-status-cut'],
+                    na:      ['— N/A',             'lag-status-na'],
+                };
+                const [label, cls] = map[status] || map.na;
+                return `<span class="lag-status-badge ${cls}">${label}</span>`;
+            }
+
+            function fmtDelta(delta, status) {
+                if (delta === null) return `<span class="lag-delta na">N/A</span>`;
+                const sign  = delta > 0 ? '+' : '';
+                const cls   = delta > 0.004 ? 'up' : delta < -0.004 ? 'down' : 'flat';
+                return `<span class="lag-delta ${cls}">${sign}${(delta * 100).toFixed(1)}¢</span>`;
+            }
+
+            function fmtFuturesDelta(delta) {
+                if (delta === null) return '<span class="lag-futures-chg flat">No data</span>';
+                const sign = delta >= 0 ? '+' : '';
+                const cls  = delta > 0.004 ? 'up' : delta < -0.004 ? 'down' : 'flat';
+                return `<span class="lag-futures-chg ${cls}">${sign}${(delta * 100).toFixed(1)}¢</span>`;
+            }
+
+            // ── Build station list: RR first, then competitors ─────────────────
+            const stations = [];
+
+            // Road Ranger row
+            if (rrStation) {
+                stations.push({
+                    id:       rrStation.Station_ID,
+                    rrLoc:    rrStation.RR_Location,
+                    label:    `Road Ranger #${storeNumber}`,
+                    isRR:     true,
+                    curReg:   parsePrice(rrStation.Unleaded_Regular_Price),
+                    curDie:   parsePrice(rrStation.Diesel_Regular_Price),
+                });
+            }
+
+            // Competitor rows (visible ones only)
+            const visibleComps = competitors.filter((_, idx) => visibleCompetitors.has(idx));
+            visibleComps.forEach(c => {
+                stations.push({
+                    id:     c.Station_ID,
+                    rrLoc:  c.RR_Location,
+                    label:  normalizeStationName(c.Station_Name),
+                    isRR:   false,
+                    curReg: parsePrice(c.Unleaded_Regular_Price),
+                    curDie: parsePrice(c.Diesel_Regular_Price),
+                });
+            });
+
+            if (!stations.length) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // ── Render ────────────────────────────────────────────────────────
+            let html = `
+                <div class="lag-section">
+                    <div class="lag-header">
+                        <span class="lag-header-title">
+                            Futures Lag Analysis
+                            <span class="lag-info-wrap">
+                                <span class="lag-info-icon">i</span>
+                                <div class="lag-info-tooltip">
+                                    <div class="lag-tip-section">
+                                        <strong>Station Price Δ (48H)</strong>
+                                        Compares the most recent scraped price to the last snapshot captured before the 48-hour mark.
+                                    </div>
+                                    <div class="lag-tip-section">
+                                        <strong>VS RBOB / VS ULSD</strong>
+                                        The wholesale futures move over the same 48-hour window from <code style="font-size:10px;background:#334155;padding:1px 4px;border-radius:3px;">commodities/history.csv</code>. RBOB drives regular gas prices; ULSD drives diesel.
+                                    </div>
+                                    <div class="lag-tip-section">
+                                        <strong>Status Badges</strong>
+                                        <div style="margin-top:4px;line-height:2">
+                                            <span class="lag-tip-badge lag-tip-moved">Moved</span> Tracked the futures move within ~70%<br>
+                                            <span class="lag-tip-badge lag-tip-lagging">Lagging</span> Futures up, station hasn't raised yet<br>
+                                            <span class="lag-tip-badge lag-tip-holding">Holding High</span> Futures down, station hasn't dropped<br>
+                                            <span class="lag-tip-badge lag-tip-cut">Cut</span> Station moved opposite to futures
+                                        </div>
+                                    </div>
+                                    <div class="lag-tip-section" style="color:#94a3b8;font-size:11px;">
+                                        ⚠️ On weekends, futures markets are closed. VS RBOB/ULSD values reflect Friday's closing move and will appear stale until Sunday evening when CME reopens.
+                                    </div>
+                                </div>
+                            </span>
+                        </span>
+                        <span class="lag-header-sub">48-hour window · How stations have reacted to recent futures moves</span>
+                    </div>
+                    <table class="lag-table">
+                        <thead>
+                            <tr>
+                                <th>Station</th>
+                                <th>Regular Δ (48H)</th>
+                                <th>vs RBOB</th>
+                                <th>Diesel Δ (48H)</th>
+                                <th>vs ULSD</th>
+                                <th>Overall Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            stations.forEach(s => {
+                const regDelta  = getStation48hDelta(s.id, s.rrLoc, s.curReg, 'Unleaded_Regular_Price');
+                const dieDelta  = getStation48hDelta(s.id, s.rrLoc, s.curDie, 'Diesel_Regular_Price');
+                const regStatus = getStatus(rbobDelta, regDelta);
+                const dieStatus = getStatus(ulsdDelta, dieDelta);
+
+                // Overall status: worst of the two (lagging/holding > cut > moved > na)
+                const priority = { lagging: 4, holding: 4, cut: 3, moved: 2, na: 1 };
+                const overallStatus = (priority[regStatus] || 0) >= (priority[dieStatus] || 0)
+                    ? regStatus : dieStatus;
+
+                html += `
+                    <tr class="${s.isRR ? 'lag-rr-row' : ''}">
+                        <td>
+                            <div class="lag-station-name">${s.label}</div>
+                            ${s.isRR ? '<div class="lag-station-sub">Road Ranger</div>' : ''}
+                        </td>
+                        <td>${fmtDelta(regDelta)}</td>
+                        <td>${fmtFuturesDelta(rbobDelta)}</td>
+                        <td>${fmtDelta(dieDelta)}</td>
+                        <td>${fmtFuturesDelta(ulsdDelta)}</td>
+                        <td>${statusBadge(overallStatus)}</td>
+                    </tr>`;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>`;
+
+            container.innerHTML = html;
+        }
+
+        // ── END FUTURES LAG ANALYSIS ──────────────────────────────────────────
+
+        // ═════════════════════════════════════════════════════════════════════
+        // COMMODITY FUTURES SECTION
+        // Loads commodities/history.csv (written by futures_scraper.py).
+        // Displays 30-min candles with 7 / 14 / 30 day selectable view.
+        // ═════════════════════════════════════════════════════════════════════
+
+        const FUTURES_ORDER = ['CL=F', 'RB=F', 'HO=F'];
+        const FUTURES_FUEL_LABEL = {
+            'CL=F': 'Crude (feedstock for all fuels)',
+            'RB=F': 'Regular Gasoline',
+            'HO=F': 'Diesel',
+        };
+
+        let commodityAllRows    = null;   // raw parsed CSV rows
+        let commodityData       = null;   // { ticker: { label,unit,color,price,change_pct,signal,outlook_note, candles:[{dt,close}] } }
+        let futuresChartInst    = null;
+        let futuresActiveTicker = 'CL=F';
+        let futuresDays         = 7;      // default view window
+
+        // ── CSV parsing ───────────────────────────────────────────────────────
+
+        function parseFuturesCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            const rows = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const vals = lines[i].split(',').map(v => v.replace(/"/g, '').trim());
+                const row = {};
+                headers.forEach((h, idx) => row[h] = vals[idx] !== undefined ? vals[idx] : '');
+                rows.push(row);
+            }
+            return rows;
+        }
+
+        function buildCommodityData(rows) {
+            const byTicker = {};
+            rows.forEach(r => {
+                const t = r.ticker;
+                if (!t) return;
+                if (!byTicker[t]) {
+                    byTicker[t] = {
+                        ticker:       t,
+                        label:        r.label        || t,
+                        unit:         r.unit         || '',
+                        color:        r.color        || '#2563eb',
+                        price:        parseFloat(r.price)      || null,
+                        change:       parseFloat(r.change)     || null,
+                        change_pct:   parseFloat(r.change_pct) || null,
+                        signal:       r.signal       || 'neutral',
+                        outlook_note: r.outlook_note || '',
+                        candles: [],
+                    };
+                }
+                const close = parseFloat(r.close);
+                if (r.dt && !isNaN(close)) {
+                    byTicker[t].candles.push({ dt: r.dt, close });
+                }
+            });
+            // Sort each ticker's candles ascending by datetime
+            Object.values(byTicker).forEach(f => {
+                f.candles.sort((a, b) => a.dt.localeCompare(b.dt));
+                // Use the most recent row's quote/signal data
+                const lastRow = rows.filter(r => r.ticker === f.ticker).slice(-1)[0];
+                if (lastRow) {
+                    f.price        = parseFloat(lastRow.price)      || f.price;
+                    f.change       = parseFloat(lastRow.change)     || f.change;
+                    f.change_pct   = parseFloat(lastRow.change_pct) || f.change_pct;
+                    f.signal       = lastRow.signal       || f.signal;
+                    f.outlook_note = lastRow.outlook_note || f.outlook_note;
+                }
+            });
+            return byTicker;
+        }
+
+        // ── Data loading ──────────────────────────────────────────────────────
+
+        async function loadCommodityData() {
+            let lastUpdated = null;
+            let csvUrl = 'commodities/history.csv';
+
+            try {
+                const mResp = await fetch('commodities/manifest.json?_=' + Date.now());
+                if (mResp.ok) {
+                    const manifest = await mResp.json();
+                    if (manifest.last_updated) lastUpdated = manifest.last_updated;
+                }
+            } catch (e) {
+                console.warn('[Futures] manifest load failed:', e.message);
+            }
+
+            try {
+                const cResp = await fetch(csvUrl + '?_=' + Date.now());
+                if (!cResp.ok) throw new Error('HTTP ' + cResp.status);
+                const text = await cResp.text();
+                commodityAllRows = parseFuturesCSV(text);
+                commodityData    = { tickers: buildCommodityData(commodityAllRows), lastUpdated };
+            } catch (e) {
+                console.warn('[Futures] history.csv load failed:', e.message);
+                commodityData = null;
+            }
+        }
+
+        // ── Time range button ─────────────────────────────────────────────────
+
+        function setFuturesDays(days) {
+            futuresDays = days;
+            [7, 14, 30].forEach(d => {
+                const btn = document.getElementById('futuresBtn' + d);
+                if (btn) btn.classList.toggle('active', d === days);
+            });
+            buildFuturesChart(futuresActiveTicker);
+        }
+
+        // ── Rendering ─────────────────────────────────────────────────────────
+
+        function renderFuturesSection() {
+            if (!commodityData || !commodityData.tickers) {
+                const sec = document.getElementById('futuresSection');
+                if (sec) {
+                    const pills = document.getElementById('futuresPills');
+                    if (pills) pills.innerHTML =
+                        '<div class="futures-error">⚠️ <code>commodities/history.csv</code> not found.<br>' +
+                        'Run <code>futures_scraper.py</code> on the server to populate it.</div>';
+                }
+                return;
+            }
+
+            const updEl = document.getElementById('futuresUpdated');
+            if (updEl && commodityData.lastUpdated) {
+                const d = new Date(commodityData.lastUpdated);
+                updEl.textContent = 'Updated: ' + d.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric',
+                    hour: 'numeric', minute: '2-digit', hour12: true,
+                    timeZone: 'America/Chicago'
+                }) + ' CT';
+            }
+
+            buildFuturesPills();
+            buildFuturesChart(futuresActiveTicker);
+        }
+
+        function buildFuturesPills() {
+            const pillsEl = document.getElementById('futuresPills');
+            if (!pillsEl || !commodityData) return;
+            const tickers = commodityData.tickers;
+
+            const html = FUTURES_ORDER.map(ticker => {
+                const f = tickers[ticker];
+                if (!f) return `
+                    <div class="futures-pill" data-ticker="${ticker}">
+                        <div class="futures-pill-label">${ticker}</div>
+                        <div class="futures-pill-price">—</div>
+                        <div class="futures-pill-chg flat">No data</div>
+                    </div>`;
+
+                const decimals = f.unit && f.unit.includes('gal') ? 4 : 2;
+                const price    = f.price != null ? f.price.toFixed(decimals) : '—';
+                const chg      = f.change_pct;
+                const chgStr   = chg != null
+                    ? (chg >= 0 ? `▲ ${chg.toFixed(2)}%` : `▼ ${Math.abs(chg).toFixed(2)}%`)
+                    : '—';
+                const chgCls   = chg == null ? 'flat' : chg > 0 ? 'up' : chg < 0 ? 'down' : 'flat';
+
+                return `
+                    <div class="futures-pill ${ticker === futuresActiveTicker ? 'active' : ''}"
+                         data-ticker="${ticker}" onclick="selectFuturesTicker('${ticker}')">
+                        <div class="futures-pill-label">${f.label}</div>
+                        <div class="futures-pill-price">$${price}
+                            <small style="font-size:10px;color:#94a3b8">${f.unit}</small>
+                        </div>
+                        <div class="futures-pill-chg ${chgCls}">${chgStr}</div>
+                    </div>`;
+            }).join('');
+
+            pillsEl.innerHTML = html;
+        }
+
+        function selectFuturesTicker(ticker) {
+            futuresActiveTicker = ticker;
+            document.querySelectorAll('.futures-pill').forEach(el => {
+                el.classList.toggle('active', el.dataset.ticker === ticker);
+            });
+            buildFuturesChart(ticker);
+        }
+
+        function buildFuturesChart(ticker) {
+            const ctx    = document.getElementById('futuresChart');
+            const noteEl = document.getElementById('futuresOutlookNote');
+            if (!ctx) return;
+            if (futuresChartInst) { futuresChartInst.destroy(); futuresChartInst = null; }
+            if (!commodityData || !commodityData.tickers) return;
+
+            const f = commodityData.tickers[ticker];
+            if (!f || !f.candles || !f.candles.length) {
+                if (noteEl) noteEl.textContent = 'No chart data for ' + ticker;
+                return;
+            }
+
+            // Filter candles to the selected day window
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - futuresDays);
+            const candles = f.candles.filter(c => new Date(c.dt) >= cutoff);
+
+            if (!candles.length) {
+                if (noteEl) noteEl.textContent = 'No data in the selected time range.';
+                return;
+            }
+
+            const labels = candles.map(c => {
+                const d = new Date(c.dt);
+                return d.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric',
+                    hour: 'numeric', minute: '2-digit', hour12: true,
+                    timeZone: 'America/Chicago'
+                });
+            });
+            const closes   = candles.map(c => c.close);
+            const decimals = f.unit && f.unit.includes('gal') ? 4 : 2;
+            const sig       = f.signal || 'neutral';
+            const lineColor = sig === 'bullish' ? '#16a34a' : sig === 'bearish' ? '#dc2626' : '#2563eb';
+            const fillColor = sig === 'bullish' ? 'rgba(22,163,74,0.07)'
+                            : sig === 'bearish' ? 'rgba(220,38,38,0.07)'
+                            : 'rgba(37,99,235,0.07)';
+
+            // SMA overlays — use candle counts appropriate for 30-min bars
+            // 20-bar (~10h) fast, 80-bar (~40h / ~2 trading days) slow
+            function smaLine(arr, n) {
+                return arr.map((_, i) => i >= n - 1
+                    ? parseFloat((arr.slice(i - n + 1, i + 1).reduce((a, b) => a + b, 0) / n).toFixed(6))
+                    : null);
+            }
+
+            futuresChartInst = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: f.label,
+                            data: closes,
+                            borderColor: lineColor, backgroundColor: fillColor,
+                            borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 4,
+                            tension: 0.1, fill: true, spanGaps: false,
+                        },
+                        {
+                            label: '10-HR AVG',
+                            data: smaLine(closes, 20),
+                            borderColor: '#f59e0b', borderWidth: 1.5, borderDash: [4, 3],
+                            pointRadius: 0, tension: 0.1, fill: false, spanGaps: true,
+                        },
+                        {
+                            label: '40-HR AVG',
+                            data: smaLine(closes, 80),
+                            borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [6, 4],
+                            pointRadius: 0, tension: 0.1, fill: false, spanGaps: true,
+                        },
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        datalabels: { display: false },
+                        legend: {
+                            position: 'top',
+                            labels: { color: '#475569', font: { size: 11 }, boxWidth: 12, padding: 14 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b', borderColor: '#334155', borderWidth: 1,
+                            titleColor: '#e2e8f0', bodyColor: '#94a3b8', padding: 10,
+                            callbacks: {
+                                label: ctx => ctx.raw != null
+                                    ? ` ${ctx.dataset.label}: $${parseFloat(ctx.raw).toFixed(decimals)}`
+                                    : ''
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#94a3b8', font: { size: 10 },
+                                maxRotation: 45,
+                                // Only show a tick every ~12 bars to avoid crowding
+                                callback: function(val, idx) {
+                                    return idx % 12 === 0 ? this.getLabelForValue(val) : '';
+                                }
+                            },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8', callback: v => '$' + parseFloat(v).toFixed(decimals) },
+                            grid: { color: '#f1f5f9' }
+                        }
+                    }
+                }
+            });
+
+        }
+
+        // ── Hook into KPI view ────────────────────────────────────────────────
+        const _origBuildKpiChart = buildKpiChart;
+        buildKpiChart = function() {
+            _origBuildKpiChart();
+            loadCommodityData().then(() => renderFuturesSection());
+        };
+
+        // ── Info tooltip positioning (fixed, escapes overflow clipping) ───────
+        document.addEventListener('mouseover', function(e) {
+            const icon = e.target.closest('.lag-info-icon');
+            if (!icon) return;
+            const tooltip = icon.closest('.lag-info-wrap').querySelector('.lag-info-tooltip');
+            if (!tooltip) return;
+            const rect = icon.getBoundingClientRect();
+            // Temporarily show to measure height
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.display = 'block';
+            const tipH = tooltip.offsetHeight;
+            const tipW = tooltip.offsetWidth;
+            tooltip.style.display = '';
+            tooltip.style.visibility = '';
+            // Flip above if not enough room below
+            const below = rect.bottom + 10 + tipH;
+            if (below > window.innerHeight - 10) {
+                tooltip.style.top  = (rect.top - tipH - 10) + 'px';
+            } else {
+                tooltip.style.top  = (rect.bottom + 10) + 'px';
+            }
+            tooltip.style.left = Math.min(rect.left, window.innerWidth - tipW - 10) + 'px';
+        });
+
+        // ── END Info tooltip ──────────────────────────────────────────────────
+
+        // ── END COMMODITY FUTURES SECTION ─────────────────────────────────────
 
         // Initialize when page loads
         Chart.register(ChartDataLabels);
