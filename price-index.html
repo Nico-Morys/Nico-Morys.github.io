@@ -2348,6 +2348,24 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             pointer-events: none;
         }
+        .lag-info-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 16px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #334155;
+        }
+        .lag-info-tooltip::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 16px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid #1e293b;
+        }
         .lag-info-wrap:hover .lag-info-tooltip { display: block; }
         .lag-info-tooltip strong { color: #f1f5f9; display: block; margin-bottom: 4px; }
         .lag-info-tooltip .lag-tip-section { margin-bottom: 10px; }
@@ -6715,6 +6733,7 @@ function setupModalStoreSearch() {
         function selectMarketKPIs() {
             document.querySelectorAll('.store-item, .alert-store-item').forEach(el => el.classList.remove('active'));
             document.getElementById('market-kpi-item').classList.add('active');
+            _futuresInitialized = false;
             renderMarketKPIView();
         }
 
@@ -6809,7 +6828,7 @@ function setupModalStoreSearch() {
             kpiBuildDropdown('kpiRegionDD',
                 ['All Regions', 'Midwest', 'NTI', 'Texas'].map(r => ({ value: r, label: r })),
                 kpiRegionSel,
-                v => { kpiRegionSel = v; kpiStoreSel = 'All Stores'; renderMarketKPIView(); }
+                v => { kpiRegionSel = v; kpiStoreSel = 'All Stores'; _futuresInitialized = false; renderMarketKPIView(); }
             );
             kpiBuildDropdown('kpiFuelDD',
                 [{value:'Regular',label:'Regular'},{value:'Diesel',label:'Diesel'}],
@@ -7679,10 +7698,17 @@ function setupModalStoreSearch() {
         }
 
         // ── Hook into KPI view ────────────────────────────────────────────────
+        // Only render the futures section once when the KPI view first loads.
+        // Selector changes (region/fuel/store) call buildKpiChart which should
+        // NOT re-render the futures section — those controls are independent.
+        let _futuresInitialized = false;
         const _origBuildKpiChart = buildKpiChart;
         buildKpiChart = function() {
             _origBuildKpiChart();
-            loadCommodityData().then(() => renderFuturesSection());
+            if (!_futuresInitialized) {
+                _futuresInitialized = true;
+                loadCommodityData().then(() => renderFuturesSection());
+            }
         };
 
         // ── Info tooltip positioning (fixed, escapes overflow clipping) ───────
