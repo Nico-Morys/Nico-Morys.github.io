@@ -2453,6 +2453,28 @@
         .lag-status-cut      { background: #eff6ff; color: #1d4ed8; }
         .lag-status-na       { background: #f8fafc; color: #94a3b8; }
         .lag-no-data { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; }
+        .lag-date-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0 12px 0;
+            flex-wrap: wrap;
+        }
+        .lag-date-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+        .lag-date-select {
+            font-size: 12px;
+            padding: 4px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            color: #1e293b;
+            cursor: pointer;
+        }
+        .lag-date-select:focus { outline: none; border-color: #2563eb; }
 
         /* ── PRICE MOVEMENT TABLE ── */
         .kpi-movement-section {
@@ -4581,6 +4603,9 @@
             document.getElementById('content').innerHTML = html;
 
             // Render lag analysis (async — needs commodity data)
+            window._lagStoreNumber = storeNumber;
+            window._lagRrStation   = rrStation;
+            window._lagCompetitors = competitors;
             renderLagAnalysis(storeNumber, rrStation, competitors);
 
             // Set up competitor search
@@ -7208,6 +7233,10 @@ function setupModalStoreSearch() {
         // Shows how each competitor's price moved vs RBOB/ULSD over 48 hours
         // ═════════════════════════════════════════════════════════════════════
 
+        // ── Lag Analysis state (persists across re-renders) ───────────────────
+        let lagFromDate = null;
+        let lagToDate   = null;
+
         async function renderLagAnalysis(storeNumber, rrStation, competitors) {
             const container = document.getElementById('lag-analysis-container');
             if (!container) return;
@@ -7217,58 +7246,81 @@ function setupModalStoreSearch() {
                 await loadCommodityData();
             }
 
-            // ── Futures 48H delta ─────────────────────────────────────────────
-            function getFutures48hDelta(ticker) {
-                if (!commodityData || !commodityData.tickers) return null;
-                const f = commodityData.tickers[ticker];
-                if (!f || !f.candles || f.candles.length < 2) return null;
-                const cutoff = new Date();
-                cutoff.setHours(cutoff.getHours() - 48);
-                const recent = f.candles.filter(c => new Date(c.dt) >= cutoff);
-                if (recent.length < 2) return null;
-                const oldest = recent[0].close;
-                const newest = recent[recent.length - 1].close;
-                return round2(newest - oldest);
+            // ── Collect available dates from historicalDataCache ──────────────
+            function getAvailableDates() {
+                const dateSet = new Set();
+                if (historicalDataCache) {
+                    historicalDataCache.forEach(r => { if (r._ctDate) dateSet.add(r._ctDate); });
+                }
+                return Array.from(dateSet).sort();
             }
 
-            const rbobDelta = getFutures48hDelta('RB=F');   // cents/gal wholesale
-            const ulsdDelta = getFutures48hDelta('HO=F');
+            const availDates = getAvailableDates();
+            if (!availDates.length) {
+                container.innerHTML = '';
+                return;
+            }
 
-            // ── Station 48H price delta from historicalDataCache ──────────────
-            // Uses Station_ID (unique per station) to avoid cross-store name collisions.
-            // Also requires a valid current price — if the station has no price today
-            // for that fuel type, we return null rather than showing stale history.
-            function getStation48hDelta(stationId, rrLoc, currentPrice, fuelKey) {
-                // If station has no current price for this fuel, don't show a delta
-                if (currentPrice === null) return null;
-                if (!historicalDataCache || !historicalDataCache.length) return null;
+            // Default: from = second-to-last date, to = last date
+            if (!lagFromDate || !availDates.includes(lagFromDate)) {
+                lagFromDate = availDates.length >= 2 ? availDates[availDates.length - 2] : availDates[0];
+            }
+            if (!lagToDate || !availDates.includes(lagToDate)) {
+                lagToDate = availDates[availDates.length - 1];
+            }
 
-                const cutoff = new Date();
-                cutoff.setHours(cutoff.getHours() - 48);
+            // ── Today's CT date string for "is this today?" check ─────────────
+            const todayCT = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
 
-                const rows = historicalDataCache
-                    .filter(r => r.Station_ID && r.Station_ID.trim() === stationId.trim())
-                    .filter(r => rrLoc ? r.RR_Location && r.RR_Location.trim() === rrLoc.trim() : true)
-                    .filter(r => r._fileTimestamp)
-                    .sort((a, b) => a._fileTimestamp - b._fileTimestamp);
+            // ── Futures delta between two selected dates ───────────────────────
+            // If toDate is today, use the most recent candle available.
+            // Otherwise use the last candle on or before end-of that calendar date.
+            function getFuturesDeltaForDates(ticker, fromDate, toDate) {
+                if (!commodityData || !commodityData.tickers) return null;
+                const f = commodityData.tickers[ticker];
+                if (!f || !f.candles || !f.candles.length) return null;
 
-                if (rows.length < 2) return null;
+                // "From" anchor: last candle whose UTC date falls on fromDate (CT)
+                function lastCandleOnDate(dateStr) {
+                    // end of that calendar day in CT = next calendar day 05:00 UTC (CT is UTC-5/6)
+                    // To be safe, collect all candles where CT date matches dateStr
+                    const matching = f.candles.filter(c => {
+                        const ctDate = new Date(c.dt).toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+                        return ctDate === dateStr;
+                    });
+                    return matching.length ? matching[matching.length - 1] : null;
+                }
 
-                const validRows = rows.filter(r => parsePrice(r[fuelKey]) !== null);
-                if (validRows.length < 2) return null;
+                function mostRecentCandle() {
+                    return f.candles[f.candles.length - 1];
+                }
 
-                const beforeCutoff = validRows.filter(r => r._fileTimestamp <= cutoff);
-                const firstRow = beforeCutoff.length
-                    ? beforeCutoff[beforeCutoff.length - 1]
-                    : validRows[0];
+                const fromCandle = lastCandleOnDate(fromDate);
+                // For toDate: if today, use most recent candle regardless of date
+                const toCandle = (toDate === todayCT) ? mostRecentCandle() : lastCandleOnDate(toDate);
 
-                const lastRow = validRows[validRows.length - 1];
-                if (firstRow === lastRow) return 0;
+                if (!fromCandle || !toCandle) return null;
+                return Math.round((toCandle.close - fromCandle.close) * 10000) / 10000;
+            }
 
-                const first = parsePrice(firstRow[fuelKey]);
-                const last  = parsePrice(lastRow[fuelKey]);
-                if (first === null || last === null) return null;
-                return round2(last - first);
+            // ── Average station price on a given _ctDate ──────────────────────
+            function getStationAvgForDate(stationId, rrLoc, fuelKey, ctDate) {
+                if (!historicalDataCache) return null;
+                const rows = historicalDataCache.filter(r =>
+                    r.Station_ID && r.Station_ID.trim() === stationId.trim() &&
+                    (rrLoc ? r.RR_Location && r.RR_Location.trim() === rrLoc.trim() : true) &&
+                    r._ctDate === ctDate
+                );
+                const prices = rows.map(r => parsePrice(r[fuelKey])).filter(p => p !== null);
+                if (!prices.length) return null;
+                return Math.round((prices.reduce((a, b) => a + b, 0) / prices.length) * 1000) / 1000;
+            }
+
+            function getStationDeltaForDates(stationId, rrLoc, fuelKey, fromDate, toDate) {
+                const fromAvg = getStationAvgForDate(stationId, rrLoc, fuelKey, fromDate);
+                const toAvg   = getStationAvgForDate(stationId, rrLoc, fuelKey, toDate);
+                if (fromAvg === null || toAvg === null) return { delta: null, fromAvg, toAvg };
+                return { delta: Math.round((toAvg - fromAvg) * 100) / 100, fromAvg, toAvg };
             }
 
             function parsePrice(str) {
@@ -7277,26 +7329,20 @@ function setupModalStoreSearch() {
                 return isNaN(n) ? null : n;
             }
 
-            function round2(n) { return Math.round(n * 100) / 100; }
-
             // ── Status logic ──────────────────────────────────────────────────
-            // futuresDelta and stationDelta both in dollars
-            // We expect retail to move ~80-120% of futures move
             function getStatus(futuresDelta, stationDelta) {
                 if (futuresDelta === null || stationDelta === null) return 'na';
-                const threshold = 0.005; // $0.005 = half a cent — ignore tiny moves
-                if (Math.abs(futuresDelta) < threshold) return 'moved'; // futures flat
+                const threshold = 0.005;
+                if (Math.abs(futuresDelta) < threshold) return 'moved';
                 const ratio = stationDelta / futuresDelta;
                 if (futuresDelta > threshold) {
-                    // Futures went UP
-                    if (stationDelta < -threshold)       return 'cut';      // cut despite rise
-                    if (ratio >= 0.7)                    return 'moved';    // tracked it
-                    return 'lagging';                                        // hasn't moved up yet
+                    if (stationDelta < -threshold) return 'cut';
+                    if (ratio >= 0.7)             return 'moved';
+                    return 'lagging';
                 } else {
-                    // Futures went DOWN
-                    if (stationDelta > threshold)        return 'cut';      // raised despite drop — unusual
-                    if (ratio >= 0.7)                    return 'moved';    // tracked it
-                    return 'holding';                                        // hasn't dropped yet
+                    if (stationDelta > threshold) return 'cut';
+                    if (ratio >= 0.7)             return 'moved';
+                    return 'holding';
                 }
             }
 
@@ -7306,16 +7352,16 @@ function setupModalStoreSearch() {
                     lagging: ['Lagging',       'lag-status-lagging'],
                     holding: ['Holding High',  'lag-status-holding'],
                     cut:     ['Cut',            'lag-status-cut'],
-                    na:      ['— N/A',             'lag-status-na'],
+                    na:      ['— N/A',          'lag-status-na'],
                 };
                 const [label, cls] = map[status] || map.na;
                 return `<span class="lag-status-badge ${cls}">${label}</span>`;
             }
 
-            function fmtDelta(delta, status) {
+            function fmtDelta(delta) {
                 if (delta === null) return `<span class="lag-delta na">N/A</span>`;
-                const sign  = delta > 0 ? '+' : '';
-                const cls   = delta > 0.004 ? 'up' : delta < -0.004 ? 'down' : 'flat';
+                const sign = delta > 0 ? '+' : '';
+                const cls  = delta > 0.004 ? 'up' : delta < -0.004 ? 'down' : 'flat';
                 return `<span class="lag-delta ${cls}">${sign}${(delta * 100).toFixed(1)}¢</span>`;
             }
 
@@ -7326,38 +7372,51 @@ function setupModalStoreSearch() {
                 return `<span class="lag-futures-chg ${cls}">${sign}${(delta * 100).toFixed(1)}¢</span>`;
             }
 
-            // ── Build station list: RR first, then competitors ─────────────────
-            const stations = [];
-
-            // Road Ranger row
-            if (rrStation) {
-                stations.push({
-                    id:       rrStation.Station_ID,
-                    rrLoc:    rrStation.RR_Location,
-                    label:    `Road Ranger #${storeNumber}`,
-                    isRR:     true,
-                    curReg:   parsePrice(rrStation.Unleaded_Regular_Price),
-                    curDie:   parsePrice(rrStation.Diesel_Regular_Price),
-                });
+            function fmtAvg(avg) {
+                return avg !== null ? `$${avg.toFixed(3)}` : '—';
             }
 
-            // Competitor rows (visible ones only)
+            function fmtDateLabel(d) {
+                if (!d) return d;
+                const [y, m, day] = d.split('-');
+                const isToday = d === todayCT;
+                const label = new Date(+y, +m - 1, +day).toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' });
+                return isToday ? label + ' (Today)' : label;
+            }
+
+            // ── Commodity deltas for selected window ──────────────────────────
+            const rbobDelta = getFuturesDeltaForDates('RB=F', lagFromDate, lagToDate);
+            const ulsdDelta = getFuturesDeltaForDates('HO=F', lagFromDate, lagToDate);
+
+            // ── Station list ──────────────────────────────────────────────────
+            const stations = [];
+            if (rrStation) {
+                stations.push({
+                    id: rrStation.Station_ID, rrLoc: rrStation.RR_Location,
+                    label: `Road Ranger #${storeNumber}`, isRR: true,
+                    curReg: parsePrice(rrStation.Unleaded_Regular_Price),
+                    curDie: parsePrice(rrStation.Diesel_Regular_Price),
+                });
+            }
             const visibleComps = competitors.filter((_, idx) => visibleCompetitors.has(idx));
             visibleComps.forEach(c => {
                 stations.push({
-                    id:     c.Station_ID,
-                    rrLoc:  c.RR_Location,
-                    label:  normalizeStationName(c.Station_Name),
-                    isRR:   false,
+                    id: c.Station_ID, rrLoc: c.RR_Location,
+                    label: normalizeStationName(c.Station_Name), isRR: false,
                     curReg: parsePrice(c.Unleaded_Regular_Price),
                     curDie: parsePrice(c.Diesel_Regular_Price),
                 });
             });
 
-            if (!stations.length) {
-                container.innerHTML = '';
-                return;
-            }
+            if (!stations.length) { container.innerHTML = ''; return; }
+
+            // ── Date picker options ───────────────────────────────────────────
+            const dateOptionsFrom = availDates.map(d =>
+                `<option value="${d}" ${d === lagFromDate ? 'selected' : ''}>${fmtDateLabel(d)}</option>`
+            ).join('');
+            const dateOptionsTo = availDates.map(d =>
+                `<option value="${d}" ${d === lagToDate ? 'selected' : ''}>${fmtDateLabel(d)}</option>`
+            ).join('');
 
             // ── Render ────────────────────────────────────────────────────────
             let html = `
@@ -7369,12 +7428,12 @@ function setupModalStoreSearch() {
                                 <span class="lag-info-icon">i</span>
                                 <div class="lag-info-tooltip">
                                     <div class="lag-tip-section">
-                                        <strong>Station Price Δ (48H)</strong>
-                                        Compares the most recent scraped price to the last snapshot captured before the 48-hour mark.
+                                        <strong>Station Price Δ</strong>
+                                        Average scraped price on the "To" date vs the "From" date. Shows the avg → avg for each station.
                                     </div>
                                     <div class="lag-tip-section">
                                         <strong>VS RBOB / VS ULSD</strong>
-                                        The wholesale futures move over the same 48-hour window from <code style="font-size:10px;background:#334155;padding:1px 4px;border-radius:3px;">commodities/history.csv</code>. RBOB drives regular gas prices; ULSD drives diesel.
+                                        Wholesale futures move between the two selected dates from <code style="font-size:10px;background:#334155;padding:1px 4px;border-radius:3px;">commodities/history.csv</code>. If "To" is today, uses the most recent scraped candle. RBOB drives regular gas; ULSD drives diesel.
                                     </div>
                                     <div class="lag-tip-section">
                                         <strong>Status Badges</strong>
@@ -7391,41 +7450,49 @@ function setupModalStoreSearch() {
                                 </div>
                             </span>
                         </span>
-                        <span class="lag-header-sub">48-hour window · How stations have reacted to recent futures moves</span>
+                        <div class="lag-date-controls">
+                            <span class="lag-date-label">From:</span>
+                            <select class="lag-date-select" id="lagFromSelect" onchange="lagFromDate=this.value; renderLagAnalysis(window._lagStoreNumber, window._lagRrStation, window._lagCompetitors)">
+                                ${dateOptionsFrom}
+                            </select>
+                            <span class="lag-date-label">→ To:</span>
+                            <select class="lag-date-select" id="lagToSelect" onchange="lagToDate=this.value; renderLagAnalysis(window._lagStoreNumber, window._lagRrStation, window._lagCompetitors)">
+                                ${dateOptionsTo}
+                            </select>
+                        </div>
                     </div>
                     <table class="lag-table">
                         <thead>
                             <tr>
                                 <th>Station</th>
-                                <th>Regular Δ (48H)</th>
+                                <th>Regular Δ</th>
+                                <th>Avg (From → To)</th>
                                 <th>vs RBOB</th>
-                                <th>Diesel Δ (48H)</th>
+                                <th>Diesel Δ</th>
+                                <th>Avg (From → To)</th>
                                 <th>vs ULSD</th>
-                                <th>Overall Status</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
             `;
 
             stations.forEach(s => {
-                const regDelta  = getStation48hDelta(s.id, s.rrLoc, s.curReg, 'Unleaded_Regular_Price');
-                const dieDelta  = getStation48hDelta(s.id, s.rrLoc, s.curDie, 'Diesel_Regular_Price');
-                const regStatus = getStatus(rbobDelta, regDelta);
-                const dieStatus = getStatus(ulsdDelta, dieDelta);
-
-                // Overall status: worst of the two (lagging/holding > cut > moved > na)
-                const priority = { lagging: 4, holding: 4, cut: 3, moved: 2, na: 1 };
-                const overallStatus = (priority[regStatus] || 0) >= (priority[dieStatus] || 0)
-                    ? regStatus : dieStatus;
+                const reg = getStationDeltaForDates(s.id, s.rrLoc, 'Unleaded_Regular_Price', lagFromDate, lagToDate);
+                const die = getStationDeltaForDates(s.id, s.rrLoc, 'Diesel_Regular_Price',   lagFromDate, lagToDate);
+                const regStatus = getStatus(rbobDelta, reg.delta);
+                const dieStatus = getStatus(ulsdDelta, die.delta);
+                const priority  = { lagging: 4, holding: 4, cut: 3, moved: 2, na: 1 };
+                const overallStatus = (priority[regStatus] || 0) >= (priority[dieStatus] || 0) ? regStatus : dieStatus;
 
                 html += `
                     <tr class="${s.isRR ? 'lag-rr-row' : ''}">
-                        <td>
-                            <div class="lag-station-name">${s.label}</div>
-                        </td>
-                        <td>${fmtDelta(regDelta)}</td>
+                        <td><div class="lag-station-name">${s.label}</div></td>
+                        <td>${fmtDelta(reg.delta)}</td>
+                        <td style="font-size:11px;color:#64748b">${fmtAvg(reg.fromAvg)} → ${fmtAvg(reg.toAvg)}</td>
                         <td>${fmtFuturesDelta(rbobDelta)}</td>
-                        <td>${fmtDelta(dieDelta)}</td>
+                        <td>${fmtDelta(die.delta)}</td>
+                        <td style="font-size:11px;color:#64748b">${fmtAvg(die.fromAvg)} → ${fmtAvg(die.toAvg)}</td>
                         <td>${fmtFuturesDelta(ulsdDelta)}</td>
                         <td>${statusBadge(overallStatus)}</td>
                     </tr>`;
@@ -7577,8 +7644,8 @@ function setupModalStoreSearch() {
                 updEl.textContent = 'Updated: ' + d.toLocaleString('en-US', {
                     month: 'short', day: 'numeric',
                     hour: 'numeric', minute: '2-digit', hour12: true,
-                    timeZone: 'America/Chicago'
-                }) + ' CT';
+                    timeZone: 'America/New_York'
+                }) + ' ET';
             }
 
             buildFuturesPills();
@@ -7674,7 +7741,7 @@ function setupModalStoreSearch() {
                 return d.toLocaleString('en-US', {
                     month: 'short', day: 'numeric',
                     hour: 'numeric', minute: '2-digit', hour12: true,
-                    timeZone: 'America/Chicago'
+                    timeZone: 'America/New_York'
                 });
             });
             const closes   = candles.map(c => c.close);
