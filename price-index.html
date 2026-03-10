@@ -2483,6 +2483,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             padding: 24px 28px;
             margin-top: 28px;
+            width: fit-content;
+            min-width: 600px;
         }
         .kpi-movement-header {
             display: flex;
@@ -2551,10 +2553,15 @@
         .kpi-date-select:hover, .kpi-date-select:focus { border-color: #1e3a8a; }
         .kpi-movement-table-wrap { overflow-x: auto; }
         .kpi-movement-table {
-            width: 100%;
+            width: auto;
+            min-width: 0;
             border-collapse: collapse;
             font-size: 13px;
+            table-layout: fixed;
         }
+        .kpi-movement-table col.col-store { width: 160px; }
+        .kpi-movement-table col.col-price { width: 120px; }
+        .kpi-movement-table col.col-move  { width: 160px; }
         .kpi-movement-table thead th {
             background: #f8fafc;
             color: #64748b;
@@ -7165,16 +7172,23 @@ function setupModalStoreSearch() {
                 if (moves.length > maxMoves) maxMoves = moves.length;
             });
 
+            // Only show stores that had at least one price move
+            const filteredNums = storeNums.filter(num => storeMoves[num].moves.length > 0);
+            maxMoves = 0;
+            filteredNums.forEach(num => {
+                if (storeMoves[num].moves.length > maxMoves) maxMoves = storeMoves[num].moves.length;
+            });
+
             function fmtTime(ts) {
                 return ts.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' });
             }
 
-            function movePill(diffCents, toPrice, time) {
+            function movePill(diffCents, fromPrice, toPrice, time) {
                 const sign = diffCents > 0 ? '+' : '';
                 const cls  = diffCents > 0 ? 'up' : 'down';
                 return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
                     <span class="kpi-mv-pill ${cls}">${sign}${diffCents}¢</span>
-                    <span style="font-size:10px;color:#64748b;font-weight:600;">→ $${toPrice.toFixed(3)}</span>
+                    <span style="font-size:10px;color:#64748b;font-weight:600;">$${fromPrice.toFixed(3)} → $${toPrice.toFixed(3)}</span>
                     <span style="font-size:9px;color:#94a3b8;">${fmtTime(time)}</span>
                 </div>`;
             }
@@ -7189,8 +7203,13 @@ function setupModalStoreSearch() {
                 }
             }
 
+            if (!filteredNums.length) {
+                container.innerHTML = '<div class="kpi-movement-empty">No price moves recorded for this date.</div>';
+                return;
+            }
+
             // Build rows
-            const rowsHtml = storeNums.map(num => {
+            const rowsHtml = filteredNums.map(num => {
                 const city = cityLabel(num);
                 const { moves, currentPrice } = storeMoves[num];
 
@@ -7202,7 +7221,7 @@ function setupModalStoreSearch() {
                 } else {
                     for (let i = 0; i < maxMoves; i++) {
                         if (i < moves.length) {
-                            moveCells += `<td class="col-move">${movePill(moves[i].diffCents, moves[i].toPrice, moves[i].time)}</td>`;
+                            moveCells += `<td class="col-move">${movePill(moves[i].diffCents, moves[i].fromPrice, moves[i].toPrice, moves[i].time)}</td>`;
                         } else {
                             moveCells += `<td class="col-move"><span class="kpi-mv-pill na">—</span></td>`;
                         }
@@ -7219,8 +7238,13 @@ function setupModalStoreSearch() {
                 </tr>`;
             }).join('');
 
+            const numMoveCols = maxMoves === 0 ? 1 : maxMoves;
+            let colgroupHtml = `<col class="col-store"><col class="col-price">`;
+            for (let i = 0; i < numMoveCols; i++) colgroupHtml += `<col class="col-move">`;
+
             container.innerHTML = `
                 <table class="kpi-movement-table">
+                    <colgroup>${colgroupHtml}</colgroup>
                     <thead><tr>${headerHtml}</tr></thead>
                     <tbody>${rowsHtml}</tbody>
                 </table>`;
