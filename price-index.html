@@ -7435,15 +7435,6 @@ function setupModalStoreSearch() {
                                         <strong>VS RBOB / VS ULSD</strong>
                                         Wholesale futures move between the two selected dates from <code style="font-size:10px;background:#334155;padding:1px 4px;border-radius:3px;">commodities/history.csv</code>. If "To" is today, uses the most recent scraped candle. RBOB drives regular gas; ULSD drives diesel.
                                     </div>
-                                    <div class="lag-tip-section">
-                                        <strong>Status Badges</strong>
-                                        <div style="margin-top:4px;line-height:2">
-                                            <span class="lag-tip-badge lag-tip-moved">Moved</span> Tracked the futures move within ~70%<br>
-                                            <span class="lag-tip-badge lag-tip-lagging">Lagging</span> Futures up, station hasn't raised yet<br>
-                                            <span class="lag-tip-badge lag-tip-holding">Holding High</span> Futures down, station hasn't dropped<br>
-                                            <span class="lag-tip-badge lag-tip-cut">Cut</span> Station moved opposite to futures
-                                        </div>
-                                    </div>
                                     <div class="lag-tip-section" style="color:#94a3b8;font-size:11px;">
                                         ⚠️ On weekends, futures markets are closed. VS RBOB/ULSD values reflect Friday's closing move and will appear stale until Sunday evening when CME reopens.
                                     </div>
@@ -7471,7 +7462,6 @@ function setupModalStoreSearch() {
                                 <th>Diesel Δ</th>
                                 <th>Avg (From → To)</th>
                                 <th>vs ULSD</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -7480,10 +7470,6 @@ function setupModalStoreSearch() {
             stations.forEach(s => {
                 const reg = getStationDeltaForDates(s.id, s.rrLoc, 'Unleaded_Regular_Price', lagFromDate, lagToDate);
                 const die = getStationDeltaForDates(s.id, s.rrLoc, 'Diesel_Regular_Price',   lagFromDate, lagToDate);
-                const regStatus = getStatus(rbobDelta, reg.delta);
-                const dieStatus = getStatus(ulsdDelta, die.delta);
-                const priority  = { lagging: 4, holding: 4, cut: 3, moved: 2, na: 1 };
-                const overallStatus = (priority[regStatus] || 0) >= (priority[dieStatus] || 0) ? regStatus : dieStatus;
 
                 html += `
                     <tr class="${s.isRR ? 'lag-rr-row' : ''}">
@@ -7494,7 +7480,6 @@ function setupModalStoreSearch() {
                         <td>${fmtDelta(die.delta)}</td>
                         <td style="font-size:11px;color:#64748b">${fmtAvg(die.fromAvg)} → ${fmtAvg(die.toAvg)}</td>
                         <td>${fmtFuturesDelta(ulsdDelta)}</td>
-                        <td>${statusBadge(overallStatus)}</td>
                     </tr>`;
             });
 
