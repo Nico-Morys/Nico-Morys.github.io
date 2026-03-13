@@ -4893,16 +4893,37 @@
          * Each file has rows like:
          *   timestamp, location, fuel_type, city, state, total_gallons_sold, delivery_count, delivery_volume, tank_count
          * 
-         * Because total_gallons_sold is a running cumulative total for the day, we need the
-         * LAST snapshot per day for each location to get daily consumption, not sum all rows.
+         * Each row represents gallons sold in that ~15-minute interval.
+         * We sum all intervals per day for the daily total, and also bucket by hour for hover tooltips.
          */
         const VOLUME_DATA_PATH = './consumption/';
 
+        // Shared CSV line parser used across volume functions
+        function parseCSVLine(line) {
+            const result = [];
+            let i = 0;
+            while (i < line.length) {
+                if (line[i] === '"') {
+                    let val = '';
+                    i++;
+                    while (i < line.length) {
+                        if (line[i] === '"' && line[i+1] === '"') { val += '"'; i += 2; }
+                        else if (line[i] === '"') { i++; break; }
+                        else { val += line[i++]; }
+                    }
+                    result.push(val);
+                    if (line[i] === ',') i++;
+                } else {
+                    let val = '';
+                    while (i < line.length && line[i] !== ',') val += line[i++];
+                    result.push(val);
+                    if (line[i] === ',') i++;
+                }
+            }
+            return result;
+        }
+
         async function loadVolumeData(storeNumber) {
-            // Build file list by fetching directory listing or use a manifest
-            // Since we can't list directories in browser, we'll try to load a manifest file
-            // The manifest should be a JSON array of filenames: ["consumption_summary_2026-02-27_164429.csv", ...]
-            // If no manifest, gracefully show no-data message.
             let filenames = [];
             try {
                 const manifestResp = await fetch(VOLUME_DATA_PATH + 'manifest.json');
@@ -4912,7 +4933,7 @@
             } catch(e) { /* no manifest */ }
 
             if (filenames.length === 0) {
-                return null; // signal no data
+                return null;
             }
 
             // Filter filenames by date range (last volumeDays days)
@@ -4928,95 +4949,220 @@
                 return d >= cutoff;
             });
 
-            // Group filenames by date, keep the latest per date (last snapshot of the day)
+            // Group ALL filenames by date (we need every interval for hourly breakdown)
             const byDate = {};
             relevant.forEach(fn => {
                 const m = fn.match(dateRegex);
                 if (!m) return;
                 const date = m[1];
-                if (!byDate[date] || fn > byDate[date]) byDate[date] = fn;
+                if (!byDate[date]) byDate[date] = [];
+                byDate[date].push(fn);
             });
 
-            // Load each latest-per-day file and extract the gallons for this store + fuel type
-            // Match location by store number prefix e.g. "0118" in "0118 - Springfield, IL"
             const storeNumPad = String(storeNumber).padStart(4, '0');
             const dailyGallons = {};
+            // hourlyBreakdown[date][hour] = gallons (hour 0-23)
+            const hourlyBreakdown = {};
 
-            console.log(`[Volume] Loading data for store ${storeNumPad}, fuel: ${volumeFuelType}, files:`, Object.values(byDate));
+            console.log(`[Volume] Loading data for store ${storeNumPad}, fuel: ${volumeFuelType}`);
 
-            const promises = Object.entries(byDate).map(async ([date, fn]) => {
-                try {
-                    const resp = await fetch(VOLUME_DATA_PATH + fn);
-                    if (!resp.ok) { console.warn(`[Volume] 404 for ${fn}`); return; }
-                    const raw = await resp.text();
-                    // Normalize line endings (Windows \r\n -> \n)
-                    const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-                    const lines = text.trim().split('\n');
-                    if (lines.length < 2) { console.warn(`[Volume] ${fn} has no data rows`); return; }
+            // For past days: only need the last file (final tally).
+            // For today: load ALL files to get the intra-day hourly breakdown.
+            const today = new Date().toISOString().slice(0, 10);
 
-                    // The location field is quoted in the CSV: "0118 - Springfield, IL"
-                    // Use a proper quoted-CSV parser instead of regex or naive split
-                    function parseCSVLine(line) {
-                        const result = [];
-                        let i = 0;
-                        while (i < line.length) {
-                            if (line[i] === '"') {
-                                // Quoted field - read until closing quote
-                                let val = '';
-                                i++; // skip opening quote
-                                while (i < line.length) {
-                                    if (line[i] === '"' && line[i+1] === '"') {
-                                        val += '"'; i += 2; // escaped quote
-                                    } else if (line[i] === '"') {
-                                        i++; break; // closing quote
-                                    } else {
-                                        val += line[i++];
-                                    }
-                                }
-                                result.push(val);
-                                if (line[i] === ',') i++; // skip comma
-                            } else {
-                                // Unquoted field
-                                let val = '';
-                                while (i < line.length && line[i] !== ',') val += line[i++];
-                                result.push(val);
-                                if (line[i] === ',') i++; // skip comma
+            const datePromises = Object.entries(byDate).map(async ([date, fns]) => {
+                // Sort filenames so last = most recent
+                fns.sort();
+                hourlyBreakdown[date] = {};
+
+                if (date === today) {
+                    // Load ALL files for today to build hourly breakdown
+                    // Each file is a snapshot — rows represent gallons sold in that interval
+                    // We need to avoid double-counting: track which (timestamp, interval) rows we've seen
+                    // Strategy: load each file, extract rows for this store, bucket by hour
+                    // Since each file is cumulative within the day, use the LAST file's data
+                    // BUT each row's timestamp tells us when it was sold — sum by hour from the merged set
+                    // Actually each file contains ONLY the intervals since last snapshot, so summing across all files = summing all intervals
+
+                    const allIntervals = []; // {hour, gallons}
+                    const seenTimestamps = new Set();
+
+                    for (const fn of fns) {
+                        try {
+                            const resp = await fetch(VOLUME_DATA_PATH + fn);
+                            if (!resp.ok) continue;
+                            const raw = await resp.text();
+                            const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                            const lines = text.trim().split('\n');
+                            if (lines.length < 2) continue;
+
+                            const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+                            const tsIdx      = headerCols.indexOf('timestamp');
+                            const locIdx     = headerCols.indexOf('location');
+                            const fuelIdx    = headerCols.indexOf('fuel_type');
+                            const gallonsIdx = headerCols.indexOf('total_gallons_sold');
+                            if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) continue;
+
+                            for (let i = 1; i < lines.length; i++) {
+                                if (!lines[i].trim()) continue;
+                                const cols = parseCSVLine(lines[i]);
+                                if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
+                                const loc     = cols[locIdx].trim();
+                                const ft      = cols[fuelIdx].trim();
+                                const gallons = parseFloat(cols[gallonsIdx]) || 0;
+                                if (!loc.startsWith(storeNumPad) || ft !== volumeFuelType) continue;
+                                if (gallons === 0) continue;
+
+                                // Use timestamp as dedup key to avoid counting the same interval twice
+                                const ts = tsIdx !== -1 ? cols[tsIdx].trim() : `${fn}-${i}`;
+                                if (seenTimestamps.has(ts)) continue;
+                                seenTimestamps.add(ts);
+
+                                // Extract hour from timestamp "YYYY-MM-DD HH:MM:SS"
+                                const hourMatch = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
+                                const hour = hourMatch ? parseInt(hourMatch[1], 10) : 0;
+                                allIntervals.push({ hour, gallons });
                             }
+                        } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
+                    }
+
+                    // Build hourly buckets and daily total
+                    let dayTotal = 0;
+                    for (const { hour, gallons } of allIntervals) {
+                        hourlyBreakdown[date][hour] = (hourlyBreakdown[date][hour] || 0) + gallons;
+                        dayTotal += gallons;
+                    }
+                    if (dayTotal > 0) dailyGallons[date] = dayTotal;
+
+                } else {
+                    // Past day: use only the last file for total, but still build hourly from it
+                    const fn = fns[fns.length - 1];
+                    try {
+                        const resp = await fetch(VOLUME_DATA_PATH + fn);
+                        if (!resp.ok) return;
+                        const raw = await resp.text();
+                        const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                        const lines = text.trim().split('\n');
+                        if (lines.length < 2) return;
+
+                        const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+                        const tsIdx      = headerCols.indexOf('timestamp');
+                        const locIdx     = headerCols.indexOf('location');
+                        const fuelIdx    = headerCols.indexOf('fuel_type');
+                        const gallonsIdx = headerCols.indexOf('total_gallons_sold');
+                        if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) return;
+
+                        let dayTotal = 0;
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            const cols = parseCSVLine(lines[i]);
+                            if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
+                            const loc     = cols[locIdx].trim();
+                            const ft      = cols[fuelIdx].trim();
+                            const gallons = parseFloat(cols[gallonsIdx]) || 0;
+                            if (!loc.startsWith(storeNumPad) || ft !== volumeFuelType) continue;
+                            if (gallons === 0) continue;
+
+                            const ts = tsIdx !== -1 ? cols[tsIdx].trim() : '';
+                            const hourMatch = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
+                            const hour = hourMatch ? parseInt(hourMatch[1], 10) : 0;
+                            hourlyBreakdown[date][hour] = (hourlyBreakdown[date][hour] || 0) + gallons;
+                            dayTotal += gallons;
                         }
-                        return result;
-                    }
-
-                    const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-                    const locIdx     = headerCols.indexOf('location');
-                    const fuelIdx    = headerCols.indexOf('fuel_type');
-                    const gallonsIdx = headerCols.indexOf('total_gallons_sold');
-                    console.log(`[Volume] Parsed headers:`, headerCols, `locIdx=${locIdx} fuelIdx=${fuelIdx} gallonsIdx=${gallonsIdx}`);
-
-                    if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) {
-                        console.warn(`[Volume] Missing required columns in ${fn}`);
-                        return;
-                    }
-
-                    let matchCount = 0;
-                    for (let i = 1; i < lines.length; i++) {
-                        if (!lines[i].trim()) continue;
-                        const cols = parseCSVLine(lines[i]);
-                        if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
-                        const loc     = cols[locIdx].trim();
-                        const ft      = cols[fuelIdx].trim();
-                        const gallons = parseFloat(cols[gallonsIdx]) || 0;
-                        if (i <= 3) console.log(`[Volume] Row ${i}: loc="${loc}" ft="${ft}" gallons=${gallons}`);
-                        if (loc.startsWith(storeNumPad) && ft === volumeFuelType) {
-                            dailyGallons[date] = (dailyGallons[date] || 0) + gallons;
-                            matchCount++;
-                        }
-                    }
-                    console.log(`[Volume] ${fn}: ${matchCount} matching rows, gallons[${date}]=${dailyGallons[date] || 0}`);
-                } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
+                        if (dayTotal > 0) dailyGallons[date] = dayTotal;
+                    } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
+                }
             });
 
-            await Promise.all(promises);
-            return dailyGallons;
+            await Promise.all(datePromises);
+            return { dailyGallons, hourlyBreakdown };
+        }
+
+        // Custom volume tooltip element
+        let volumeTooltipEl = null;
+        function getVolumeTooltipEl() {
+            if (!volumeTooltipEl) {
+                volumeTooltipEl = document.createElement('div');
+                volumeTooltipEl.id = 'volume-hover-tooltip';
+                volumeTooltipEl.style.cssText = `
+                    position: fixed;
+                    background: #1e293b;
+                    color: #f1f5f9;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                    font-size: 12px;
+                    pointer-events: none;
+                    z-index: 9999;
+                    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+                    min-width: 200px;
+                    max-width: 260px;
+                    display: none;
+                    line-height: 1.5;
+                `;
+                document.body.appendChild(volumeTooltipEl);
+            }
+            return volumeTooltipEl;
+        }
+
+        function renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, friendlyLabel, fuelLabel, barColor) {
+            const el = getVolumeTooltipEl();
+            if (tooltip.opacity === 0 || !tooltip.dataPoints || tooltip.dataPoints.length === 0) {
+                el.style.display = 'none';
+                return;
+            }
+
+            const dp = tooltip.dataPoints[0];
+            const totalGallons = dp.raw;
+
+            // Build hourly rows
+            const hours = hourlyData ? Object.keys(hourlyData).map(Number).sort((a, b) => a - b) : [];
+            let hourRows = '';
+            if (hours.length > 0) {
+                const maxHourlyVal = Math.max(...hours.map(h => hourlyData[h]));
+                hourRows = hours.map(h => {
+                    const gal = hourlyData[h];
+                    const pct = maxHourlyVal > 0 ? (gal / maxHourlyVal) * 100 : 0;
+                    const ampm = h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`;
+                    return `
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                            <span style="width:34px;text-align:right;color:#94a3b8;font-size:11px;flex-shrink:0;">${ampm}</span>
+                            <div style="flex:1;background:rgba(255,255,255,0.1);border-radius:3px;height:8px;overflow:hidden;">
+                                <div style="width:${pct.toFixed(1)}%;height:100%;background:${barColor};border-radius:3px;"></div>
+                            </div>
+                            <span style="width:52px;text-align:right;color:#e2e8f0;font-size:11px;flex-shrink:0;">${Math.round(gal).toLocaleString()} gal</span>
+                        </div>`;
+                }).join('');
+            } else {
+                hourRows = '<div style="color:#94a3b8;font-size:11px;padding:4px 0;">No hourly breakdown available</div>';
+            }
+
+            el.innerHTML = `
+                <div style="font-weight:700;font-size:13px;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:5px;">
+                    ${friendlyLabel} — ${fuelLabel}
+                </div>
+                <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">
+                    Total: <span style="color:#f1f5f9;font-weight:600;">${Math.round(totalGallons).toLocaleString()} gal</span>
+                </div>
+                <div style="font-size:11px;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;">Hourly Breakdown</div>
+                ${hourRows}
+            `;
+
+            // Position tooltip: above bar, clamped to viewport
+            const canvasRect = chart.canvas.getBoundingClientRect();
+            const x = canvasRect.left + tooltip.caretX;
+            const y = canvasRect.top + tooltip.caretY;
+
+            el.style.display = 'block';
+            const elW = el.offsetWidth;
+            const elH = el.offsetHeight;
+            let left = x - elW / 2;
+            let top = y - elH - 12;
+            // Clamp horizontally
+            left = Math.max(8, Math.min(left, window.innerWidth - elW - 8));
+            // If tooltip goes above viewport, show below
+            if (top < 8) top = y + 12;
+            el.style.left = left + 'px';
+            el.style.top = top + 'px';
         }
 
         async function initOrUpdateVolumeChart() {
@@ -5030,7 +5176,9 @@
             const container = canvas.parentElement;
             if (!container) return;
 
-            const dailyGallons = await loadVolumeData(storeNumber);
+            const volumeResult = await loadVolumeData(storeNumber);
+            const dailyGallons   = volumeResult ? volumeResult.dailyGallons   : null;
+            const hourlyBreakdown = volumeResult ? volumeResult.hourlyBreakdown : null;
 
             // Build sorted date labels for last N days
             const labels = [];
@@ -5049,13 +5197,11 @@
             });
 
             // If we have very few data days, trim labels to only days that have data
-            // (plus one padding day on each side so bars aren't squished to edges)
             let trimmedLabels = labels;
             let trimmedValues = dataValues;
             if (dailyGallons) {
                 const dataDates = Object.keys(dailyGallons).sort();
                 if (dataDates.length > 0 && dataDates.length < volumeDays) {
-                    // Find first/last data date index in labels
                     let firstIdx = labels.indexOf(dataDates[0]);
                     let lastIdx = labels.indexOf(dataDates[dataDates.length - 1]);
                     firstIdx = Math.max(0, firstIdx - 1);
@@ -5065,23 +5211,25 @@
                 }
             }
 
-            // Display friendly labels (e.g. "Feb 27")
+            // Display friendly labels (e.g. "Mar 12")
             const friendlyLabels = trimmedLabels.map(d => {
                 const dt = new Date(d + 'T12:00:00');
                 return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             });
 
-            const fuelLabel = volumeFuelType === 'Unlead' ? 'Unleaded' : 'Diesel';
-            const barColor = volumeFuelType === 'Unlead' ? 'rgba(30, 58, 138, 0.8)' : 'rgba(220, 38, 38, 0.8)';
+            const fuelLabel  = volumeFuelType === 'Unlead' ? 'Unleaded' : 'Diesel';
+            const barColor   = volumeFuelType === 'Unlead' ? 'rgba(30, 58, 138, 0.8)' : 'rgba(220, 38, 38, 0.8)';
             const borderColor = volumeFuelType === 'Unlead' ? 'rgb(30, 58, 138)' : 'rgb(220, 38, 38)';
 
             if (volumeChart) {
                 volumeChart.destroy();
                 volumeChart = null;
             }
+            // Hide any lingering tooltip
+            const existingTip = document.getElementById('volume-hover-tooltip');
+            if (existingTip) existingTip.style.display = 'none';
 
             if (!dailyGallons || !hasAnyData) {
-                // Show no-data message
                 container.innerHTML = `
                     <div class="volume-no-data">
                         <span class="volume-no-data-icon">📂</span>
@@ -5091,12 +5239,11 @@
             }
 
             // Re-create canvas if we replaced it with no-data div
-            let ctx;
             const existingCanvas = container.querySelector('canvas#live-volume-chart');
             if (!existingCanvas) {
                 container.innerHTML = '<canvas id="live-volume-chart"></canvas>';
             }
-            ctx = document.getElementById('live-volume-chart').getContext('2d');
+            const ctx = document.getElementById('live-volume-chart').getContext('2d');
 
             volumeChart = new Chart(ctx, {
                 type: 'bar',
@@ -5109,6 +5256,8 @@
                         borderColor: borderColor,
                         borderWidth: 1,
                         borderRadius: 4,
+                        // Store ISO dates so tooltip can look up hourly data
+                        isoLabels: trimmedLabels,
                     }]
                 },
                 options: {
@@ -5117,7 +5266,21 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        tooltip: { enabled: false },
+                        tooltip: {
+                            enabled: false, // we use custom tooltip
+                            external: function(context) {
+                                const { chart, tooltip } = context;
+                                const isoLabels = chart.data.datasets[0].isoLabels || trimmedLabels;
+                                const dateISO = tooltip.dataPoints && tooltip.dataPoints.length > 0
+                                    ? isoLabels[tooltip.dataPoints[0].dataIndex]
+                                    : null;
+                                const hourlyData = (dateISO && hourlyBreakdown) ? hourlyBreakdown[dateISO] : null;
+                                const fl = tooltip.dataPoints && tooltip.dataPoints.length > 0
+                                    ? friendlyLabels[tooltip.dataPoints[0].dataIndex]
+                                    : '';
+                                renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, fl, fuelLabel, barColor);
+                            }
+                        },
                         datalabels: {
                             anchor: function(context) {
                                 const value = context.dataset.data[context.dataIndex];
@@ -5157,8 +5320,20 @@
                                 color: '#6c757d'
                             }
                         }
+                    },
+                    onHover: (event, elements) => {
+                        const el = getVolumeTooltipEl();
+                        if (!elements || elements.length === 0) {
+                            el.style.display = 'none';
+                        }
                     }
                 }
+            });
+
+            // Hide tooltip when mouse leaves the chart canvas
+            ctx.canvas.addEventListener('mouseleave', () => {
+                const el = getVolumeTooltipEl();
+                if (el) el.style.display = 'none';
             });
         }
 
