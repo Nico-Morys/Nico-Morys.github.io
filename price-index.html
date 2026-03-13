@@ -2582,12 +2582,12 @@
         }
         .kpi-movement-table tbody tr:last-child { border-bottom: none; }
         .kpi-movement-table tbody tr:hover { background: #f8fafc; }
-        .kpi-movement-table td { padding: 6px 10px; vertical-align: middle; }
+        .kpi-movement-table td { padding: 3px 10px; vertical-align: middle; }
         .kpi-movement-table td.col-price { text-align: center; background: #f8fbff; }
         .kpi-movement-table td.col-move  { text-align: center; }
-        .kpi-mv-store { font-weight: 700; color: #1e3a8a; font-size: 12px; }
-        .kpi-mv-city  { font-size: 11px; color: #94a3b8; margin-top: 1px; }
-        .kpi-mv-price { font-weight: 700; font-size: 15px; color: #14213d; }
+        .kpi-mv-store { font-weight: 700; color: #1e3a8a; font-size: 12px; display: inline; }
+        .kpi-mv-city  { font-size: 10px; color: #94a3b8; display: inline; margin-left: 4px; }
+        .kpi-mv-price { font-weight: 700; font-size: 13px; color: #14213d; }
         .kpi-mv-price.na { color: #cbd5e1; font-weight: 400; font-size: 12px; }
         .kpi-mv-pill {
             display: inline-block;
@@ -7361,10 +7361,10 @@ function setupModalStoreSearch() {
             function movePill(diffCents, fromPrice, toPrice, time) {
                 const sign = diffCents > 0 ? '+' : '';
                 const cls  = diffCents > 0 ? 'up' : 'down';
-                return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                    <span class="kpi-mv-pill ${cls}">${sign}${diffCents}¢</span>
-                    <span style="font-size:10px;color:#64748b;font-weight:600;">$${fromPrice.toFixed(3)} → $${toPrice.toFixed(3)}</span>
-                    <span style="font-size:9px;color:#94a3b8;">${fmtTime(time)}</span>
+                return `<div style="display:flex;align-items:center;gap:5px;justify-content:center;">
+                    <span class="kpi-mv-pill ${cls}" style="padding:2px 6px;font-size:11px;">${sign}${diffCents}¢</span>
+                    <span style="font-size:10px;color:#64748b;font-weight:600;white-space:nowrap;">$${fromPrice.toFixed(3)}→$${toPrice.toFixed(3)}</span>
+                    <span style="font-size:9px;color:#94a3b8;white-space:nowrap;">${fmtTime(time)}</span>
                 </div>`;
             }
 
@@ -7405,8 +7405,7 @@ function setupModalStoreSearch() {
 
                 return `<tr>
                     <td>
-                        <div class="kpi-mv-store">#${num}</div>
-                        ${city ? `<div class="kpi-mv-city">${city}</div>` : ''}
+                        <span class="kpi-mv-store">#${num}</span>${city ? `<span class="kpi-mv-city">${city}</span>` : ''}
                     </td>
                     <td class="col-price">${priceCell}</td>
                     ${moveCells}
