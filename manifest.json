@@ -1059,10 +1059,11 @@
     "historical/20260315_222835_master_price_data.csv",
     "historical/20260315_225116_master_price_data.csv",
     "historical/20260315_231400_master_price_data.csv",
-    "historical/20260315_233627_master_price_data.csv"
+    "historical/20260315_233627_master_price_data.csv",
+    "historical/20260315_235854_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260315_233627_master_price_data.csv",
-  "last_updated": "2026-03-15T23:36:27.759918+00:00",
-  "timestamp": "20260315_233627"
+  "latest_historical_csv": "historical/20260315_235854_master_price_data.csv",
+  "last_updated": "2026-03-15T23:58:54.200062+00:00",
+  "timestamp": "20260315_235854"
 }
