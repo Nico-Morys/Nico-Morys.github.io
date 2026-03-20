@@ -33,6 +33,12 @@
 !commodities/*.csv
 !commodities/manifest.json
 
+# Allow map files itself
+!map.html
+!map.js
+!map-styles.css
+!ratings.json
+
 
 # Allow .gitignore itself
 !.gitignore
