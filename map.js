@@ -48,6 +48,7 @@ let currentDataFile = '';
 let currentSelectedStationForNotes = null; // Track currently selected station for notes
 let currentFetchController = null; // AbortController to cancel stale scrub fetches
 let hasInitiallyLoaded = false; // True after the very first data load completes
+let stationRatings = {}; // { "144::Casey's General Store #2867": "above_average", ... }
 
 // ============================================
 // NOTES MANAGEMENT FUNCTIONS
@@ -216,6 +217,49 @@ function getBrandLogo(brand) {
     // Return a styled div with initials instead of trying to load external images
     return `<div class="brand-initials" style="background-color: ${color}; color: white; font-weight: bold; font-size: 10px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 50%;">${initials}</div>`;
 }
+
+
+// ============================================
+// RATINGS HELPERS
+// ============================================
+
+async function loadRatings() {
+    try {
+        const response = await fetch('ratings.json?v=' + Date.now());
+        if (response.ok) {
+            stationRatings = await response.json();
+            console.log(`Ratings loaded: ${Object.keys(stationRatings).length} entries`);
+        }
+    } catch (e) {
+        console.warn('Could not load ratings.json — ratings will be hidden.', e);
+    }
+}
+
+// Returns a colored pill HTML string, or '' if no rating found.
+// For RR station header: pass (rrStoreId, null)
+// For competitor card:   pass (rrStoreId, competitorName)
+function getRatingBadge(rrStoreId, competitorName) {
+    const ratingConfig = {
+        poor:          { bg: '#1565c0', text: 'Poor' },
+        fair:          { bg: '#1565c0', text: 'Fair' },
+        average:       { bg: '#1565c0', text: 'Average' },
+        above_average: { bg: '#1565c0', text: 'Above Average' },
+        best_in_class: { bg: '#1565c0', text: 'Best in Class' }
+    };
+
+    // RR store self-rating: key is "rr_NNN"
+    // Competitor rating: key is "NNN::CompetitorName"
+    const key = competitorName
+        ? `${rrStoreId}::${competitorName}`
+        : `rr_${rrStoreId}`;
+
+    const rating = stationRatings[key];
+    if (!rating || !ratingConfig[rating]) return '';
+
+    const { bg, text } = ratingConfig[rating];
+    return `<span class="station-rating-badge" style="background:${bg};">${text}</span>`;
+}
+
 
 // ============================================
 // DATE NAVIGATION FUNCTIONS
@@ -520,6 +564,7 @@ function toggleStationChecked(stationId, marker) {
     }
     
     updateProgressCounter();
+    saveCheckedStations();
 }
 
 // Check all stations
@@ -535,6 +580,7 @@ function checkAllStations() {
     });
     
     updateProgressCounter();
+    saveCheckedStations();
 }
 
 // Uncheck all stations
@@ -548,6 +594,24 @@ function uncheckAllStations() {
     });
     
     updateProgressCounter();
+    saveCheckedStations();
+}
+
+// Persist checked stations to localStorage
+function saveCheckedStations() {
+    localStorage.setItem('rr-checked-stations', JSON.stringify(Array.from(checkedStations)));
+}
+
+// Load checked stations from localStorage
+function loadCheckedStations() {
+    try {
+        const saved = localStorage.getItem('rr-checked-stations');
+        if (saved) {
+            JSON.parse(saved).forEach(id => checkedStations.add(id));
+        }
+    } catch (e) {
+        console.warn('Could not restore checked stations:', e);
+    }
 }
 
 
@@ -1262,7 +1326,8 @@ function updatePanelForMultipleSelections() {
         
         document.getElementById('station-name').textContent = station.name;
         const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'Price N/A';
-        document.getElementById('station-address').innerHTML = `${station.address}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>`;
+        const rrRatingBadge = getRatingBadge(station.id, null);
+        document.getElementById('station-address').innerHTML = `${station.address}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>${rrRatingBadge ? '<br>' + rrRatingBadge : ''}`;
         
         competitorsList.innerHTML = '';
         
@@ -1291,11 +1356,15 @@ function updatePanelForMultipleSelections() {
                 const priceDiff = competitor.price - stationPrice;
                 const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                 
+                const ratingBadge = getRatingBadge(station.id, competitor.name);
                 competitorCard.innerHTML = `
                     <div class="competitor-name">${competitor.name}</div>
                     <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                     <div class="competitor-difference">${diffText}</div>
-                    <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
+                    <div class="competitor-distance-row">
+                        <span>${competitor.distance.toFixed(1)} mi away</span>
+                        ${ratingBadge}
+                    </div>
                 `;
                 
                 competitorsList.appendChild(competitorCard);
@@ -1391,8 +1460,9 @@ function updatePanelForMultipleSelections() {
                     const priceDiff = competitor.price - stationPrice;
                     const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                     
+                    const ratingBadge = getRatingBadge(station.id, competitor.name);
                     competitorCard.innerHTML = `
-                        <div class="competitor-name">${competitor.name}</div>
+                        <div class="competitor-name">${competitor.name}${ratingBadge}</div>
                         <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                         <div class="competitor-difference">${diffText}</div>
                         <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
@@ -1504,7 +1574,7 @@ document.addEventListener('DOMContentLoaded', function() {
         minZoom: 4, // Prevent zooming out too far
         maxZoom: 18  // Optional: set max zoom for performance
     }).setView([41.0, -87.0], 6);
-    
+    window.map = map; // expose for AADT overlay
     
     // Map click handler - only close panel if clicking on the map itself, not on markers
     map.on('click', function(e) {
@@ -1677,6 +1747,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Load manifest and initial data
+    // Load ratings, checked stations, and manifest in parallel
+    loadCheckedStations();
+    loadRatings();
     loadManifest();
 });

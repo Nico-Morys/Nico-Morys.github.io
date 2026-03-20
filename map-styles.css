@@ -185,6 +185,30 @@ html, body {
     border: 1.5px solid rgba(255, 235, 59, 0.6);
 }
 
+.station-rating-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+
+.competitor-distance-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.competitor-distance-row span {
+    font-size: 11px;
+}
+
+
 /* Price badge with arrow pointing down to marker */
 .price-badge::after {
     content: '';
