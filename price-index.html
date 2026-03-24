@@ -2232,6 +2232,47 @@
         .kpi-chart-controls .cd-wrap { min-width: 140px; }
         .kpi-chart-controls .kpi-dd-group--store .cd-wrap { min-width: 240px; }
 
+        /* Major Players multi-select */
+        .mp-wrap { position: relative; min-width: 170px; user-select: none; }
+        .mp-trigger {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            border: 1px solid #e2e8f0; border-radius: 6px; padding: 7px 11px;
+            font-size: 0.9rem; color: #1a1a2e; background: #f8fafc;
+            cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
+            max-width: 220px; overflow: hidden;
+        }
+        .mp-trigger:hover, .mp-wrap.open .mp-trigger { border-color: #2563eb; }
+        .mp-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+        .mp-wrap.open .mp-trigger .cd-arrow { transform: rotate(180deg); }
+        .mp-list {
+            display: none; position: absolute; top: calc(100% + 4px); left: 0;
+            z-index: 2000; background: #fff; border: 1px solid #e2e8f0;
+            border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            min-width: 100%; padding: 6px 0;
+        }
+        .mp-wrap.open .mp-list { display: block; }
+        .mp-option {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 14px; font-size: 0.88rem; color: #1a1a2e;
+            cursor: pointer; white-space: nowrap; transition: background 0.12s;
+        }
+        .mp-option:hover { background: #eff6ff; }
+        .mp-option input[type=checkbox] { accent-color: #2563eb; width: 14px; height: 14px; cursor: pointer; }
+        .mp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .mp-clear {
+            margin: 4px 8px 2px; padding: 5px 8px; font-size: 0.78rem; color: #94a3b8;
+            cursor: pointer; border-top: 1px solid #f1f5f9; text-align: center;
+            border-radius: 4px; transition: background 0.12s;
+        }
+        .mp-clear:hover { background: #fef2f2; color: #dc2626; }
+        .mp-option--disabled { cursor: not-allowed; }
+        .mp-option--disabled:hover { background: transparent; }
+        .mp-na-badge {
+            margin-left: auto; font-size: 0.68rem; font-weight: 700;
+            color: #94a3b8; background: #f1f5f9; border-radius: 3px;
+            padding: 1px 5px; letter-spacing: 0.3px;
+        }
+
         /* Chart section */
         .kpi-chart-section {
             background: #fff; border-radius: 10px; padding: 20px 22px;
@@ -6783,16 +6824,102 @@ function setupModalStoreSearch() {
 
         // Close dropdowns on outside click
         document.addEventListener('click', e => {
-            if (!e.target.closest('.cd-wrap')) {
+            if (!e.target.closest('.cd-wrap') && !e.target.closest('.mp-wrap')) {
                 document.querySelectorAll('.cd-wrap.open').forEach(w => w.classList.remove('open'));
+                document.querySelectorAll('.mp-wrap.open').forEach(w => w.classList.remove('open'));
             }
         });
 
+        const MAJOR_PLAYERS_LIST = ["Love's", "Pilot", "Thorntons", "TA"];
+
+        function kpiBuildMultiPlayerDropdown(containerId) {
+            const wrap = document.getElementById(containerId);
+            if (!wrap) return;
+            wrap.className = 'mp-wrap';
+            wrap.id = containerId;
+            _renderMpDropdown(wrap, null); // null = no restrictions until store is selected
+        }
+
+        function _mpLabel() {
+            if (kpiMajorPlayerSel.size === 0) return 'None (Off)';
+            if (kpiMajorPlayerSel.size === MAJOR_PLAYERS_LIST.length) return 'All Players';
+            return [...kpiMajorPlayerSel].join(', ');
+        }
+
+        function _renderMpDropdown(wrap, availablePlayers) {
+            // availablePlayers = Set of player names available for the current store,
+            // or null meaning all are available (All Stores / region view)
+            wrap.innerHTML = `
+                <div class="mp-trigger" onclick="mpToggle('${wrap.id}')">
+                    <span class="mp-label">${_mpLabel()}</span>
+                    <span class="cd-arrow">▼</span>
+                </div>
+                <div class="mp-list">
+                    ${MAJOR_PLAYERS_LIST.map(p => {
+                        const unavailable = availablePlayers !== null && availablePlayers !== undefined && !availablePlayers.has(p);
+                        return `
+                        <label class="mp-option${unavailable ? ' mp-option--disabled' : ''}" onclick="event.stopPropagation()">
+                            <input type="checkbox" data-player="${p.replace(/'/g, '&#39;')}" data-wrapid="${wrap.id}"
+                                ${kpiMajorPlayerSel.has(p) ? 'checked' : ''}
+                                ${unavailable ? 'disabled' : ''}
+                                onchange="mpTogglePlayer(this.dataset.wrapid, this.dataset.player, this.checked)">
+                            <span class="mp-dot" style="background:${MAJOR_PLAYER_COLORS[p].line};${unavailable ? 'opacity:0.3' : ''}"></span>
+                            <span style="${unavailable ? 'opacity:0.4;text-decoration:line-through' : ''}">${p}</span>
+                            ${unavailable ? '<span class="mp-na-badge">N/A</span>' : ''}
+                        </label>`;
+                    }).join('')}
+                    <div class="mp-clear" onclick="mpClearAll('${wrap.id}')">✕ Clear all</div>
+                </div>`;
+        }
+
+        function mpToggle(id) {
+            const wrap = document.getElementById(id);
+            const isOpen = wrap.classList.contains('open');
+            document.querySelectorAll('.cd-wrap.open, .mp-wrap.open').forEach(w => w.classList.remove('open'));
+            if (!isOpen) wrap.classList.add('open');
+        }
+
+        function mpTogglePlayer(id, player, checked) {
+            // Decode HTML entity back to real character (e.g. Love&#39;s → Love's)
+            player = player.replace(/&#39;/g, "'");
+            if (checked) kpiMajorPlayerSel.add(player);
+            else kpiMajorPlayerSel.delete(player);
+            const wrap = document.getElementById(id);
+            if (wrap) wrap.querySelector('.mp-label').textContent = _mpLabel();
+            buildKpiChart();
+        }
+
+        function mpClearAll(id) {
+            kpiMajorPlayerSel.clear();
+            const wrap = document.getElementById(id);
+            if (wrap) {
+                wrap.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+                wrap.querySelector('.mp-label').textContent = _mpLabel();
+                wrap.classList.remove('open');
+            }
+            buildKpiChart();
+        }
+
         // ── MARKET KPI VIEW ───────────────────────────────────────────────
         let kpiChartInst = null;
-        let kpiFuelSel   = 'Regular';
-        let kpiRegionSel = 'All Regions';
-        let kpiStoreSel  = 'All Stores';
+        let kpiFuelSel         = 'Regular';
+        let kpiRegionSel       = 'All Regions';
+        let kpiStoreSel        = 'All Stores';
+        let kpiMajorPlayerSel  = new Set(); // multi-select: Set of active player names
+
+        // Major player brand → Station_Name prefix/pattern matchers
+        const MAJOR_PLAYER_MATCHERS = {
+            "Love's":   name => name.startsWith("Love's Travel Stop"),
+            "Pilot":    name => /^(PILOT|Pilot|FLYING J|Flying J)/i.test(name),
+            "Thorntons":name => /^THORNTONS/i.test(name),
+            "TA":       name => /^(TA |TA Express|TA Petro|Petro Travel Center)/i.test(name),
+        };
+        const MAJOR_PLAYER_COLORS = {
+            "Love's":    { line: '#16a34a', bg: 'rgba(22,163,74,0.06)' },
+            "Pilot":     { line: '#7c3aed', bg: 'rgba(124,58,237,0.06)' },
+            "Thorntons": { line: '#0891b2', bg: 'rgba(8,145,178,0.06)' },
+            "TA":        { line: '#d97706', bg: 'rgba(217,119,6,0.06)' },
+        };
 
         const KPI_REGIONS = {
             'Midwest': ['118','132','136','139','140','141','144','145','153','157','181','185','186','187','203','205','206','209','210','211','225','226','235','236','240','242','263','265','266','268','269'],
@@ -6842,6 +6969,10 @@ function setupModalStoreSearch() {
                             <div class="kpi-dd-group kpi-dd-group--store">
                                 <label class="kpi-dd-label">Store</label>
                                 <div class="cd-wrap" id="kpiStoreDD"></div>
+                            </div>
+                            <div class="kpi-dd-group">
+                                <label class="kpi-dd-label">Major Players</label>
+                                <div class="cd-wrap" id="kpiMajorPlayerDD"></div>
                             </div>
                         </div>
                     </div>
@@ -6912,6 +7043,7 @@ function setupModalStoreSearch() {
                 kpiStoreSel,
                 v => { kpiStoreSel = v; buildKpiChart(); }
             );
+            kpiBuildMultiPlayerDropdown('kpiMajorPlayerDD');
 
             if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
             buildKpiChart();
@@ -6989,6 +7121,32 @@ function setupModalStoreSearch() {
                 return;
             }
 
+            // Determine which major players are actually present in the filtered data
+            // Only enforce when a specific store is selected (not All Stores / region avg)
+            if (storeNum) {
+                const presentPlayers = new Set();
+                MAJOR_PLAYERS_LIST.forEach(p => {
+                    const matcher = MAJOR_PLAYER_MATCHERS[p];
+                    if (matcher && filtered.some(r => matcher(r.Station_Name || ''))) {
+                        presentPlayers.add(p);
+                    }
+                });
+                // Remove any selected players that aren't present for this store
+                let changed = false;
+                kpiMajorPlayerSel.forEach(p => {
+                    if (!presentPlayers.has(p)) { kpiMajorPlayerSel.delete(p); changed = true; }
+                });
+                // Re-render the dropdown to reflect available/disabled state
+                const mpWrap = document.getElementById('kpiMajorPlayerDD');
+                if (mpWrap) {
+                    _renderMpDropdown(mpWrap, presentPlayers);
+                }
+            } else {
+                // All stores / region — all players available, re-render without restrictions
+                const mpWrap = document.getElementById('kpiMajorPlayerDD');
+                if (mpWrap) _renderMpDropdown(mpWrap, null);
+            }
+
             // Group by pre-computed Central date, average all snapshots per day
             const byDate = {};
             filtered.forEach(row => {
@@ -7016,6 +7174,37 @@ function setupModalStoreSearch() {
                     ? `${kpiRegionSel} RR Stores Avg`
                     : 'All RR Stores Avg';
 
+            // Build Major Player lines for each selected player
+            const majorPlayerDatasets = [];
+            kpiMajorPlayerSel.forEach(playerName => {
+                const matcher = MAJOR_PLAYER_MATCHERS[playerName];
+                const colors  = MAJOR_PLAYER_COLORS[playerName];
+                if (!matcher) return;
+                const mpByDate = {};
+                source.forEach(row => {
+                    const dateKey = row._ctDate;
+                    if (!dateKey) return;
+                    if (!matcher(row.Station_Name || '')) return;
+                    const price = pv(row[fuelKey]);
+                    if (price === null || price <= 0) return;
+                    if (!mpByDate[dateKey]) mpByDate[dateKey] = [];
+                    mpByDate[dateKey].push(price);
+                });
+                const mpLine = dates.map(d => {
+                    const arr = mpByDate[d];
+                    if (!arr || !arr.length) return null;
+                    return +(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(3);
+                });
+                majorPlayerDatasets.push({
+                    label: `${playerName} Avg`,
+                    data: mpLine,
+                    borderColor: colors.line, backgroundColor: colors.bg,
+                    borderWidth: 2, pointRadius: 2, pointHoverRadius: 5,
+                    tension: 0.1, spanGaps: true, fill: false,
+                    borderDash: [5, 3]
+                });
+            });
+
             const datasets = [
                 {
                     label: storeLabel,
@@ -7032,6 +7221,7 @@ function setupModalStoreSearch() {
                     tension: 0.1, spanGaps: true, fill: false
                 }
             ];
+            majorPlayerDatasets.forEach(ds => datasets.push(ds));
 
             if (kpiChartInst) {
                 kpiChartInst.data.labels   = labels;
