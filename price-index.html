@@ -7175,13 +7175,19 @@ function setupModalStoreSearch() {
                     : 'All RR Stores Avg';
 
             // Build Major Player lines for each selected player
+            // For region filtering, scope competitors to only rows whose RR_Location
+            // belongs to a store in the selected region (not all competitors globally)
+            const mpSource = (kpiRegionSel !== 'All Regions' && !storeNum && regionStoreNames)
+                ? source.filter(r => regionStoreNames.has(r.RR_Location ? r.RR_Location.trim() : ''))
+                : filtered;
+
             const majorPlayerDatasets = [];
             kpiMajorPlayerSel.forEach(playerName => {
                 const matcher = MAJOR_PLAYER_MATCHERS[playerName];
                 const colors  = MAJOR_PLAYER_COLORS[playerName];
                 if (!matcher) return;
                 const mpByDate = {};
-                source.forEach(row => {
+                mpSource.forEach(row => {
                     const dateKey = row._ctDate;
                     if (!dateKey) return;
                     if (!matcher(row.Station_Name || '')) return;
