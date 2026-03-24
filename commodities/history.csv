@@ -5114,3 +5114,6 @@ HO=F,ULSD,USD/gal,#7c3aed,2026-03-24T22:00:00Z,3.835,3.835,-0.507,-11.6766,beari
 CL=F,WTI Crude Oil,USD/bbl,#b45309,2026-03-24T22:30:00Z,88.790001,88.79,-7.35,-7.6451,neutral,Fast SMA below slow SMA; 3-candle slope +0.2000; 24h chg -0.2%
 RB=F,RBOB Gasoline,USD/gal,#2563eb,2026-03-24T22:30:00Z,2.99,2.99,-0.1371,-4.3843,bullish,Fast SMA above slow SMA; 3-candle slope +0.0003; 24h chg +4.6%
 HO=F,ULSD,USD/gal,#7c3aed,2026-03-24T22:30:00Z,3.8016,3.8016,-0.5404,-12.4459,bearish,Fast SMA below slow SMA; 3-candle slope -0.0351; 24h chg -0.9%
+CL=F,WTI Crude Oil,USD/bbl,#b45309,2026-03-24T23:00:00Z,88.800003,88.91,-7.23,-7.5203,bearish,Fast SMA below slow SMA; 3-candle slope -0.0800; 24h chg -0.4%
+RB=F,RBOB Gasoline,USD/gal,#2563eb,2026-03-24T23:00:00Z,2.9931,2.9931,-0.134,-4.2851,neutral,Fast SMA above slow SMA; 3-candle slope -0.0060; 24h chg +4.7%
+HO=F,ULSD,USD/gal,#7c3aed,2026-03-24T23:00:00Z,3.7954,3.7954,-0.5466,-12.5887,bearish,Fast SMA below slow SMA; 3-candle slope -0.0066; 24h chg -1.1%

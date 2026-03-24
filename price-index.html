@@ -5490,10 +5490,10 @@
                 if (visibleCompetitors.has(idx)) {
                     visibleCompetitorIds.add(comp.Station_ID);
                     visibleCompetitorNames.add(normalizeStationName(comp.Station_Name));
-                    // Create keys using both Station_ID and Name+Address for compatibility
-                    visibleCompetitorKeys.add(comp.Station_ID);
+                    // Create keys using both Station_ID and Name+Address for compatibility and trim
+                    visibleCompetitorKeys.add(comp.Station_ID.trim());
                     const key = `${comp.Station_Name}|${comp.Station_Address}`;
-                    visibleCompetitorKeys.add(key);
+                    visibleCompetitorKeys.add(key.trim());
                 }
             });
 
@@ -5550,9 +5550,9 @@
                 // Match by Station_ID if available, otherwise just Station_Name
                 let competitorKey;
                 if (row.Station_ID) {
-                    competitorKey = row.Station_ID;
+                    competitorKey = row.Station_ID.trim();
                 } else {
-                    competitorKey = row.Station_Name;
+                    competitorKey = row.Station_Name.trim();
                 }
 
 
@@ -5592,12 +5592,12 @@
                 // Use Station_ID for competitors (they have IDs)
                 let stationKey;
                 if (isRoadRanger) {
-                    stationKey = row.Station_Name;
+                    stationKey = row.Station_Name.trim();
                 } else if (row.Station_ID) {
-                    stationKey = row.Station_ID;
+                    stationKey = row.Station_ID.trim();
                 } else {
                     // Fallback
-                    stationKey = row.Station_Name;
+                    stationKey = row.Station_Name.trim();
                 }
 
                 if (!dataByTimestamp[timeStr].stations[stationKey] || 
