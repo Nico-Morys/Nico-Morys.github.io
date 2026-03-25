@@ -8,6 +8,10 @@
 !historical/
 !historical/*.csv
 
+# Allow margins folder and its CSV files
+!margins/
+!margins/*.csv
+
 # Allow pricedata folder and its JSON files
 !pricedata/
 !pricedata/*.json
