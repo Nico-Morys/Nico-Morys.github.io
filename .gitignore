@@ -11,6 +11,7 @@
 # Allow margins folder and its CSV files
 !margins/
 !margins/*.csv
+!margins/*.xlsx
 
 # Allow pricedata folder and its JSON files
 !pricedata/
