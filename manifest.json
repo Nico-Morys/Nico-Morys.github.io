@@ -1988,10 +1988,11 @@
     "historical/20260331_023521_master_price_data.csv",
     "historical/20260331_025759_master_price_data.csv",
     "historical/20260331_032037_master_price_data.csv",
-    "historical/20260331_034319_master_price_data.csv"
+    "historical/20260331_034319_master_price_data.csv",
+    "historical/20260331_040610_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260331_034319_master_price_data.csv",
-  "last_updated": "2026-03-31T03:43:19.714175+00:00",
-  "timestamp": "20260331_034319"
+  "latest_historical_csv": "historical/20260331_040610_master_price_data.csv",
+  "last_updated": "2026-03-31T04:06:10.036195+00:00",
+  "timestamp": "20260331_040610"
 }
