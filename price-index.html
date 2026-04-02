@@ -5199,11 +5199,11 @@
             const storeNumber = currentStore.rr_store.replace('Road Ranger #', '').split(' - ')[0];
 
             // Get the container directly — the canvas may have been replaced by a no-data div
-            const container = document.querySelector('#volume-content .volume-body');
+            const container = document.querySelector('#volume-content .volume-chart-container');
             if (!container) return;
 
             // Ensure canvas exists (may have been wiped by a previous no-data render)
-            if (!document.getElementById('live-volume-chart')) {
+            if (!container.querySelector('canvas#live-volume-chart')) {
                 container.innerHTML = '<canvas id="live-volume-chart"></canvas>';
             }
 
