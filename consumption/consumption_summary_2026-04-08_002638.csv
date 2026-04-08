@@ -1,0 +1,215 @@
+timestamp,location,fuel_type,city,state,total_gallons_sold,delivery_count,delivery_volume,tank_count
+2026-04-08 00:11:35,"0118 - Springfield, IL",Diesel,Springfield,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0118 - Springfield, IL",Unlead,Springfield,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0132 - Champaign, IL",Diesel,Champaign,IL,13.774999999999636,0,0.0,3
+2026-04-08 00:11:35,"0132 - Champaign, IL",Unlead,Champaign,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0136 - Cottage Grove, WI",Diesel,Cottage Grove,WI,119.4330000000009,0,0.0,2
+2026-04-08 00:11:35,"0136 - Cottage Grove, WI",Unlead,Cottage Grove,WI,5.5460000000002765,0,0.0,1
+2026-04-08 00:11:35,"0139 - Tuscola, IL",Diesel,Tuscola,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0139 - Tuscola, IL",Unlead,Tuscola,IL,0.0,0,0.0,2
+2026-04-08 00:11:35,"0140 - Mendota, IL",Diesel,Mendota,IL,0.0,0,0.0,2
+2026-04-08 00:11:35,"0140 - Mendota, IL",Unlead,Mendota,IL,2.0,0,0.0,2
+2026-04-08 00:11:35,"0141 - Brazil, IN",Diesel,Brazil,IN,9.34729999999945,0,0.0,4
+2026-04-08 00:11:35,"0141 - Brazil, IN",Unlead,Brazil,IN,0.0,0,0.0,1
+2026-04-08 00:11:35,"0144 - Elk Run Height, IA",Diesel,Elk Run Height,IA,0.0,0,0.0,4
+2026-04-08 00:11:35,"0144 - Elk Run Height, IA",Unlead,Elk Run Height,IA,9.773999999999432,0,0.0,2
+2026-04-08 00:11:35,"0145 - Fenton, MO",Diesel,Fenton,MO,198.0,0,0.0,2
+2026-04-08 00:11:35,"0145 - Fenton, MO",Unlead,Fenton,MO,0.0,0,0.0,1
+2026-04-08 00:11:35,"0157 - Okawville, IL",Diesel,Okawville,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0157 - Okawville, IL",Unlead,Okawville,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0181 - Springfield, IL",Diesel,Springfield,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0181 - Springfield, IL",Unlead,Springfield,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0185 - McLean, IL",Diesel,McLean,IL,0.0,0,0.0,4
+2026-04-08 00:11:35,"0185 - McLean, IL",Unlead,McLean,IL,31.672999999999774,0,0.0,1
+2026-04-08 00:11:35,"0186 - Minonk, IL",Diesel,Minonk,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0186 - Minonk, IL",Unlead,Minonk,IL,3.3520000000007713,0,0.0,1
+2026-04-08 00:11:35,"0187 - Chicago, IL",Diesel,Chicago,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0187 - Chicago, IL",Unlead,Chicago,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0203 - Rockford, IL",Diesel,Rockford,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0203 - Rockford, IL",Unlead,Rockford,IL,19.400899999999638,0,0.0,1
+2026-04-08 00:11:35,"0205 - South Beloit, IL",Diesel,South Beloit,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0205 - South Beloit, IL",Unlead,South Beloit,IL,12.0,0,0.0,1
+2026-04-08 00:11:35,"0206 - Winnebago, IL",Diesel,Winnebago,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0206 - Winnebago, IL",Unlead,Winnebago,IL,46.0,0,0.0,1
+2026-04-08 00:11:35,"0209 - Oakdale, WI",Diesel,Oakdale,WI,0.0,0,0.0,3
+2026-04-08 00:11:35,"0209 - Oakdale, WI",Unlead,Oakdale,WI,9.0,0,0.0,1
+2026-04-08 00:11:35,"0210 - Rochelle, IL",Diesel,Rochelle,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0210 - Rochelle, IL",Unlead,Rochelle,IL,29.0,0,0.0,1
+2026-04-08 00:11:35,"0211 - Loves Park, IL",Diesel,Loves Park,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0211 - Loves Park, IL",Unlead,Loves Park,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0225 - Princeton, IL",Diesel,Princeton,IL,41.0,0,0.0,4
+2026-04-08 00:11:35,"0225 - Princeton, IL",Unlead,Princeton,IL,0.0,0,0.0,2
+2026-04-08 00:11:35,"0226 - Greenwood, IN",Diesel,Greenwood,IN,0.0,0,0.0,2
+2026-04-08 00:11:35,"0226 - Greenwood, IN",Unlead,Greenwood,IN,15.0,0,0.0,2
+2026-04-08 00:11:35,"0235 - Hampshire, IL",Diesel,Hampshire,IL,0.0,0,0.0,2
+2026-04-08 00:11:35,"0235 - Hampshire, IL",Unlead,Hampshire,IL,14.0,0,0.0,2
+2026-04-08 00:11:35,"0236 - East Troy, WI",Diesel,East Troy,WI,0.0,0,0.0,2
+2026-04-08 00:11:35,"0236 - East Troy, WI",Unlead,East Troy,WI,0.0,0,0.0,1
+2026-04-08 00:11:35,"0240 - Lake Station, IN",Diesel,Lake Station,IN,0.0,0,0.0,5
+2026-04-08 00:11:35,"0240 - Lake Station, IN",Unlead,Lake Station,IN,30.0,0,0.0,2
+2026-04-08 00:11:35,"0242 - St Robert, MO",Diesel,St Robert,MO,0.0,0,0.0,4
+2026-04-08 00:11:35,"0263 - Ottawa, IL",Diesel,Ottawa,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0263 - Ottawa, IL",Unlead,Ottawa,IL,12.0,0,0.0,1
+2026-04-08 00:11:35,"0265 - Dixon, IL",Diesel,Dixon,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0265 - Dixon, IL",Unlead,Dixon,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0266 - New Berlin, IL",Diesel,New Berlin,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0266 - New Berlin, IL",Unlead,New Berlin,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0267 - Pharr, TX",Diesel,Pharr,TX,0.0,0,0.0,4
+2026-04-08 00:11:35,"0267 - Pharr, TX",Unlead,Pharr,TX,3.0,0,0.0,1
+2026-04-08 00:11:35,"0268 - Grayville, IL",Diesel,Grayville,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0268 - Grayville, IL",Unlead,Grayville,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0269 - Marshall, IL",Diesel,Marshall,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0269 - Marshall, IL",Unlead,Marshall,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0270 - Moore, TX",Diesel,Moore,TX,224.0,0,0.0,3
+2026-04-08 00:11:35,"0270 - Moore, TX",Unlead,Moore,TX,62.0,0,0.0,1
+2026-04-08 00:11:35,"0271 - Odessa, TX",Diesel,Odessa,TX,52.87700000000041,0,0.0,3
+2026-04-08 00:11:35,"0271 - Odessa, TX",Unlead,Odessa,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0272 - Encinal, TX",Diesel,Encinal,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0272 - Encinal, TX",Unlead,Encinal,TX,21.29700000000048,0,0.0,1
+2026-04-08 00:11:35,"0273 - Combes, TX",Diesel,Combes,TX,0.0,1,2944.803,3
+2026-04-08 00:11:35,"0273 - Combes, TX",Unlead,Combes,TX,30.127999999998792,0,0.0,1
+2026-04-08 00:11:35,"0275 - Sonora, TX",Diesel,Sonora,TX,22.544300000001385,0,0.0,3
+2026-04-08 00:11:35,"0275 - Sonora, TX",Unlead,Sonora,TX,59.66899999999987,0,0.0,1
+2026-04-08 00:11:35,"0276 - Waco, TX",Diesel,Waco,TX,25.95049999999992,0,0.0,3
+2026-04-08 00:11:35,"0276 - Waco, TX",Unlead,Waco,TX,9.941999999999098,0,0.0,1
+2026-04-08 00:11:35,"0277 - New Boston, TX",Diesel,New Boston,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0277 - New Boston, TX",Unlead,New Boston,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0278 - Brinkley, AR",Diesel,Brinkley,AR,153.49169999999867,0,0.0,3
+2026-04-08 00:11:35,"0278 - Brinkley, AR",Unlead,Brinkley,AR,0.0,0,0.0,1
+2026-04-08 00:11:35,"0279 - Marion, IL",Diesel,Marion,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0279 - Marion, IL",Unlead,Marion,IL,41.24699999999939,0,0.0,1
+2026-04-08 00:11:35,"0280 - Monahans, TX",Diesel,Monahans,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0280 - Monahans, TX",Unlead,Monahans,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0281 - Cisco, TX",Diesel,Cisco,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0281 - Cisco, TX",Unlead,Cisco,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0282 - Gainesville, TX",Diesel,Gainesville,TX,20.66899999999987,0,0.0,3
+2026-04-08 00:11:35,"0282 - Gainesville, TX",Unlead,Gainesville,TX,27.371000000001004,0,0.0,1
+2026-04-08 00:11:35,"0283 - Sealy, TX",Diesel,Sealy,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0283 - Sealy, TX",Unlead,Sealy,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0284 - New Deal, TX",Diesel,New Deal,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0284 - New Deal, TX",Unlead,New Deal,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0285 - Seguin, TX",Diesel,Seguin,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0285 - Seguin, TX",Unlead,Seguin,TX,0.0,1,708.2010000000009,1
+2026-04-08 00:11:35,"0286 - Amarillo, TX",Diesel,Amarillo,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0286 - Amarillo, TX",Unlead,Amarillo,TX,9.050999999999476,0,0.0,1
+2026-04-08 00:11:35,"0287 - Burbonnais, IL",Diesel,Burbonnais,IL,0.0,0,0.0,3
+2026-04-08 00:11:35,"0287 - Burbonnais, IL",Unlead,Burbonnais,IL,0.0,0,0.0,1
+2026-04-08 00:11:35,"0289 - Teague, TX",Diesel,Teague,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0289 - Teague, TX",Unlead,Teague,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0290 - Joplin, MO",Diesel,Joplin,MO,0.0,0,0.0,3
+2026-04-08 00:11:35,"0290 - Joplin, MO",Unlead,Joplin,MO,0.0,0,0.0,1
+2026-04-08 00:11:35,"0312 - Vidor, TX",Diesel,Vidor,TX,154.2569999999996,0,0.0,3
+2026-04-08 00:11:35,"0312 - Vidor, TX",Unlead,Vidor,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0315 - Laredo, TX",Diesel,Laredo,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0315 - Laredo, TX",Unlead,Laredo,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0319 - Milford, TX",Diesel,Milford,TX,0.0,0,0.0,3
+2026-04-08 00:11:35,"0319 - Milford, TX",Unlead,Milford,TX,0.0,0,0.0,1
+2026-04-08 00:11:35,"0323 - Canton, TX",Diesel,Canton,TX,29.139999999999418,0,0.0,3
+2026-04-08 00:11:35,"0323 - Canton, TX",Unlead,Canton,TX,9.669000000001688,0,0.0,1
+2026-04-08 00:26:37,"0118 - Springfield, IL",Diesel,Springfield,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0118 - Springfield, IL",Unlead,Springfield,IL,18.0,0,0.0,1
+2026-04-08 00:26:37,"0132 - Champaign, IL",Diesel,Champaign,IL,135.5318000000002,0,0.0,3
+2026-04-08 00:26:37,"0132 - Champaign, IL",Unlead,Champaign,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0136 - Cottage Grove, WI",Diesel,Cottage Grove,WI,105.46599999999944,0,0.0,2
+2026-04-08 00:26:37,"0136 - Cottage Grove, WI",Unlead,Cottage Grove,WI,0.0,0,0.0,1
+2026-04-08 00:26:37,"0139 - Tuscola, IL",Diesel,Tuscola,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0139 - Tuscola, IL",Unlead,Tuscola,IL,0.0,0,0.0,2
+2026-04-08 00:26:37,"0140 - Mendota, IL",Diesel,Mendota,IL,0.0,0,0.0,2
+2026-04-08 00:26:37,"0140 - Mendota, IL",Unlead,Mendota,IL,0.0,0,0.0,2
+2026-04-08 00:26:37,"0141 - Brazil, IN",Diesel,Brazil,IN,0.0,0,0.0,4
+2026-04-08 00:26:37,"0141 - Brazil, IN",Unlead,Brazil,IN,0.0,0,0.0,1
+2026-04-08 00:26:37,"0144 - Elk Run Height, IA",Diesel,Elk Run Height,IA,0.0,0,0.0,4
+2026-04-08 00:26:37,"0144 - Elk Run Height, IA",Unlead,Elk Run Height,IA,0.0,0,0.0,2
+2026-04-08 00:26:37,"0145 - Fenton, MO",Diesel,Fenton,MO,0.0,0,0.0,2
+2026-04-08 00:26:37,"0145 - Fenton, MO",Unlead,Fenton,MO,0.0,0,0.0,1
+2026-04-08 00:26:37,"0157 - Okawville, IL",Diesel,Okawville,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0157 - Okawville, IL",Unlead,Okawville,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0181 - Springfield, IL",Diesel,Springfield,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0181 - Springfield, IL",Unlead,Springfield,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0185 - McLean, IL",Diesel,McLean,IL,0.0,0,0.0,4
+2026-04-08 00:26:37,"0185 - McLean, IL",Unlead,McLean,IL,9.98070000000007,0,0.0,1
+2026-04-08 00:26:37,"0186 - Minonk, IL",Diesel,Minonk,IL,38.289999999999054,0,0.0,3
+2026-04-08 00:26:37,"0186 - Minonk, IL",Unlead,Minonk,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0187 - Chicago, IL",Diesel,Chicago,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0187 - Chicago, IL",Unlead,Chicago,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0203 - Rockford, IL",Diesel,Rockford,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0203 - Rockford, IL",Unlead,Rockford,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0205 - South Beloit, IL",Diesel,South Beloit,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0205 - South Beloit, IL",Unlead,South Beloit,IL,13.0,0,0.0,1
+2026-04-08 00:26:37,"0206 - Winnebago, IL",Diesel,Winnebago,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0206 - Winnebago, IL",Unlead,Winnebago,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0209 - Oakdale, WI",Diesel,Oakdale,WI,0.0,0,0.0,3
+2026-04-08 00:26:37,"0209 - Oakdale, WI",Unlead,Oakdale,WI,0.0,0,0.0,1
+2026-04-08 00:26:37,"0210 - Rochelle, IL",Diesel,Rochelle,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0210 - Rochelle, IL",Unlead,Rochelle,IL,20.0,0,0.0,1
+2026-04-08 00:26:37,"0211 - Loves Park, IL",Diesel,Loves Park,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0211 - Loves Park, IL",Unlead,Loves Park,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0225 - Princeton, IL",Diesel,Princeton,IL,9.0,0,0.0,4
+2026-04-08 00:26:37,"0225 - Princeton, IL",Unlead,Princeton,IL,0.0,0,0.0,2
+2026-04-08 00:26:37,"0226 - Greenwood, IN",Diesel,Greenwood,IN,278.0,0,0.0,2
+2026-04-08 00:26:37,"0226 - Greenwood, IN",Unlead,Greenwood,IN,4.0,0,0.0,2
+2026-04-08 00:26:37,"0235 - Hampshire, IL",Diesel,Hampshire,IL,0.0,0,0.0,2
+2026-04-08 00:26:37,"0235 - Hampshire, IL",Unlead,Hampshire,IL,2.0,0,0.0,2
+2026-04-08 00:26:37,"0236 - East Troy, WI",Diesel,East Troy,WI,0.0,0,0.0,2
+2026-04-08 00:26:37,"0236 - East Troy, WI",Unlead,East Troy,WI,10.0,0,0.0,1
+2026-04-08 00:26:37,"0240 - Lake Station, IN",Diesel,Lake Station,IN,0.0,0,0.0,5
+2026-04-08 00:26:37,"0240 - Lake Station, IN",Unlead,Lake Station,IN,5.0,0,0.0,2
+2026-04-08 00:26:37,"0242 - St Robert, MO",Diesel,St Robert,MO,0.0,0,0.0,4
+2026-04-08 00:26:37,"0263 - Ottawa, IL",Diesel,Ottawa,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0263 - Ottawa, IL",Unlead,Ottawa,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0265 - Dixon, IL",Diesel,Dixon,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0265 - Dixon, IL",Unlead,Dixon,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0266 - New Berlin, IL",Diesel,New Berlin,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0266 - New Berlin, IL",Unlead,New Berlin,IL,14.629000000000815,0,0.0,1
+2026-04-08 00:26:37,"0267 - Pharr, TX",Diesel,Pharr,TX,0.0,0,0.0,4
+2026-04-08 00:26:37,"0267 - Pharr, TX",Unlead,Pharr,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0268 - Grayville, IL",Diesel,Grayville,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0268 - Grayville, IL",Unlead,Grayville,IL,32.0,0,0.0,1
+2026-04-08 00:26:37,"0269 - Marshall, IL",Diesel,Marshall,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0269 - Marshall, IL",Unlead,Marshall,IL,0.0,0,0.0,1
+2026-04-08 00:26:37,"0270 - Moore, TX",Diesel,Moore,TX,79.0,0,0.0,3
+2026-04-08 00:26:37,"0270 - Moore, TX",Unlead,Moore,TX,17.0,0,0.0,1
+2026-04-08 00:26:37,"0271 - Odessa, TX",Diesel,Odessa,TX,238.94900000000052,0,0.0,3
+2026-04-08 00:26:37,"0271 - Odessa, TX",Unlead,Odessa,TX,3.628700000000208,0,0.0,1
+2026-04-08 00:26:37,"0272 - Encinal, TX",Diesel,Encinal,TX,11.130999999997584,0,0.0,3
+2026-04-08 00:26:37,"0272 - Encinal, TX",Unlead,Encinal,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0273 - Combes, TX",Diesel,Combes,TX,202.9339999999993,1,523.4875000000011,3
+2026-04-08 00:26:37,"0273 - Combes, TX",Unlead,Combes,TX,29.134000000000015,0,0.0,1
+2026-04-08 00:26:37,"0275 - Sonora, TX",Diesel,Sonora,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0275 - Sonora, TX",Unlead,Sonora,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0276 - Waco, TX",Diesel,Waco,TX,15.237999999999374,2,5087.535,3
+2026-04-08 00:26:37,"0276 - Waco, TX",Unlead,Waco,TX,14.377000000000407,0,0.0,1
+2026-04-08 00:26:37,"0277 - New Boston, TX",Diesel,New Boston,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0277 - New Boston, TX",Unlead,New Boston,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0278 - Brinkley, AR",Diesel,Brinkley,AR,0.0,0,0.0,3
+2026-04-08 00:26:37,"0278 - Brinkley, AR",Unlead,Brinkley,AR,0.0,0,0.0,1
+2026-04-08 00:26:37,"0279 - Marion, IL",Diesel,Marion,IL,110.47100000000137,0,0.0,3
+2026-04-08 00:26:37,"0279 - Marion, IL",Unlead,Marion,IL,9.340000000000146,0,0.0,1
+2026-04-08 00:26:37,"0280 - Monahans, TX",Diesel,Monahans,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0280 - Monahans, TX",Unlead,Monahans,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0281 - Cisco, TX",Diesel,Cisco,TX,19.832000000000335,0,0.0,3
+2026-04-08 00:26:37,"0281 - Cisco, TX",Unlead,Cisco,TX,14.800000000001091,0,0.0,1
+2026-04-08 00:26:37,"0282 - Gainesville, TX",Diesel,Gainesville,TX,0.0,2,2679.5390000000007,3
+2026-04-08 00:26:37,"0282 - Gainesville, TX",Unlead,Gainesville,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0283 - Sealy, TX",Diesel,Sealy,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0283 - Sealy, TX",Unlead,Sealy,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0284 - New Deal, TX",Diesel,New Deal,TX,304.92149999999856,0,0.0,3
+2026-04-08 00:26:37,"0284 - New Deal, TX",Unlead,New Deal,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0285 - Seguin, TX",Diesel,Seguin,TX,70.80400000000009,0,0.0,3
+2026-04-08 00:26:37,"0285 - Seguin, TX",Unlead,Seguin,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0286 - Amarillo, TX",Diesel,Amarillo,TX,82.30939999999919,0,0.0,3
+2026-04-08 00:26:37,"0286 - Amarillo, TX",Unlead,Amarillo,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0287 - Burbonnais, IL",Diesel,Burbonnais,IL,0.0,0,0.0,3
+2026-04-08 00:26:37,"0287 - Burbonnais, IL",Unlead,Burbonnais,IL,2.4549999999999272,0,0.0,1
+2026-04-08 00:26:37,"0289 - Teague, TX",Diesel,Teague,TX,125.23499999999694,0,0.0,3
+2026-04-08 00:26:37,"0289 - Teague, TX",Unlead,Teague,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0290 - Joplin, MO",Diesel,Joplin,MO,0.0,0,0.0,3
+2026-04-08 00:26:37,"0290 - Joplin, MO",Unlead,Joplin,MO,9.918299999999363,0,0.0,1
+2026-04-08 00:26:37,"0312 - Vidor, TX",Diesel,Vidor,TX,246.89700000000084,0,0.0,3
+2026-04-08 00:26:37,"0312 - Vidor, TX",Unlead,Vidor,TX,3.605999999999767,0,0.0,1
+2026-04-08 00:26:37,"0315 - Laredo, TX",Diesel,Laredo,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0315 - Laredo, TX",Unlead,Laredo,TX,0.0,0,0.0,1
+2026-04-08 00:26:37,"0319 - Milford, TX",Diesel,Milford,TX,0.0,0,0.0,3
+2026-04-08 00:26:37,"0319 - Milford, TX",Unlead,Milford,TX,26.124000000001615,0,0.0,1
+2026-04-08 00:26:37,"0323 - Canton, TX",Diesel,Canton,TX,133.96199999999953,0,0.0,3
+2026-04-08 00:26:37,"0323 - Canton, TX",Unlead,Canton,TX,8.805999999998676,0,0.0,1
