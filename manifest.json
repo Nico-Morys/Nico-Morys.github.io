@@ -2651,10 +2651,11 @@
     "historical/20260410_182930_master_price_data.csv",
     "historical/20260410_185257_master_price_data.csv",
     "historical/20260410_191607_master_price_data.csv",
-    "historical/20260410_194107_master_price_data.csv"
+    "historical/20260410_194107_master_price_data.csv",
+    "historical/20260410_200500_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260410_194107_master_price_data.csv",
-  "last_updated": "2026-04-10T19:41:07.112167+00:00",
-  "timestamp": "20260410_194107"
+  "latest_historical_csv": "historical/20260410_200500_master_price_data.csv",
+  "last_updated": "2026-04-10T20:05:00.217285+00:00",
+  "timestamp": "20260410_200500"
 }
