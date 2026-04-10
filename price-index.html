@@ -2274,6 +2274,29 @@
             padding: 1px 5px; letter-spacing: 0.3px;
         }
 
+        /* KPI Time Frame / Date Range Selector */
+        .kpi-timeframe-group {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .kpi-date-range-inputs {
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+        }
+        .kpi-date-input {
+            padding: 6px 9px; font-size: 0.82rem;
+            border: 1px solid #e2e8f0; border-radius: 6px;
+            background: #f8fafc; color: #1a1a2e;
+            cursor: pointer; transition: border-color 0.2s;
+            width: 130px;
+        }
+        .kpi-date-input:hover, .kpi-date-input:focus { border-color: #2563eb; outline: none; }
+        .kpi-date-sep { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }
+        .kpi-date-clear {
+            padding: 6px 12px; font-size: 0.82rem; font-weight: 600;
+            background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 6px;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .kpi-date-clear:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+
         /* Chart section */
         .kpi-chart-section {
             background: #fff; border-radius: 10px; padding: 20px 22px;
@@ -7176,6 +7199,9 @@ function setupModalStoreSearch() {
         let kpiRegionSel       = 'All Regions';
         let kpiStoreSel        = 'All Stores';
         let kpiMajorPlayerSel  = new Set(); // multi-select: Set of active player names
+        let kpiTimeframeDays   = 0;          // 0 = All; 'custom' = date range
+        let kpiCustomFrom      = null;       // ISO date string 'YYYY-MM-DD'
+        let kpiCustomTo        = null;
 
         // Major player brand → Station_Name prefix/pattern matchers
         const MAJOR_PLAYER_MATCHERS = {
@@ -7243,6 +7269,15 @@ function setupModalStoreSearch() {
                             <div class="kpi-dd-group">
                                 <label class="kpi-dd-label">Major Players</label>
                                 <div class="cd-wrap" id="kpiMajorPlayerDD"></div>
+                            </div>
+                            <div class="kpi-timeframe-group">
+                                <label class="kpi-dd-label">Date Range</label>
+                                <div class="kpi-date-range-inputs visible" id="kpiCustomDateRange">
+                                    <input type="date" class="kpi-date-input" id="kpiDateFrom" title="Start date" onchange="applyKpiCustomDateRange()">
+                                    <span class="kpi-date-sep">→</span>
+                                    <input type="date" class="kpi-date-input" id="kpiDateTo" title="End date" onchange="applyKpiCustomDateRange()">
+                                    <button class="kpi-date-clear" onclick="clearKpiDateRange()">Clear</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -7346,6 +7381,15 @@ function setupModalStoreSearch() {
             );
             kpiBuildMultiPlayerDropdown('kpiMajorPlayerDD');
 
+            // Restore custom date range inputs if values were previously set
+            const availDatesForRange = getKpiAvailDates();
+            if (availDatesForRange.length) {
+                const fromEl = document.getElementById('kpiDateFrom');
+                const toEl   = document.getElementById('kpiDateTo');
+                if (fromEl) fromEl.value = kpiCustomFrom || '';
+                if (toEl)   toEl.value   = kpiCustomTo   || '';
+            }
+
             if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; }
             if (kpiVolChart)  { kpiVolChart.destroy();  kpiVolChart  = null; }
             buildKpiChart();
@@ -7369,6 +7413,26 @@ function setupModalStoreSearch() {
             const dateSet = new Set();
             source.forEach(row => { if (row._ctDate) dateSet.add(row._ctDate); });
             return [...dateSet].sort();
+        }
+
+        function applyKpiCustomDateRange() {
+            const from = document.getElementById('kpiDateFrom');
+            const to   = document.getElementById('kpiDateTo');
+            kpiCustomFrom = from && from.value ? from.value : null;
+            kpiCustomTo   = to   && to.value   ? to.value   : null;
+            kpiTimeframeDays = 'custom';
+            buildKpiChart();
+        }
+
+        function clearKpiDateRange() {
+            kpiCustomFrom = null;
+            kpiCustomTo   = null;
+            kpiTimeframeDays = 0; // show all
+            const from = document.getElementById('kpiDateFrom');
+            const to   = document.getElementById('kpiDateTo');
+            if (from) from.value = '';
+            if (to)   to.value   = '';
+            buildKpiChart();
         }
 
         function buildKpiChart() {
@@ -7463,8 +7527,26 @@ function setupModalStoreSearch() {
 
             const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
 
-            const dates = Object.keys(byDate).sort();
-            if (!dates.length) { if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; } return; }
+            const allDates = Object.keys(byDate).sort();
+            if (!allDates.length) { if (kpiChartInst) { kpiChartInst.destroy(); kpiChartInst = null; } return; }
+
+            // Apply time frame filter
+            let dates = allDates;
+            if (kpiTimeframeDays === 'custom') {
+                if (kpiCustomFrom || kpiCustomTo) {
+                    dates = allDates.filter(d => {
+                        if (kpiCustomFrom && d < kpiCustomFrom) return false;
+                        if (kpiCustomTo   && d > kpiCustomTo)   return false;
+                        return true;
+                    });
+                }
+            } else if (kpiTimeframeDays > 0) {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - kpiTimeframeDays);
+                const cutoffStr = cutoff.toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+                dates = allDates.filter(d => d >= cutoffStr);
+                if (!dates.length) dates = allDates; // fallback to all if filter too narrow
+            }
 
             const labels   = dates.map(d => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
             const rrLine   = dates.map(d => { const v = avg(byDate[d].rr);   return v !== null ? +v.toFixed(3) : null; });
