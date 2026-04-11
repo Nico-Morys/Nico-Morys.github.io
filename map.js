@@ -1314,7 +1314,7 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
     let estimatedCost;
     let costSource;
     if (storeCosts[storeNum] !== undefined) {
-        estimatedCost = storeCosts[storeNum] + marginBuffer;
+        estimatedCost = storeCosts[storeNum];
         costSource = 'actual';
     } else {
         const ASSUMED_MARGIN_PER_GAL = 0.10;
@@ -1322,12 +1322,17 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
         costSource = 'estimated';
     }
 
+    // The minimum price we're allowed to recommend = cost + buffer
+    const minPrice = (storeCosts[storeNum] !== undefined)
+        ? storeCosts[storeNum] + marginBuffer
+        : estimatedCost;
+
     // Search over a wide range: -15¢ to +15¢ vs comp avg
     let bestProfit = -Infinity;
     let bestDiff = 0;
     for (let diff = -15; diff <= 15; diff += 0.5) {
         const price = liveCompAvg + diff / 100;
-        if (price <= estimatedCost) continue; // can't sell below cost
+        if (price <= minPrice) continue; // must clear cost + buffer floor
         const margin = price - estimatedCost;
         const gal = Math.max(0, base + effectiveSlope * diff);
         const profit = margin * gal;
@@ -1337,7 +1342,9 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
         }
     }
 
-    const recPrice = Math.round((liveCompAvg + bestDiff / 100) * 100) / 100;
+    // Final price: clamp to minimum of cost + buffer
+    const rawPrice = liveCompAvg + bestDiff / 100;
+    const recPrice = Math.round(Math.max(rawPrice, minPrice) * 100) / 100;
     const predictedGal = Math.round(Math.max(0, base + effectiveSlope * bestDiff));
 
     return {
