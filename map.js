@@ -48,7 +48,9 @@ let currentDataFile = '';
 let currentSelectedStationForNotes = null; // Track currently selected station for notes
 let currentFetchController = null; // AbortController to cancel stale scrub fetches
 let hasInitiallyLoaded = false; // True after the very first data load completes
-let stationRatings = {}; // { "144::Casey's General Store #2867": "above_average", ... }
+let modelData = {}; // store_num -> model store object from rr_all_stores_output.json
+let storeCosts = {}; // store_num -> cost per gallon (from user paste)
+let marginBuffer = 0.05; // additional margin buffer on top of cost
 
 // ============================================
 // NOTES MANAGEMENT FUNCTIONS
@@ -218,49 +220,6 @@ function getBrandLogo(brand) {
     return `<div class="brand-initials" style="background-color: ${color}; color: white; font-weight: bold; font-size: 10px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 50%;">${initials}</div>`;
 }
 
-
-// ============================================
-// RATINGS HELPERS
-// ============================================
-
-async function loadRatings() {
-    try {
-        const response = await fetch('ratings.json?v=' + Date.now());
-        if (response.ok) {
-            stationRatings = await response.json();
-            console.log(`Ratings loaded: ${Object.keys(stationRatings).length} entries`);
-        }
-    } catch (e) {
-        console.warn('Could not load ratings.json — ratings will be hidden.', e);
-    }
-}
-
-// Returns a colored pill HTML string, or '' if no rating found.
-// For RR station header: pass (rrStoreId, null)
-// For competitor card:   pass (rrStoreId, competitorName)
-function getRatingBadge(rrStoreId, competitorName) {
-    const ratingConfig = {
-        poor:          { bg: '#1565c0', text: 'Poor' },
-        fair:          { bg: '#1565c0', text: 'Fair' },
-        average:       { bg: '#1565c0', text: 'Average' },
-        above_average: { bg: '#1565c0', text: 'Above Average' },
-        best_in_class: { bg: '#1565c0', text: 'Best in Class' }
-    };
-
-    // RR store self-rating: key is "rr_NNN"
-    // Competitor rating: key is "NNN::CompetitorName"
-    const key = competitorName
-        ? `${rrStoreId}::${competitorName}`
-        : `rr_${rrStoreId}`;
-
-    const rating = stationRatings[key];
-    if (!rating || !ratingConfig[rating]) return '';
-
-    const { bg, text } = ratingConfig[rating];
-    return `<span class="station-rating-badge" style="background:${bg};">${text}</span>`;
-}
-
-
 // ============================================
 // DATE NAVIGATION FUNCTIONS
 // ============================================
@@ -380,6 +339,17 @@ function updateScrubberLabels() {
 // Load manifest and get available dates
 async function loadManifest() {
     try {
+        // Load model data for recommended pricing (non-blocking — map works without it)
+        fetch('rr_all_stores_output.json?v=' + Date.now())
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (data && data.stores) {
+                    data.stores.forEach(s => { modelData[s.store_num] = s; });
+                    console.log(`Loaded model data for ${Object.keys(modelData).length} stores`);
+                }
+            })
+            .catch(e => console.warn('Model data not available (recommended pricing disabled):', e.message));
+
         const response = await fetch('pricedata/manifest.json?v=' + Date.now());
         const manifest = await response.json();
 
@@ -564,7 +534,6 @@ function toggleStationChecked(stationId, marker) {
     }
     
     updateProgressCounter();
-    saveCheckedStations();
 }
 
 // Check all stations
@@ -580,7 +549,6 @@ function checkAllStations() {
     });
     
     updateProgressCounter();
-    saveCheckedStations();
 }
 
 // Uncheck all stations
@@ -594,24 +562,6 @@ function uncheckAllStations() {
     });
     
     updateProgressCounter();
-    saveCheckedStations();
-}
-
-// Persist checked stations to localStorage
-function saveCheckedStations() {
-    localStorage.setItem('rr-checked-stations', JSON.stringify(Array.from(checkedStations)));
-}
-
-// Load checked stations from localStorage
-function loadCheckedStations() {
-    try {
-        const saved = localStorage.getItem('rr-checked-stations');
-        if (saved) {
-            JSON.parse(saved).forEach(id => checkedStations.add(id));
-        }
-    } catch (e) {
-        console.warn('Could not restore checked stations:', e);
-    }
 }
 
 
@@ -1308,6 +1258,126 @@ function deselectStation(stationId) {
     }
 }
 
+// Compute a live recommended price for a store using model data + current competitor prices
+function computeRecommendedPrice(stationId, currentCompetitors) {
+    const storeNum = getStoreNumber(
+        (stations.find(s => s.id.toString() === stationId.toString()) || {}).name || ''
+    );
+    const model = modelData[storeNum];
+    if (!model || !model.has_model) return null;
+
+    // Use enhanced model if available, fall back to dow_model
+    const em = model.enhanced_model || model.dow_model;
+    const dm = model.dow_model;
+    if (!em || !dm) return null;
+
+    // Compute live comp_avg from the current map data (not stale model snapshot)
+    const validComps = (currentCompetitors || []).filter(c => c.price && c.price > 0);
+    if (validComps.length === 0) return null;
+    const liveCompAvg = validComps.reduce((sum, c) => sum + c.price, 0) / validComps.length;
+
+    // Today's DOW
+    const DOW_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+    const now = new Date();
+    const todayDow = DOW_NAMES[now.getDay() === 0 ? 6 : now.getDay() - 1]; // JS: 0=Sun
+
+    // Get baseline gallons for today's DOW
+    const base = dm.dow_baselines[todayDow] || 0;
+
+    // Get effective slope (use weekend slope if available and it's a weekend)
+    const isWeekend = (todayDow === 'Saturday' || todayDow === 'Sunday');
+    let effectiveSlope;
+    if (em.weekend_slope !== undefined && isWeekend) {
+        effectiveSlope = em.weekend_slope;
+    } else if (em.weekday_slope !== undefined && !isWeekend) {
+        effectiveSlope = em.weekday_slope;
+    } else {
+        effectiveSlope = em.price_slope || dm.price_slope;
+    }
+
+    if (effectiveSlope >= 0) {
+        // Model says higher prices = more gallons (anomaly) — just recommend match
+        return {
+            price: Math.round(liveCompAvg * 100) / 100,
+            diffCents: 0,
+            predictedGallons: Math.round(base),
+            compAvg: liveCompAvg,
+            dow: todayDow,
+            confidence: model.confidence,
+            costSource: 'n/a',
+        };
+    }
+
+    // ── Gross-profit optimization ──
+    // Use actual cost if available from user paste, otherwise estimate
+    const currentRR = (stations.find(s => s.id.toString() === stationId.toString()) || {}).price || liveCompAvg;
+    let estimatedCost;
+    let costSource;
+    if (storeCosts[storeNum] !== undefined) {
+        estimatedCost = storeCosts[storeNum] + marginBuffer;
+        costSource = 'actual';
+    } else {
+        const ASSUMED_MARGIN_PER_GAL = 0.10;
+        estimatedCost = currentRR - ASSUMED_MARGIN_PER_GAL;
+        costSource = 'estimated';
+    }
+
+    // Search over a wide range: -15¢ to +15¢ vs comp avg
+    let bestProfit = -Infinity;
+    let bestDiff = 0;
+    for (let diff = -15; diff <= 15; diff += 0.5) {
+        const price = liveCompAvg + diff / 100;
+        if (price <= estimatedCost) continue; // can't sell below cost
+        const margin = price - estimatedCost;
+        const gal = Math.max(0, base + effectiveSlope * diff);
+        const profit = margin * gal;
+        if (profit > bestProfit) {
+            bestProfit = profit;
+            bestDiff = diff;
+        }
+    }
+
+    const recPrice = Math.round((liveCompAvg + bestDiff / 100) * 100) / 100;
+    const predictedGal = Math.round(Math.max(0, base + effectiveSlope * bestDiff));
+
+    return {
+        price: recPrice,
+        diffCents: Math.round(bestDiff * 10) / 10,
+        predictedGallons: predictedGal,
+        compAvg: liveCompAvg,
+        dow: todayDow,
+        confidence: model.confidence,
+        costSource: costSource,
+    };
+}
+
+// Format recommended price HTML for the panel
+function formatRecommendedPriceHTML(rec) {
+    if (!rec) return '';
+    const confColors = { high: '#4ade80', medium: '#fbbf24', low: '#f87171' };
+    const confColor = confColors[rec.confidence] || '#888';
+    const diffLabel = rec.diffCents < 0 ? `${rec.diffCents}¢ vs comp avg` :
+                      rec.diffCents > 0 ? `+${rec.diffCents}¢ vs comp avg` : 'match comp avg';
+    const costLabel = rec.costSource === 'actual'
+        ? `<span style="color: #4ade80; margin-left: 6px;">✓ actual cost</span>`
+        : `<span style="color: #666; margin-left: 6px;">est. cost</span>`;
+    return `
+        <div style="margin-top: 8px; padding: 8px 12px; background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 6px;">
+            <div style="font-size: 11px; color: #aaa; margin-bottom: 2px;">
+                Recommended Price (${rec.dow})
+                <span style="color: ${confColor}; margin-left: 6px; font-weight: 600;">${rec.confidence}</span>
+                ${costLabel}
+            </div>
+            <div style="font-size: 20px; font-weight: bold; color: #4ade80;">
+                $${rec.price.toFixed(2)}
+            </div>
+            <div style="font-size: 11px; color: #aaa;">
+                ${diffLabel} · ~${rec.predictedGallons.toLocaleString()} gal predicted
+            </div>
+        </div>
+    `;
+}
+
 // Update panel to show info about multiple selections
 function updatePanelForMultipleSelections() {
     if (selectedStations.size === 0) {
@@ -1326,8 +1396,8 @@ function updatePanelForMultipleSelections() {
         
         document.getElementById('station-name').textContent = station.name;
         const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'Price N/A';
-        const rrRatingBadge = getRatingBadge(station.id, null);
-        document.getElementById('station-address').innerHTML = `${station.address}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>${rrRatingBadge ? '<br>' + rrRatingBadge : ''}`;
+        const rec = computeRecommendedPrice(stationId, stationCompetitors);
+        document.getElementById('station-address').innerHTML = `${station.address}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>${formatRecommendedPriceHTML(rec)}`;
         
         competitorsList.innerHTML = '';
         
@@ -1356,15 +1426,11 @@ function updatePanelForMultipleSelections() {
                 const priceDiff = competitor.price - stationPrice;
                 const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                 
-                const ratingBadge = getRatingBadge(station.id, competitor.name);
                 competitorCard.innerHTML = `
                     <div class="competitor-name">${competitor.name}</div>
                     <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                     <div class="competitor-difference">${diffText}</div>
-                    <div class="competitor-distance-row">
-                        <span>${competitor.distance.toFixed(1)} mi away</span>
-                        ${ratingBadge}
-                    </div>
+                    <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
                 `;
                 
                 competitorsList.appendChild(competitorCard);
@@ -1422,6 +1488,13 @@ function updatePanelForMultipleSelections() {
             };
             
             const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'N/A';
+            const multiRec = computeRecommendedPrice(stationId, stationCompetitors);
+            const multiRecHTML = multiRec ? `
+                <div style="font-size: 12px; margin-bottom: 6px; color: #4ade80; font-weight: bold;">
+                    Rec: $${multiRec.price.toFixed(2)}
+                    <span style="font-weight: 400; color: #86efac; font-size: 10px; margin-left: 4px;">${multiRec.diffCents < 0 ? multiRec.diffCents : '+' + multiRec.diffCents}¢ vs avg · ~${multiRec.predictedGallons.toLocaleString()} gal</span>
+                </div>
+            ` : '';
             stationHeader.innerHTML = `
                 <div style="font-weight: bold; font-size: 15px; margin-bottom: 6px; color: white; line-height: 1.3;">
                     ${station.name}
@@ -1429,6 +1502,7 @@ function updatePanelForMultipleSelections() {
                 <div style="font-size: 13px; margin-bottom: 8px; color: #ffeb3b; font-weight: bold;">
                     Your Price: ${priceText}
                 </div>
+                ${multiRecHTML}
                 <div style="font-size: 11px; opacity: 0.85; color: #bfdbfe;">
                     ${stationCompetitors.length} competitor${stationCompetitors.length !== 1 ? 's' : ''}  Click to move to top
                 </div>
@@ -1460,9 +1534,8 @@ function updatePanelForMultipleSelections() {
                     const priceDiff = competitor.price - stationPrice;
                     const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                     
-                    const ratingBadge = getRatingBadge(station.id, competitor.name);
                     competitorCard.innerHTML = `
-                        <div class="competitor-name">${competitor.name}${ratingBadge}</div>
+                        <div class="competitor-name">${competitor.name}</div>
                         <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                         <div class="competitor-difference">${diffText}</div>
                         <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
@@ -1574,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', function() {
         minZoom: 4, // Prevent zooming out too far
         maxZoom: 18  // Optional: set max zoom for performance
     }).setView([41.0, -87.0], 6);
-    window.map = map; // expose for AADT overlay
+    
     
     // Map click handler - only close panel if clicking on the map itself, not on markers
     map.on('click', function(e) {
@@ -1747,8 +1820,124 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Load ratings, checked stations, and manifest in parallel
-    loadCheckedStations();
-    loadRatings();
+    // ============================================
+    // COST TABLE EVENT LISTENERS
+    // ============================================
+
+    // Sorted store numbers — must match the order users paste from Excel
+    const STORE_ORDER = [
+        '118','132','136','139','140','141','144','145','157','181',
+        '185','186','187','203','205','206','209','210','211','225',
+        '226','235','236','240','242','263','265','266','268','269',
+        '270','271','272','273','275','276','277','278','279','280',
+        '281','282','283','284','285','286','287','289','290','312',
+        '315','319','323'
+    ];
+
+    const applyCostsBtn = document.getElementById('apply-costs-btn');
+    const clearCostsBtn = document.getElementById('clear-costs-btn');
+    const marginBufferSel = document.getElementById('margin-buffer');
+    const costPasteArea = document.getElementById('cost-paste-area');
+    const costTableBody = document.getElementById('cost-table-body');
+    const costStatus = document.getElementById('cost-status');
+
+    function applyCosts() {
+        const raw = costPasteArea.value.trim();
+        if (!raw) {
+            costStatus.textContent = 'Paste cost data first.';
+            costStatus.style.color = '#f87171';
+            return;
+        }
+
+        // Parse pasted values — one number per line, may have $ signs or commas
+        const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+        const values = lines.map(l => parseFloat(l.replace(/[$,]/g, '')));
+
+        if (values.length > STORE_ORDER.length) {
+            costStatus.textContent = `Too many values (${values.length}). Expected up to ${STORE_ORDER.length}.`;
+            costStatus.style.color = '#f87171';
+            return;
+        }
+
+        // Read margin buffer
+        marginBuffer = parseFloat(marginBufferSel.value) || 0;
+
+        // Map values to store numbers
+        storeCosts = {};
+        let validCount = 0;
+        values.forEach((val, i) => {
+            if (!isNaN(val) && val > 0 && i < STORE_ORDER.length) {
+                storeCosts[STORE_ORDER[i]] = val;
+                validCount++;
+            }
+        });
+
+        // Build table
+        costTableBody.innerHTML = '';
+        STORE_ORDER.forEach((storeNum, i) => {
+            const cost = storeCosts[storeNum];
+            if (cost === undefined) return; // skip stores without cost data
+
+            // Find current price from map data
+            const station = stations.find(s => getStoreNumber(s.name) === storeNum);
+            const currentPrice = station ? station.price : null;
+            const margin = currentPrice ? (currentPrice - cost).toFixed(2) : '—';
+            const marginColor = currentPrice && (currentPrice - cost) > 0 ? '#4ade80' : '#f87171';
+
+            // Compute recommended price for this store
+            const stationId = station ? station.id.toString() : '';
+            const stationComps = station ? (competitors[stationId] || []) : [];
+            const rec = station ? computeRecommendedPrice(stationId, stationComps) : null;
+            const recText = rec ? `$${rec.price.toFixed(2)}` : '—';
+            const recColor = rec ? '#4ade80' : '#666';
+
+            const tr = document.createElement('div');
+            tr.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid #2a2a2a;';
+            tr.innerHTML = `
+                <div style="padding: 4px 8px; color: #ddd; font-size: 11px;">RR ${storeNum}</div>
+                <div style="padding: 4px 8px; text-align: right; color: #ffeb3b; font-size: 11px;">$${currentPrice ? currentPrice.toFixed(2) : '—'}</div>
+                <div style="padding: 4px 8px; text-align: right; color: #4ade80; font-family: monospace; font-size: 11px;">$${cost.toFixed(2)}</div>
+                <div style="padding: 4px 8px; text-align: right; color: ${marginColor}; font-family: monospace; font-size: 11px;">$${margin}</div>
+                <div style="padding: 4px 8px; text-align: right; color: ${recColor}; font-weight: 600; font-size: 11px;">${recText}</div>
+            `;
+            costTableBody.appendChild(tr);
+        });
+
+        costStatus.textContent = `Applied costs for ${validCount} stores with $${marginBuffer.toFixed(2)} margin buffer. Click any store on the map to see updated recommendations.`;
+        costStatus.style.color = '#4ade80';
+
+        // If a station is currently selected, refresh the panel
+        if (selectedStations.size > 0) {
+            updatePanelForMultipleSelections();
+        }
+    }
+
+    function clearCosts() {
+        storeCosts = {};
+        marginBuffer = parseFloat(marginBufferSel.value) || 0;
+        costPasteArea.value = '';
+        costTableBody.innerHTML = '<div style="padding: 20px 12px; text-align: center; color: #555; font-size: 11px;">Paste cost data and click "Apply Costs" to populate</div>';
+        costStatus.textContent = 'Costs cleared. Using estimated margins.';
+        costStatus.style.color = '#888';
+
+        // Refresh panel if open
+        if (selectedStations.size > 0) {
+            updatePanelForMultipleSelections();
+        }
+    }
+
+    if (applyCostsBtn) applyCostsBtn.addEventListener('click', applyCosts);
+    if (clearCostsBtn) clearCostsBtn.addEventListener('click', clearCosts);
+    if (marginBufferSel) {
+        marginBufferSel.addEventListener('change', function() {
+            marginBuffer = parseFloat(this.value) || 0;
+            // Re-apply if we have costs
+            if (Object.keys(storeCosts).length > 0) {
+                applyCosts();
+            }
+        });
+    }
+
+    // Load manifest and initial data
     loadManifest();
 });

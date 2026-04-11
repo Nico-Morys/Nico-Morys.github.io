@@ -43,6 +43,7 @@
 !map.js
 !map-styles.css
 !ratings.json
+!rr_all_stores_output.json
 
 
 # Allow .gitignore itself

@@ -259,6 +259,83 @@
         </div>
     </main>
 
+    <!-- Cost Input Section -->
+    <section id="cost-section" style="
+        background: #1a1a2e;
+        border-top: 2px solid #1e3a8a;
+        padding: 16px 32px;
+        color: #e0e0e0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    ">
+        <div style="max-width: 820px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                <h2 style="font-size: 14px; font-weight: 700; color: #fff; margin: 0;">Store Cost Basis</h2>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <label for="margin-buffer" style="font-size: 11px; color: #aaa; white-space: nowrap;">Buffer:</label>
+                        <select id="margin-buffer" style="
+                            background: #2c2c2c; color: #fff; border: 1px solid #444;
+                            border-radius: 4px; padding: 4px 8px; font-size: 11px; cursor: pointer;
+                        ">
+                            <option value="0">$0.00</option>
+                            <option value="0.02">$0.02</option>
+                            <option value="0.03">$0.03</option>
+                            <option value="0.05" selected>$0.05</option>
+                            <option value="0.07">$0.07</option>
+                            <option value="0.10">$0.10</option>
+                            <option value="0.15">$0.15</option>
+                        </select>
+                    </div>
+                    <button id="apply-costs-btn" style="
+                        background: #1e3a8a; color: #fff; border: none; border-radius: 4px;
+                        padding: 5px 14px; font-size: 11px; font-weight: 600; cursor: pointer;
+                    " onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#1e3a8a'">
+                        Apply
+                    </button>
+                    <button id="clear-costs-btn" style="
+                        background: transparent; color: #f87171; border: 1px solid #f87171; border-radius: 4px;
+                        padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer;
+                    " onmouseover="this.style.background='#f8717122'" onmouseout="this.style.background='transparent'">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: stretch; height: 160px;">
+                <!-- Paste area -->
+                <div style="flex: 0 0 140px; display: flex; flex-direction: column;">
+                    <label for="cost-paste-area" style="font-size: 10px; color: #666; display: block; margin-bottom: 3px; flex-shrink: 0;">
+                        Paste costs (118 → 323):
+                    </label>
+                    <textarea id="cost-paste-area" placeholder="4.55&#10;4.60&#10;4.48&#10;..." style="
+                        flex: 1; width: 100%; box-sizing: border-box;
+                        background: #0d0d1a; color: #4ade80; border: 1px solid #333;
+                        border-radius: 4px; padding: 6px 8px; font-family: 'Courier New', monospace;
+                        font-size: 12px; resize: none; line-height: 1.5;
+                    "></textarea>
+                </div>
+
+                <!-- Cost table -->
+                <div style="flex: 1; border: 1px solid #333; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
+                    <!-- Fixed header -->
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; background: #2c2c2c; border-bottom: 2px solid #444; flex-shrink: 0;">
+                        <div style="padding: 6px 8px; font-size: 11px; color: #aaa; font-weight: 600;">Store</div>
+                        <div style="padding: 6px 8px; font-size: 11px; color: #aaa; font-weight: 600; text-align: right;">Price</div>
+                        <div style="padding: 6px 8px; font-size: 11px; color: #aaa; font-weight: 600; text-align: right;">Cost</div>
+                        <div style="padding: 6px 8px; font-size: 11px; color: #aaa; font-weight: 600; text-align: right;">Margin</div>
+                        <div style="padding: 6px 8px; font-size: 11px; color: #aaa; font-weight: 600; text-align: right;">Rec.</div>
+                    </div>
+                    <!-- Scrollable body -->
+                    <div id="cost-table-body" style="overflow-y: auto; flex: 1;">
+                        <div style="padding: 20px 12px; text-align: center; color: #555; font-size: 11px;">Paste costs &amp; click Apply</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cost-status" style="font-size: 10px; color: #555; margin-top: 4px;"></div>
+        </div>
+    </section>
+
     <!-- Leaflet.js -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="map.js"></script>
