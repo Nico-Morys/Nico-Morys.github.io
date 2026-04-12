@@ -5015,70 +5015,94 @@
             const dailyGallons = {};
             // hourlyBreakdown[date][hour] = gallons (hour 0-23)
             const hourlyBreakdown = {};
+            // deliverysByDate[date] = [{fuelType, ts, volume}, ...] — deduped within 1 hr per fuel type
+            const deliverysByDate = {};
 
             console.log(`[Volume] Loading data for store ${storeNumPad}, fuel: ${volumeFuelType}`);
+
+            // Parse all relevant rows for this store from a CSV text block.
+            // Returns rows for ALL fuel types so we can collect deliveries regardless of the active filter.
+            function parseStoreRows(rawText, fn) {
+                const lines = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+                if (lines.length < 2) return [];
+                const hdr        = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+                const tsIdx      = hdr.indexOf('timestamp');
+                const locIdx     = hdr.indexOf('location');
+                const fuelIdx    = hdr.indexOf('fuel_type');
+                const gallonsIdx = hdr.indexOf('total_gallons_sold');
+                const delCntIdx  = hdr.indexOf('delivery_count');
+                const delVolIdx  = hdr.indexOf('delivery_volume');
+                if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) return [];
+                const rows = [];
+                for (let i = 1; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    const cols = parseCSVLine(lines[i]);
+                    const loc  = cols[locIdx]?.trim() || '';
+                    if (!loc.startsWith(storeNumPad)) continue;
+                    const ft      = cols[fuelIdx]?.trim() || '';
+                    const gallons = parseFloat(cols[gallonsIdx]) || 0;
+                    const ts      = tsIdx !== -1 ? (cols[tsIdx]?.trim() || `${fn}-${i}`) : `${fn}-${i}`;
+                    const delCnt  = delCntIdx !== -1 ? (parseInt(cols[delCntIdx]) || 0) : 0;
+                    const delVol  = delVolIdx !== -1 ? (parseFloat(cols[delVolIdx]) || 0) : 0;
+                    rows.push({ ft, gallons, ts, delCnt, delVol });
+                }
+                return rows;
+            }
+
+            // Collapse delivery events within 60 min of each other per fuel type — keep only first.
+            function deduplicateDeliveries(raw) {
+                const byFuel = {};
+                for (const d of raw) {
+                    if (!byFuel[d.fuelType]) byFuel[d.fuelType] = [];
+                    byFuel[d.fuelType].push(d);
+                }
+                const result = [];
+                for (const events of Object.values(byFuel)) {
+                    events.sort((a, b) => a.ts.localeCompare(b.ts));
+                    let last = null;
+                    for (const ev of events) {
+                        if (!last) { last = ev; result.push(ev); continue; }
+                        const tA = new Date(last.ts.replace(' ', 'T'));
+                        const tB = new Date(ev.ts.replace(' ', 'T'));
+                        if (!isNaN(tA) && !isNaN(tB) && (tB - tA) < 3600000) continue; // within 1 hr — skip
+                        last = ev;
+                        result.push(ev);
+                    }
+                }
+                return result;
+            }
 
             // For past days: only need the last file (final tally).
             // For today: load ALL files to get the intra-day hourly breakdown.
             const today = new Date().toISOString().slice(0, 10);
 
             const datePromises = Object.entries(byDate).map(async ([date, fns]) => {
-                // Sort filenames so last = most recent
                 fns.sort();
                 hourlyBreakdown[date] = {};
+                const rawDeliveries = [];
 
                 if (date === today) {
-                    // Load ALL files for today to build hourly breakdown
-                    // Each file is a snapshot — rows represent gallons sold in that interval
-                    // We need to avoid double-counting: track which (timestamp, interval) rows we've seen
-                    // Strategy: load each file, extract rows for this store, bucket by hour
-                    // Since each file is cumulative within the day, use the LAST file's data
-                    // BUT each row's timestamp tells us when it was sold — sum by hour from the merged set
-                    // Actually each file contains ONLY the intervals since last snapshot, so summing across all files = summing all intervals
-
-                    const allIntervals = []; // {hour, gallons}
+                    const allIntervals = [];
                     const seenTimestamps = new Set();
 
                     for (const fn of fns) {
                         try {
                             const resp = await fetch(VOLUME_DATA_PATH + fn);
                             if (!resp.ok) continue;
-                            const raw = await resp.text();
-                            const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-                            const lines = text.trim().split('\n');
-                            if (lines.length < 2) continue;
-
-                            const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-                            const tsIdx      = headerCols.indexOf('timestamp');
-                            const locIdx     = headerCols.indexOf('location');
-                            const fuelIdx    = headerCols.indexOf('fuel_type');
-                            const gallonsIdx = headerCols.indexOf('total_gallons_sold');
-                            if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) continue;
-
-                            for (let i = 1; i < lines.length; i++) {
-                                if (!lines[i].trim()) continue;
-                                const cols = parseCSVLine(lines[i]);
-                                if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
-                                const loc     = cols[locIdx].trim();
-                                const ft      = cols[fuelIdx].trim();
-                                const gallons = parseFloat(cols[gallonsIdx]) || 0;
-                                if (!loc.startsWith(storeNumPad) || ft !== volumeFuelType) continue;
-                                if (gallons === 0) continue;
-
-                                // Use timestamp as dedup key to avoid counting the same interval twice
-                                const ts = tsIdx !== -1 ? cols[tsIdx].trim() : `${fn}-${i}`;
+                            const rows = parseStoreRows(await resp.text(), fn);
+                            for (const { ft, gallons, ts, delCnt, delVol } of rows) {
+                                // Collect deliveries for BOTH fuel types regardless of active filter
+                                if (delCnt > 0) rawDeliveries.push({ fuelType: ft, ts, volume: delVol });
+                                // Hourly gallons only for the selected fuel type
+                                if (ft !== volumeFuelType || gallons === 0) continue;
                                 if (seenTimestamps.has(ts)) continue;
                                 seenTimestamps.add(ts);
-
-                                // Extract hour from timestamp "YYYY-MM-DD HH:MM:SS"
-                                const hourMatch = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
-                                const hour = hourMatch ? parseInt(hourMatch[1], 10) : 0;
-                                allIntervals.push({ hour, gallons });
+                                const hm = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
+                                allIntervals.push({ hour: hm ? parseInt(hm[1], 10) : 0, gallons });
                             }
                         } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
                     }
 
-                    // Build hourly buckets and daily total
                     let dayTotal = 0;
                     for (const { hour, gallons } of allIntervals) {
                         hourlyBreakdown[date][hour] = (hourlyBreakdown[date][hour] || 0) + gallons;
@@ -5092,42 +5116,27 @@
                     try {
                         const resp = await fetch(VOLUME_DATA_PATH + fn);
                         if (!resp.ok) return;
-                        const raw = await resp.text();
-                        const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-                        const lines = text.trim().split('\n');
-                        if (lines.length < 2) return;
-
-                        const headerCols = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-                        const tsIdx      = headerCols.indexOf('timestamp');
-                        const locIdx     = headerCols.indexOf('location');
-                        const fuelIdx    = headerCols.indexOf('fuel_type');
-                        const gallonsIdx = headerCols.indexOf('total_gallons_sold');
-                        if (locIdx === -1 || fuelIdx === -1 || gallonsIdx === -1) return;
-
+                        const rows = parseStoreRows(await resp.text(), fn);
                         let dayTotal = 0;
-                        for (let i = 1; i < lines.length; i++) {
-                            if (!lines[i].trim()) continue;
-                            const cols = parseCSVLine(lines[i]);
-                            if (cols.length <= Math.max(locIdx, fuelIdx, gallonsIdx)) continue;
-                            const loc     = cols[locIdx].trim();
-                            const ft      = cols[fuelIdx].trim();
-                            const gallons = parseFloat(cols[gallonsIdx]) || 0;
-                            if (!loc.startsWith(storeNumPad) || ft !== volumeFuelType) continue;
-                            if (gallons === 0) continue;
-
-                            const ts = tsIdx !== -1 ? cols[tsIdx].trim() : '';
-                            const hourMatch = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
-                            const hour = hourMatch ? parseInt(hourMatch[1], 10) : 0;
+                        for (const { ft, gallons, ts, delCnt, delVol } of rows) {
+                            if (delCnt > 0) rawDeliveries.push({ fuelType: ft, ts, volume: delVol });
+                            if (ft !== volumeFuelType || gallons === 0) continue;
+                            const hm = ts.match(/\d{4}-\d{2}-\d{2} (\d{2}):/);
+                            const hour = hm ? parseInt(hm[1], 10) : 0;
                             hourlyBreakdown[date][hour] = (hourlyBreakdown[date][hour] || 0) + gallons;
                             dayTotal += gallons;
                         }
                         if (dayTotal > 0) dailyGallons[date] = dayTotal;
                     } catch(e) { console.error(`[Volume] Error parsing ${fn}:`, e); }
                 }
+
+                if (rawDeliveries.length > 0) {
+                    deliverysByDate[date] = deduplicateDeliveries(rawDeliveries);
+                }
             });
 
             await Promise.all(datePromises);
-            return { dailyGallons, hourlyBreakdown };
+            return { dailyGallons, hourlyBreakdown, deliverysByDate };
         }
 
         // Custom volume tooltip element
@@ -5156,7 +5165,7 @@
             return volumeTooltipEl;
         }
 
-        function renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, friendlyLabel, fuelLabel, barColor) {
+        function renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, friendlyLabel, fuelLabel, barColor, deliveries) {
             const el = getVolumeTooltipEl();
             if (tooltip.opacity === 0 || !tooltip.dataPoints || tooltip.dataPoints.length === 0) {
                 el.style.display = 'none';
@@ -5188,6 +5197,43 @@
                 hourRows = '<div style="color:#94a3b8;font-size:11px;padding:4px 0;">No hourly breakdown available</div>';
             }
 
+            // Build delivery section (shown for both fuel types regardless of active filter)
+            let deliverySection = '';
+            if (deliveries && deliveries.length > 0) {
+                const FUEL_COLOR = { Unlead: '#60a5fa', Diesel: '#f87171' };
+                const FUEL_LABEL = { Unlead: 'Unleaded', Diesel: 'Diesel' };
+                const rows = deliveries.map(d => {
+                    const label = FUEL_LABEL[d.fuelType] || d.fuelType;
+                    const dot   = FUEL_COLOR[d.fuelType] || '#94a3b8';
+                    let timeStr = '';
+                    if (d.ts) {
+                        // Parse "YYYY-MM-DD HH:MM:SS" as UTC, display in America/Chicago
+                        try {
+                            const dt = new Date(d.ts.replace(' ', 'T') + 'Z');
+                            timeStr = dt.toLocaleTimeString('en-US', {
+                                timeZone: 'America/Chicago',
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                hour12: true
+                            });
+                        } catch(e) {
+                            timeStr = d.ts.replace(/^\d{4}-\d{2}-\d{2} /, '').replace(/:\d{2}$/, '');
+                        }
+                    }
+                    const volStr = d.volume > 0 ? ` · ${Math.round(d.volume).toLocaleString()} gal` : '';
+                    return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dot};flex-shrink:0;"></span>
+                        <span style="color:#e2e8f0;font-size:11px;font-weight:600;">${label}</span>
+                        <span style="color:#94a3b8;font-size:11px;">${timeStr}${volStr}</span>
+                    </div>`;
+                }).join('');
+                deliverySection = `
+                    <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.12);">
+                        <div style="font-size:11px;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;">Deliveries</div>
+                        ${rows}
+                    </div>`;
+            }
+
             el.innerHTML = `
                 <div style="font-weight:700;font-size:13px;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:5px;">
                     ${friendlyLabel} — ${fuelLabel}
@@ -5197,6 +5243,7 @@
                 </div>
                 <div style="font-size:11px;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;">Hourly Breakdown</div>
                 ${hourRows}
+                ${deliverySection}
             `;
 
             // Position tooltip: above bar, clamped to viewport
@@ -5231,8 +5278,9 @@
             }
 
             const volumeResult = await loadVolumeData(storeNumber);
-            const dailyGallons   = volumeResult ? volumeResult.dailyGallons   : null;
+            const dailyGallons    = volumeResult ? volumeResult.dailyGallons    : null;
             const hourlyBreakdown = volumeResult ? volumeResult.hourlyBreakdown : null;
+            const deliverysByDate = volumeResult ? (volumeResult.deliverysByDate || {}) : {};
 
             // Build sorted date labels for last N days
             const labels = [];
@@ -5329,10 +5377,11 @@
                                     ? isoLabels[tooltip.dataPoints[0].dataIndex]
                                     : null;
                                 const hourlyData = (dateISO && hourlyBreakdown) ? hourlyBreakdown[dateISO] : null;
+                                const deliveries = (dateISO && deliverysByDate) ? (deliverysByDate[dateISO] || []) : [];
                                 const fl = tooltip.dataPoints && tooltip.dataPoints.length > 0
                                     ? friendlyLabels[tooltip.dataPoints[0].dataIndex]
                                     : '';
-                                renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, fl, fuelLabel, barColor);
+                                renderVolumeTooltip(tooltip, chart, hourlyData, dateISO, fl, fuelLabel, barColor, deliveries);
                             }
                         },
                         datalabels: {
@@ -5351,8 +5400,32 @@
                                 const max = Math.max(...context.dataset.data);
                                 return (max > 0 && value / max < 0.15) ? '#333' : '#ffffff';
                             },
-                            font: { size: 15, weight: '700' },
-                            formatter: v => v > 0 ? v.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' gal' : ''
+                            font: function(context) {
+                                const n = context.chart.data.labels.length;
+                                const size = n <= 7 ? 15 : n <= 14 ? 12 : n <= 21 ? 10 : 9;
+                                return { size, weight: '700' };
+                            },
+                            display: function(context) {
+                                // Hide label if the bar is too narrow to fit any text
+                                const chart = context.chart;
+                                const meta  = chart.getDatasetMeta(0);
+                                const bar   = meta.data[context.dataIndex];
+                                const barWidth = bar ? bar.width : 0;
+                                return barWidth >= 22;
+                            },
+                            formatter: function(v, context) {
+                                if (!v || v === 0) return '';
+                                const n = context.chart.data.labels.length;
+                                if (n <= 14) {
+                                    // Full: "1,740 gal"
+                                    return v.toLocaleString(undefined, {maximumFractionDigits: 0}) + ' gal';
+                                } else {
+                                    // Abbreviated: "1.7k" to save space
+                                    return v >= 1000
+                                        ? (v / 1000).toFixed(1).replace(/\.0$/, '') + 'k'
+                                        : Math.round(v).toString();
+                                }
+                            }
                         }
                     },
                     scales: {
