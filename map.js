@@ -1327,6 +1327,7 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
 
     // Lower bound of search in cents vs comp avg — never go below cost + buffer
     const minDiff = Math.ceil((minPrice - liveCompAvg) * 100);
+    console.log('Store:', storeNum, 'minDiff:', minDiff, 'minPrice:', minPrice, 'estimatedCost:', estimatedCost, 'liveCompAvg:', liveCompAvg);
 
 // Search from cost+buffer floor up to +15¢ vs comp avg
     let bestProfit = -Infinity;
