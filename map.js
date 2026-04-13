@@ -48,6 +48,7 @@ let currentDataFile = '';
 let currentSelectedStationForNotes = null; // Track currently selected station for notes
 let currentFetchController = null; // AbortController to cancel stale scrub fetches
 let hasInitiallyLoaded = false; // True after the very first data load completes
+let stationRatings = {}; // { "rr_144": "fair", "144::Casey's General Store #2867": "good", ... }
 let modelData = {}; // store_num -> model store object from rr_all_stores_output.json
 let storeCosts = {}; // store_num -> cost per gallon (from user paste)
 let marginBuffer = 0.00; // additional margin buffer on top of cost
@@ -218,6 +219,53 @@ function getBrandLogo(brand) {
     
     // Return a styled div with initials instead of trying to load external images
     return `<div class="brand-initials" style="background-color: ${color}; color: white; font-weight: bold; font-size: 10px; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 50%;">${initials}</div>`;
+}
+
+// ============================================
+// RATINGS HELPERS
+// ============================================
+
+async function loadRatings() {
+    try {
+        const response = await fetch('ratings.json?v=' + Date.now());
+        if (response.ok) {
+            stationRatings = await response.json();
+            console.log(`Ratings loaded: ${Object.keys(stationRatings).length} entries`);
+        }
+    } catch (e) {
+        console.warn('Could not load ratings.json — ratings will be hidden.', e);
+    }
+}
+
+function getRatingBadge(rrStoreId, competitorName) {
+    const COLORS = {
+        poor:          '#1565c0',
+        fair:          '#1565c0',
+        average:       '#1565c0',
+        above_average: '#1565c0',
+        best_in_class: '#1565c0',
+    };
+    const LABELS = {
+        poor:          'Poor',
+        fair:          'Fair',
+        average:       'Average',
+        above_average: 'Above Avg',
+        best_in_class: 'Best in Class',
+    };
+
+    let key;
+    if (!competitorName) {
+        key = `rr_${rrStoreId}`;
+    } else {
+        key = `${rrStoreId}::${competitorName}`;
+    }
+
+    const rating = stationRatings[key];
+    if (!rating) return '';
+
+    const color = COLORS[rating] || '#757575';
+    const label = LABELS[rating] || rating;
+    return `<span class="station-rating-badge" style="background-color:${color};">${label}</span>`;
 }
 
 // ============================================
@@ -1404,7 +1452,8 @@ function updatePanelForMultipleSelections() {
         document.getElementById('station-name').textContent = station.name;
         const priceText = stationPrice ? `$${stationPrice.toFixed(2)}` : 'Price N/A';
         const rec = computeRecommendedPrice(stationId, stationCompetitors);
-        document.getElementById('station-address').innerHTML = `${station.address}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>${formatRecommendedPriceHTML(rec)}`;
+        const rrRatingBadge = getRatingBadge(stationId, null);
+        document.getElementById('station-address').innerHTML = `${station.address}${rrRatingBadge ? '<br>' + rrRatingBadge : ''}<br><strong style="color: #ffeb3b; font-size: 18px;">Your Price: ${priceText}</strong>${formatRecommendedPriceHTML(rec)}`;
         
         competitorsList.innerHTML = '';
         
@@ -1434,7 +1483,7 @@ function updatePanelForMultipleSelections() {
                 const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                 
                 competitorCard.innerHTML = `
-                    <div class="competitor-name">${competitor.name}</div>
+                    <div class="competitor-name">${competitor.name} ${getRatingBadge(stationId, competitor.name)}</div>
                     <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                     <div class="competitor-difference">${diffText}</div>
                     <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
@@ -1542,7 +1591,7 @@ function updatePanelForMultipleSelections() {
                     const diffText = priceDiff > 0 ? `+$${priceDiff.toFixed(2)}` : `-$${Math.abs(priceDiff).toFixed(2)}`;
                     
                     competitorCard.innerHTML = `
-                        <div class="competitor-name">${competitor.name}</div>
+                        <div class="competitor-name">${competitor.name} ${getRatingBadge(stationId, competitor.name)}</div>
                         <div class="competitor-price">$${competitor.price.toFixed(2)}</div>
                         <div class="competitor-difference">${diffText}</div>
                         <div class="competitor-distance">${competitor.distance.toFixed(1)} mi away</div>
@@ -1945,6 +1994,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Load manifest and initial data
+    // Load ratings and manifest/initial data in parallel
+    loadRatings();
     loadManifest();
 });
