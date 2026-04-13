@@ -1323,15 +1323,16 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
     }
 
     // The minimum price we're allowed to recommend = cost + buffer (applied in both paths)
-    const minPrice = estimatedCost + marginBuffer;  
+    const minPrice = estimatedCost + marginBuffer;
 
-    // Search over a wide range: -15¢ to +15¢ vs comp avg
+    // Lower bound of search in cents vs comp avg — never go below cost + buffer
+    const minDiff = Math.ceil((minPrice - liveCompAvg) * 100);
+
+// Search from cost+buffer floor up to +15¢ vs comp avg
     let bestProfit = -Infinity;
-    let bestDiff = 0;
-    for (let diff = -15; diff <= 15; diff += 0.5) {
-        const price = liveCompAvg + diff / 100;
-        if (price < minPrice) continue; // must clear cost + buffer floor
-        const margin = price - estimatedCost;
+    let bestDiff = minDiff;
+    for (let diff = Math.max(-15, minDiff); diff <= 15; diff += 0.5) {
+        const margin = (liveCompAvg + diff / 100) - estimatedCost;
         const gal = Math.max(0, base + effectiveSlope * diff);
         const profit = margin * gal;
         if (profit > bestProfit) {
