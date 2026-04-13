@@ -50,7 +50,7 @@ let currentFetchController = null; // AbortController to cancel stale scrub fetc
 let hasInitiallyLoaded = false; // True after the very first data load completes
 let modelData = {}; // store_num -> model store object from rr_all_stores_output.json
 let storeCosts = {}; // store_num -> cost per gallon (from user paste)
-let marginBuffer = 0.05; // additional margin buffer on top of cost
+let marginBuffer = 0.00; // additional margin buffer on top of cost
 
 // ============================================
 // NOTES MANAGEMENT FUNCTIONS
@@ -1317,22 +1317,20 @@ function computeRecommendedPrice(stationId, currentCompetitors) {
         estimatedCost = storeCosts[storeNum];
         costSource = 'actual';
     } else {
-        const ASSUMED_MARGIN_PER_GAL = 0.10;
+        const ASSUMED_MARGIN_PER_GAL = 0.05;
         estimatedCost = currentRR - ASSUMED_MARGIN_PER_GAL;
         costSource = 'estimated';
     }
 
-    // The minimum price we're allowed to recommend = cost + buffer
-    const minPrice = (storeCosts[storeNum] !== undefined)
-        ? storeCosts[storeNum] + marginBuffer
-        : estimatedCost;
+    // The minimum price we're allowed to recommend = cost + buffer (applied in both paths)
+    const minPrice = estimatedCost + marginBuffer;  
 
     // Search over a wide range: -15¢ to +15¢ vs comp avg
     let bestProfit = -Infinity;
     let bestDiff = 0;
     for (let diff = -15; diff <= 15; diff += 0.5) {
         const price = liveCompAvg + diff / 100;
-        if (price <= minPrice) continue; // must clear cost + buffer floor
+        if (price < minPrice) continue; // must clear cost + buffer floor
         const margin = price - estimatedCost;
         const gal = Math.max(0, base + effectiveSlope * diff);
         const profit = margin * gal;
