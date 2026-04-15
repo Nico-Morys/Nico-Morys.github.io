@@ -582,6 +582,7 @@ function toggleStationChecked(stationId, marker) {
     }
     
     updateProgressCounter();
+    saveCheckedStations();
 }
 
 // Check all stations
@@ -597,6 +598,7 @@ function checkAllStations() {
     });
     
     updateProgressCounter();
+    saveCheckedStations();
 }
 
 // Uncheck all stations
@@ -610,6 +612,24 @@ function uncheckAllStations() {
     });
     
     updateProgressCounter();
+    saveCheckedStations();
+}
+
+// Persist checked stations to localStorage
+function saveCheckedStations() {
+    localStorage.setItem('rr-checked-stations', JSON.stringify(Array.from(checkedStations)));
+}
+
+// Load checked stations from localStorage
+function loadCheckedStations() {
+    try {
+        const saved = localStorage.getItem('rr-checked-stations');
+        if (saved) {
+            JSON.parse(saved).forEach(id => checkedStations.add(id));
+        }
+    } catch (e) {
+        console.warn('Could not restore checked stations:', e);
+    }
 }
 
 
@@ -1995,6 +2015,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load ratings and manifest/initial data in parallel
+    loadCheckedStations();
     loadRatings();
     loadManifest();
 });
