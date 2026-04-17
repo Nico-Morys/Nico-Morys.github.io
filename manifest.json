@@ -3043,10 +3043,11 @@
     "historical/20260417_054607_master_price_data.csv",
     "historical/20260417_061447_master_price_data.csv",
     "historical/20260417_071020_master_price_data.csv",
-    "historical/20260417_080331_master_price_data.csv"
+    "historical/20260417_080331_master_price_data.csv",
+    "historical/20260417_082740_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260417_080331_master_price_data.csv",
-  "last_updated": "2026-04-17T08:03:31.592058+00:00",
-  "timestamp": "20260417_080331"
+  "latest_historical_csv": "historical/20260417_082740_master_price_data.csv",
+  "last_updated": "2026-04-17T08:27:40.318355+00:00",
+  "timestamp": "20260417_082740"
 }
