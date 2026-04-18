@@ -3119,10 +3119,11 @@
     "historical/20260418_124832_master_price_data.csv",
     "historical/20260418_131120_master_price_data.csv",
     "historical/20260418_133414_master_price_data.csv",
-    "historical/20260418_135726_master_price_data.csv"
+    "historical/20260418_135726_master_price_data.csv",
+    "historical/20260418_142010_master_price_data.csv"
   ],
   "latest_master_csv": "master_price_data.csv",
-  "latest_historical_csv": "historical/20260418_135726_master_price_data.csv",
-  "last_updated": "2026-04-18T13:57:26.345193+00:00",
-  "timestamp": "20260418_135726"
+  "latest_historical_csv": "historical/20260418_142010_master_price_data.csv",
+  "last_updated": "2026-04-18T14:20:10.966202+00:00",
+  "timestamp": "20260418_142010"
 }
