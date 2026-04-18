@@ -4446,9 +4446,13 @@
             if (historicalDataCache !== null) {
                 filterHistoricalDataForCurrentStore();
             }
-            
+
             // Extract store number from "Road Ranger #118 - Springfield, IL"
             const storeNumber = store.rr_store.replace('Road Ranger #', '').split(' - ')[0];
+
+            // Fast-path: pre-fetch this store's trends file in the background so
+            // the chart is ready instantly when the user opens the Trends panel.
+            loadStoreTrends(storeNumber);
             const storeName = store.rr_store_data.name;
             
             // Get all stations for this location from master data
@@ -5528,8 +5532,12 @@
 
         // Initialize the trends chart
         async function initializeTrendsChart() {
-            // Load historical data
-            await loadHistoricalData();
+            // Fast path: load only this store's pre-built trends file instead of
+            // fetching all historical CSVs. Falls back gracefully if file missing.
+            if (currentStore) {
+                const storeNumber = currentStore.rr_store.replace('Road Ranger #', '').split(' - ')[0];
+                await loadStoreTrends(storeNumber);
+            }
             
             // Create the chart
             const ctx = document.getElementById('price-trends-chart').getContext('2d');
@@ -5767,6 +5775,53 @@
             
             console.log(`Filtered ${currentStoreHistoricalData.length} data points for current store`);
         }
+
+        // ── Fast-path trends loader ────────────────────────────────────────────
+        // Fetches trends/{storeNum}.json (one ~30-50 KB file) and populates
+        // currentStoreHistoricalData directly.  Does NOT touch historicalDataCache,
+        // so buildKpiChart() and buildMovementTable() are completely unaffected.
+        // In-memory cache means revisiting a store is instant (no second fetch).
+        const _storeTrendsCache = {};
+
+        async function loadStoreTrends(storeNum) {
+            if (!storeNum) return;
+
+            // Serve from in-memory cache if already fetched this session
+            if (_storeTrendsCache[storeNum] !== undefined) {
+                currentStoreHistoricalData = _storeTrendsCache[storeNum];
+                console.log(`[Trends] Cache hit RR #${storeNum} — ${currentStoreHistoricalData.length} rows`);
+                return;
+            }
+
+            try {
+                const resp = await fetch(`trends/${storeNum}.json`);
+                if (!resp.ok) {
+                    // File doesn't exist yet — fall back to CSV-based cache if available
+                    console.warn(`[Trends] trends/${storeNum}.json not found (${resp.status}), falling back to CSV cache`);
+                    filterHistoricalDataForCurrentStore();
+                    return;
+                }
+
+                const rows = await resp.json();
+
+                // Re-hydrate _fileTimestamp ISO strings → Date objects
+                // (updateTrendsChart expects Date instances for comparison/sorting)
+                rows.forEach(r => {
+                    if (typeof r._fileTimestamp === 'string') {
+                        r._fileTimestamp = new Date(r._fileTimestamp);
+                    }
+                });
+
+                _storeTrendsCache[storeNum] = rows;
+                currentStoreHistoricalData = rows;
+                console.log(`[Trends] Loaded trends/${storeNum}.json — ${rows.length} rows`);
+
+            } catch (e) {
+                console.warn(`[Trends] Error loading trends/${storeNum}.json:`, e);
+                filterHistoricalDataForCurrentStore();  // graceful fallback to CSV cache
+            }
+        }
+        // ── End fast-path trends loader ───────────────────────────────────────
 
         // Update the trends chart with current settings
         function updateTrendsChart() {
