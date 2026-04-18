@@ -46,6 +46,11 @@
 !rr_all_stores_output.json
 
 
+# Allow trends files
+!trends/
+!trends/*.json
+
+
 # Allow .gitignore itself
 !.gitignore
 
